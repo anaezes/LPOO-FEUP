@@ -3,7 +3,9 @@ import java.util.Scanner;
 public class DungeonKeep {
 	int numberRows = 10;
 	int[] hero = {1,1};
-	int[] guard = {8,1};
+	int[][] guard = {{8,1},{7,1},{7,3},{7,4},{7,5},{6,5},{5,5},{4,5},{3,5},{2,5},
+			{1,5},{1,6},{2,6},{3,6},{4,6},{5,6},{6,6},{7,6},{8,6},{8,5},{8,4},{8,3},{8,2}};
+	int indexGuard = 0;
 	char[][] board = {{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ','I', ' ', 'X', ' ', ' ', 'X'},
 			{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
@@ -16,6 +18,7 @@ public class DungeonKeep {
 			{'X','X','X','X','X','X','X','X','X','X'}};
 	boolean onLever = false;
 	boolean winGame = false;
+	boolean loseGame = false;
 
 
 	public static void main(String[] args)
@@ -39,7 +42,7 @@ public class DungeonKeep {
 			printBoard();
 			
 			if(winGame)
-				System.out.print("YOU WIN!");			
+				System.out.println("YOU WIN!");			
 		}
 
 		input.close();	
@@ -56,7 +59,7 @@ public class DungeonKeep {
 			{
 				if(hero[0] == j && hero[1] == i)
 					System.out.print('H' + " ");
-				else if (guard[0] == j && guard[1] == i)
+				else if (guard[indexGuard][0] == j && guard[indexGuard][1] == i)
 					System.out.print('G' + " ");
 				else
 					System.out.print(board[i][j] + " ");
@@ -117,12 +120,20 @@ public class DungeonKeep {
 			break;
 		}
 		
-		
+		moveGuard();
 	}
 
 	public void activateLever() {
 		board[5][0] = 'S';
 		board[6][0] = 'S';
+	}
+	
+	public void moveGuard() {
+		if(indexGuard < 22)
+			indexGuard++;
+		else
+			indexGuard = 0;
+			
 	}
 
 }

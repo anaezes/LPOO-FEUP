@@ -18,7 +18,7 @@ public class DungeonKeep {
 			{'X','X','X','X','X','X','X','X','X','X'}};
 	boolean onLever = false;
 	boolean winGame = false;
-	boolean loseGame = false;
+	boolean lostGame = false;
 
 
 	public static void main(String[] args)
@@ -33,20 +33,24 @@ public class DungeonKeep {
 
 		Scanner input = new Scanner(System.in);
 
-		while(!winGame && input.hasNext())
+		while(!winGame && !lostGame && input.hasNext())
 		{
 			
 			String keyCode = input.nextLine();			
 			System.out.println(keyCode);
 			keyPressed(keyCode);
-			printBoard();
-			
-			if(winGame)
-				System.out.println("YOU WIN!");			
+			printBoard();	
 		}
 
+
+		if(winGame)
+			System.out.println("YOU WIN!");			
+		else if(lostGame)
+			System.out.println("Game Over!");
+		
 		input.close();	
 	}
+	
 
 
 	public void printBoard()
@@ -66,6 +70,7 @@ public class DungeonKeep {
 			}
 			System.out.println();
 		}
+		System.out.println();
 	}
 
 
@@ -121,6 +126,8 @@ public class DungeonKeep {
 		}
 		
 		moveGuard();
+		checkLostGame();
+		
 	}
 
 	public void activateLever() {
@@ -133,7 +140,13 @@ public class DungeonKeep {
 			indexGuard++;
 		else
 			indexGuard = 0;
-			
+	}
+	
+	public void checkLostGame()
+	{
+		if(((guard[indexGuard][0] == (hero[0]+1) || guard[indexGuard][0] == (hero[0]-1)) && guard[indexGuard][1] == (hero[1])) || 
+				(guard[indexGuard][1] == (hero[1]+1) || guard[indexGuard][1] == (hero[1]-1)) && guard[indexGuard][0] == (hero[0]))
+			lostGame = true;
 	}
 
 }

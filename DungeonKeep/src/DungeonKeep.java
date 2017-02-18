@@ -84,11 +84,13 @@ public class DungeonKeep {
 				for(int j = 0; j < numberRows; j++)
 				{
 					if(hero[0] == j && hero[1] == i)
-						System.out.print('H' + " ");
+						System.out.print('H');
 					else if (guard[indexGuard][0] == j && guard[indexGuard][1] == i)
-						System.out.print('G' + " ");
+						System.out.print('G');
 					else
-						System.out.print(boardOne[i][j] + " ");
+						System.out.print(boardOne[i][j]);
+					
+					System.out.print(" ");
 				}
 				System.out.println();
 			}
@@ -103,19 +105,21 @@ public class DungeonKeep {
 					if(hero[0] == j && hero[1] == i)
 					{
 						if(onLever)
-							System.out.print('K' + " ");
+							System.out.print('K');
 						else
-							System.out.print('H' + " ");
+							System.out.print('H');
 					}
 					else if (crazyOgre[0] == j && crazyOgre[1] == i)
 					{
 						if(onLeverOgre)
-							System.out.print('$' + " ");
+							System.out.print('$');
 						else
-							System.out.print('0' + " ");
+							System.out.print('0');
 					}
 					else
-						System.out.print(boardTwo[i][j] + " ");
+						System.out.print(boardTwo[i][j]);
+					
+					System.out.print(" ");
 				}
 				System.out.println();
 			}

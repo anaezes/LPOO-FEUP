@@ -72,7 +72,6 @@ public class DungeonKeep {
 	}
 
 
-
 	public void printBoard()
 	{
 		System.out.println();

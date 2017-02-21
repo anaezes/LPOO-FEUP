@@ -90,13 +90,12 @@ public class DungeonKeep {
 						System.out.print('G');
 					else
 						System.out.print(boardOne[i][j]);
-					
+
 					System.out.print(" ");
 				}
 				System.out.println();
 			}
 		}
-
 		else if(level == Level.LEVELTWO)
 		{
 			for(int i = 0; i < numberRows-1; i++)
@@ -127,7 +126,7 @@ public class DungeonKeep {
 					}
 					else
 						System.out.print(boardTwo[i][j]);
-					
+
 					System.out.print(" ");
 				}
 				System.out.println();
@@ -148,11 +147,8 @@ public class DungeonKeep {
 		else
 		{
 			movesCrazyOgre();
-			//moveOgreClub();
 			board = boardTwo;
 		}
-
-
 
 		switch(option) { 
 		//left
@@ -255,7 +251,7 @@ public class DungeonKeep {
 			if(((crazyOgre[0] == (hero[0]+1) || crazyOgre[0] == (hero[0]-1)) && crazyOgre[1] == (hero[1])) || 
 					(crazyOgre[1] == (hero[1]+1) || crazyOgre[1] == (hero[1]-1)) && crazyOgre[0] == (hero[0]))
 				lostGame = true;
-			
+
 			if(((club[0] == (hero[0]+1) || club[0] == (hero[0]-1)) && club[1] == (hero[1])) || 
 					(club[1] == (hero[1]+1) || club[1] == (hero[1]-1)) && club[0] == (hero[0]))
 				lostGame = true;
@@ -269,74 +265,68 @@ public class DungeonKeep {
 		int num = oj.nextInt(4);
 
 		onLeverOgre = false;
-		
-		
+
 		switch(num) { 
 		//left
 		case 0:
 			if(boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'X' && boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'I' && boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'S' )
 				crazyOgre[0]--;
-				//club[0]--;
-				checkAsterisk();
-			
+			checkAsterisk();
+
 			break;
 			//right
 		case 1:
 			if(boardTwo[crazyOgre[1]][crazyOgre[0]+1] != 'X' && boardTwo[crazyOgre[1]][crazyOgre[0]+1] != 'I' && boardTwo[crazyOgre[1]][crazyOgre[0]+1] != 'S'  ) //|| boardTwo[crazyOgre[1]][crazyOgre[0]+1] == 'k' || boardTwo[crazyOgre[1]][crazyOgre[0]+1] == 'K')
 				crazyOgre[0]++;
-				//club[0]++;
-				checkAsterisk();
+			checkAsterisk();
 
 			break;
 			//up
 		case 2:
 			if(boardTwo[crazyOgre[1]-1][crazyOgre[0]] != 'X' && boardTwo[crazyOgre[1]-1][crazyOgre[0]] != 'I' && boardTwo[crazyOgre[1]-1][crazyOgre[0]] != 'S'  )//|| boardTwo[crazyOgre[1]-1][crazyOgre[0]] == 'k' || boardTwo[crazyOgre[1]-1][crazyOgre[0]] == 'K')
 				crazyOgre[1]--;
-				//club[1]--;
-				checkAsterisk();
+			checkAsterisk();
 
 			break;
 			//down
 		case 3:
 			if(boardTwo[crazyOgre[1]+1][crazyOgre[0]] != 'X' && boardTwo[crazyOgre[1]+1][crazyOgre[0]] != 'I' && boardTwo[crazyOgre[1]+1][crazyOgre[0]] != 'S')
 				crazyOgre[1]++;
-				//club[1]++;
-				checkAsterisk();
+			checkAsterisk();
 
 			break;
 		}
-			
+
 		if(boardTwo[crazyOgre[1]][crazyOgre[0]] == 'k' || boardTwo[crazyOgre[1]][crazyOgre[0]] == 'K')
 			onLeverOgre = true;
 	}
-	
+
 	public void moveOgreClub(int[] array)
 	{ 
 		onLeverClub = false;
-		
+
 		Random club_dir= new Random();
-		
+
 		int pos = club_dir.nextInt(array.length);
 		int num = array[pos];
-		System.out.println(num);
-		
-		System.out.println(crazyOgre[0]);
-		System.out.println(crazyOgre[1]);
-		System.out.println("club");
-		System.out.println(club[0]);
-		System.out.println(club[1]);
 
-		
+		//System.out.println(num);
+		//System.out.println(crazyOgre[0]);
+		//System.out.println(crazyOgre[1]);
+		//System.out.println("club");
+		//System.out.println(club[0]);
+		//System.out.println(club[1]);
+
+
 		switch(num) { 
 		//left
 		case 0:
 			if(boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'X' && boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'I' && boardTwo[crazyOgre[1]][crazyOgre[0]-1] != 'S')
 			{
-				
 				club[0] = crazyOgre[0] - 1;
 				club[1] = crazyOgre[1];
 			}
-			
+
 			break;
 			//right
 		case 1:
@@ -363,20 +353,20 @@ public class DungeonKeep {
 			}
 			break;
 		}
-		
+
 		if(boardTwo[club[1]][club[0]] == 'k' || boardTwo[club[1]][club[0]] == 'K')
 			onLeverClub = true;
 	}
-	
+
 	public void checkAsterisk(){
-		
-		if(crazyOgre[1]==1){
-			if (crazyOgre[0]==1){
+
+		if(crazyOgre[1] == 1){
+			if (crazyOgre[0] == 1){
 				int[] array = {1,3};
 				moveOgreClub(array);
 			}
-			
-			if(crazyOgre[0] ==8){
+
+			else if(crazyOgre[0] == 7){
 				int[] array = {0,3};
 				moveOgreClub(array);
 			}
@@ -385,14 +375,14 @@ public class DungeonKeep {
 				moveOgreClub(array);
 			}
 		}
-		
-		if (crazyOgre[1]==8){
-			if (crazyOgre[1]==1){
+
+		else if (crazyOgre[1] == 7){
+			if (crazyOgre[0]== 1){
 				int[] array = {1,2};
 				moveOgreClub(array);
 			}
-			
-			if(crazyOgre[1]==8){
+
+			else if(crazyOgre[0]==7){
 				int[] array = {0,2};
 				moveOgreClub(array);
 			}
@@ -401,21 +391,22 @@ public class DungeonKeep {
 				moveOgreClub(array);
 			}
 		}
-		
-		if(crazyOgre[0] == 1) {
+
+		else if(crazyOgre[0] == 1) {
 			int[] array = {1, 2, 3};
 			moveOgreClub(array);
 		}
-		
-		if(crazyOgre[0] == 8) {
+
+		else if(crazyOgre[0] == 7) {
 			int[] array = {0, 2, 3};
 			moveOgreClub(array);
 		}
-		
-		int[] array = {0, 1, 2, 3 };
-		moveOgreClub(array);
+		else
+		{
+			int[] array = {0, 1, 2, 3 };
+			moveOgreClub(array);
+		}
 	}
 }	
 
 
-  

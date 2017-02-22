@@ -61,6 +61,9 @@ public class DungeonKeep {
 		{
 			String keyCode = input.nextLine();			
 			System.out.println(keyCode);
+			if (keyCode.length()>1){
+				System.out.println("Insira apenas uma tecla!");
+			}
 			keyPressed(keyCode);
 			printBoard();	
 		}
@@ -232,6 +235,8 @@ public class DungeonKeep {
 				onLever = true;
 			}
 			break;
+		default: 
+			 System.out.println("Pressione uma tecla válida!");
 		}
 
 		if(level == Level.LEVELONE)

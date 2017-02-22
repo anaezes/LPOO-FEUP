@@ -153,13 +153,17 @@ public class DungeonKeep {
 		switch(option) { 
 		//left
 		case 'a':
+		case 'A':
 			if(board[hero[1]][hero[0]-1] == ' ')
 				hero[0]--;
 			else if(board[hero[1]][hero[0]-1] == 'k')
 			{
 				hero[0]--;
-				activateLever();
-				onLever = true;
+				if (level ==Level.LEVELONE){
+					activateLever();
+					onLever = true;
+				}
+				
 			}
 			else if(board[hero[1]][hero[0]-1] == 'S')
 			{
@@ -177,38 +181,54 @@ public class DungeonKeep {
 					winGame = true;
 				}
 			}
+			else if(board[hero[1]][hero[0]-1] == 'I')
+			{
+				if(level == Level.LEVELTWO)
+				{
+					activateLever();
+				}
+			}
 
 			break;
 		case 'd':
+		case 'D':
 			if(board[hero[1]][hero[0]+1] == ' ')
 				hero[0]++;
 			else if(board[hero[1]][hero[0]+1] == 'k')
 			{
 				hero[0]++;
-				activateLever();
+				if (level ==Level.LEVELONE){
+					activateLever();
+				}
 				onLever = true;
 			}
 			break;
 			//up
 		case 'w':
+		case 'W':
 			if(board[hero[1]-1][hero[0]] == ' ')
 				hero[1]--;
 			else if(board[hero[1]-1][hero[0]] == 'k')
 			{
 				hero[1]--;
-				activateLever();
+				if (level ==Level.LEVELONE){
+					activateLever();
+				}
 				onLever = true;
 			}
 			break;
 			//down
-		case 's' :
+		case 's':
+		case 'S':
 			if(board[hero[1]+1][hero[0]] == ' ')
 				hero[1]++;
 
 			else if(board[hero[1]+1][hero[0]] == 'k')
 			{
 				hero[1]++;
-				activateLever();
+				if (level ==Level.LEVELONE){
+					activateLever();
+				}	
 				onLever = true;
 			}
 			break;

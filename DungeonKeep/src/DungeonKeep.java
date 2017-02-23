@@ -53,19 +53,23 @@ public class DungeonKeep {
 	public void run()
 	{
 		level = Level.LEVELONE;	
+	
 		printBoard();
 
+		System.out.println("How to play? S to down - W to up - A to left - D to right");
+		
 		Scanner input = new Scanner(System.in);
 
 		while(!winGame && !lostGame && input.hasNext())
 		{
 			String keyCode = input.nextLine();			
 			System.out.println(keyCode);
-			if (keyCode.length()>1){
-				System.out.println("Insira apenas uma tecla!");
+			if (keyCode.length()==1){
+				keyPressed(keyCode);
+				printBoard();	
 			}
-			keyPressed(keyCode);
-			printBoard();	
+			
+			
 		}
 
 		if(winGame)
@@ -142,7 +146,9 @@ public class DungeonKeep {
 
 
 	public void keyPressed(String keyCode){
+		
 		char option = keyCode.charAt(0);
+		
 		char[][] board;
 
 		if(level == Level.LEVELONE)
@@ -236,7 +242,7 @@ public class DungeonKeep {
 			}
 			break;
 		default: 
-			 System.out.println("Pressione uma tecla válida!");
+			 System.out.println("Press a valid key!");
 		}
 
 		if(level == Level.LEVELONE)

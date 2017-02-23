@@ -16,6 +16,7 @@ public class InputUser {
 		InputUser game = new InputUser();
 		game.run();
 	}
+	//
 
 	public void run() {
 

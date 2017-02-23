@@ -7,11 +7,11 @@ import java.util.Random;
 public class GameLogic {
 	
 	
-	int[] hero = {1,1};
-	int[][] guard = {{8,1},{7,1},{7,3},{7,4},{7,5},{6,5},{5,5},{4,5},{3,5},{2,5},
+	public int[] hero = {1,1};
+	public int[][] guard = {{8,1},{7,1},{7,3},{7,4},{7,5},{6,5},{5,5},{4,5},{3,5},{2,5},
 			{1,5},{1,6},{2,6},{3,6},{4,6},{5,6},{6,6},{7,6},{8,6},{8,5},{8,4},{8,3},{8,2}};
-	int indexGuard = 0;
-	char[][] boardOne = {{'X','X','X','X','X','X','X','X','X','X'},
+	public int indexGuard = 0;
+	public char[][] boardOne = {{'X','X','X','X','X','X','X','X','X','X'},
 			{'X',' ',' ',' ','I', ' ', 'X', ' ', ' ', 'X'},
 			{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
 			{'X',' ','I',' ','I', ' ', 'X', ' ', ' ', 'X'},
@@ -23,9 +23,9 @@ public class GameLogic {
 			{'X','X','X','X','X','X','X','X','X','X'}};
 
 	//int[] heroTwo= {1,7};
-	int[] crazyOgre= {4,1};
-	int[] club={4,2};
-	char[][] boardTwo = {{'X','X','X','X','X','X','X','X','X'},
+	public int[] crazyOgre= {4,1};
+	public int[] club={4,2};
+	 public char[][] boardTwo = {{'X','X','X','X','X','X','X','X','X'},
 			{'I',' ',' ',' ',' ', ' ', ' ', 'k', 'X'},
 			{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 			{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
@@ -35,11 +35,11 @@ public class GameLogic {
 			{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 			{'X','X','X','X','X','X','X','X','X'}};
 
-	boolean onLever = false;
-	boolean winGame = false;
-	boolean lostGame = false;
-	boolean onLeverOgre = false;
-	boolean onLeverClub = false;
+	public boolean onLever = false;
+	public boolean winGame = false;
+	public boolean lostGame = false;
+	public boolean onLeverOgre = false;
+	public boolean onLeverClub = false;
 	public Level level;
 
 	public enum Level{

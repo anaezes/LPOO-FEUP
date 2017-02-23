@@ -1,25 +1,16 @@
 package ckeep.cli;
 
 
-import java.util.Random;
 import java.util.Scanner;
 
-import dkeep.logic.*;
 import dkeep.logic.GameLogic.Level;
+import dkeep.logic.GameLogic;
+
 
 public class InputUser {
+	GameLogic game = new GameLogic();
+	int numberRows=10;
 
-	int numberRows = 10;
-	boolean onLever = false;
-	boolean winGame = false;
-	boolean lostGame = false;
-	boolean onLeverOgre = false;
-	boolean onLeverClub = false;
-	public Level level;
-
-	public enum Level{
-		LEVELONE, LEVELTWO;
-	}
 	public static void main(String[] args)
 	{
 		InputUser game = new InputUser();
@@ -28,7 +19,7 @@ public class InputUser {
 
 	public void run() {
 
-		level = Level.LEVELONE;	
+		game.level = Level.LEVELONE;	
 
 		printBoard();
 
@@ -36,7 +27,7 @@ public class InputUser {
 
 		Scanner input = new Scanner(System.in);
 
-		while(!winGame && !lostGame && input.hasNext())
+		while(!game.winGame && !game.lostGame && input.hasNext())
 		{
 			String keyCode = input.nextLine();			
 			System.out.println(keyCode);
@@ -46,9 +37,9 @@ public class InputUser {
 			}
 		}
 
-		if(winGame)
+		if(game.winGame)
 			System.out.println("YOU WIN!");			
-		else if(lostGame)
+		else if(game.lostGame)
 			System.out.println("Game Over!");
 
 		input.close();	
@@ -59,54 +50,54 @@ public class InputUser {
 	{
 		System.out.println();
 
-		if(level == Level.LEVELONE)
+		if(game.level == Level.LEVELONE)
 		{
 			for(int i = 0; i < numberRows; i++)
 			{
 				for(int j = 0; j < numberRows; j++)
 				{
-					if(hero[0] == j && hero[1] == i)
+					if(game.hero[0] == j && game.hero[1] == i)
 						System.out.print('H');
-					else if (guard[indexGuard][0] == j && guard[indexGuard][1] == i)
+					else if (game.guard[game.indexGuard][0] == j && game.guard[game.indexGuard][1] == i)
 						System.out.print('G');
 					else
-						System.out.print(boardOne[i][j]);
+						System.out.print(game.boardOne[i][j]);
 
 					System.out.print(" ");
 				}
 				System.out.println();
 			}
 		}
-		else if(level == Level.LEVELTWO)
+		else if(game.level == Level.LEVELTWO)
 		{
 			for(int i = 0; i < numberRows-1; i++)
 			{
 				for(int j = 0; j < numberRows-1; j++)
 				{
-					if(hero[0] == j && hero[1] == i)
+					if(game.hero[0] == j && game.hero[1] == i)
 					{
-						if(onLever)
+						if(game.onLever)
 							System.out.print('K');
 						else
 							System.out.print('H');
 					}
-					else if (crazyOgre[0] == j && crazyOgre[1] == i)
+					else if (game.crazyOgre[0] == j && game.crazyOgre[1] == i)
 					{
-						if(onLeverOgre)
+						if(game.onLeverOgre)
 							System.out.print('$');
 						else
 							System.out.print('0');
 					}
-					else if (club[0]==j && club[1]==i)
+					else if (game.club[0]==j && game.club[1]==i)
 					{
-						if (onLeverClub)
+						if (game.onLeverClub)
 							System.out.print('$');
 						else 
 							System.out.print('*');
 
 					}
 					else
-						System.out.print(boardTwo[i][j]);
+						System.out.print(game.boardTwo[i][j]);
 
 					System.out.print(" ");
 				}
@@ -125,104 +116,104 @@ public class InputUser {
 
 		char[][] board;
 
-		if(level == Level.LEVELONE)
-			board = boardOne;
+		if(game.level == Level.LEVELONE)
+			board = game.boardOne;
 		else
 		{
-			movesCrazyOgre();
-			board = boardTwo;
+			game.movesCrazyOgre();
+			board = game.boardTwo;
 		}
 
 		switch(option) { 
 		//left
 		case 'a':
 		case 'A':
-			if(board[hero[1]][hero[0]-1] == ' ')
-				hero[0]--;
-			else if(board[hero[1]][hero[0]-1] == 'k')
+			if(board[game.hero[1]][game.hero[0]-1] == ' ')
+				game.hero[0]--;
+			else if(board[game.hero[1]][game.hero[0]-1] == 'k')
 			{
-				hero[0]--;
-				if (level ==Level.LEVELONE){
-					activateLever();
-					onLever = true;
+				game.hero[0]--;
+				if (game.level ==Level.LEVELONE){
+					game.activateLever();
+					game.onLever = true;
 				}
 
 			}
-			else if(board[hero[1]][hero[0]-1] == 'S')
+			else if(board[game.hero[1]][game.hero[0]-1] == 'S')
 			{
 
-				if(level == Level.LEVELONE)
+				if(game.level == Level.LEVELONE)
 				{
-					hero[0] = 1;
-					hero[1] = 7;
-					level = Level.LEVELTWO;
-					onLever = false;
+					game.hero[0] = 1;
+					game.hero[1] = 7;
+					game.level = Level.LEVELTWO;
+					game.onLever = false;
 				}
 				else 
 				{
-					hero[0]--;
-					winGame = true;
+					game.hero[0]--;
+					game.winGame = true;
 				}
 			}
-			else if(board[hero[1]][hero[0]-1] == 'I')
+			else if(board[game.hero[1]][game.hero[0]-1] == 'I')
 			{
-				if(level == Level.LEVELTWO)
+				if(game.level == Level.LEVELTWO)
 				{
-					activateLever();
+					game.activateLever();
 				}
 			}
 
 			break;
 		case 'd':
 		case 'D':
-			if(board[hero[1]][hero[0]+1] == ' ')
-				hero[0]++;
-			else if(board[hero[1]][hero[0]+1] == 'k')
+			if(board[game.hero[1]][game.hero[0]+1] == ' ')
+				game.hero[0]++;
+			else if(board[game.hero[1]][game.hero[0]+1] == 'k')
 			{
-				hero[0]++;
-				if (level ==Level.LEVELONE){
-					activateLever();
+				game.hero[0]++;
+				if (game.level ==Level.LEVELONE){
+					game.activateLever();
 				}
-				onLever = true;
+				game.onLever = true;
 			}
 			break;
 			//up
 		case 'w':
 		case 'W':
-			if(board[hero[1]-1][hero[0]] == ' ')
-				hero[1]--;
-			else if(board[hero[1]-1][hero[0]] == 'k')
+			if(board[game.hero[1]-1][game.hero[0]] == ' ')
+				game.hero[1]--;
+			else if(board[game.hero[1]-1][game.hero[0]] == 'k')
 			{
-				hero[1]--;
-				if (level ==Level.LEVELONE){
-					activateLever();
+				game.hero[1]--;
+				if (game.level ==Level.LEVELONE){
+					game.activateLever();
 				}
-				onLever = true;
+				game.onLever = true;
 			}
 			break;
 			//down
 		case 's':
 		case 'S':
-			if(board[hero[1]+1][hero[0]] == ' ')
-				hero[1]++;
+			if(board[game.hero[1]+1][game.hero[0]] == ' ')
+				game.hero[1]++;
 
-			else if(board[hero[1]+1][hero[0]] == 'k')
+			else if(board[game.hero[1]+1][game.hero[0]] == 'k')
 			{
-				hero[1]++;
-				if (level ==Level.LEVELONE){
-					activateLever();
+				game.hero[1]++;
+				if (game.level ==Level.LEVELONE){
+					game.activateLever();
 				}	
-				onLever = true;
+				game.onLever = true;
 			}
 			break;
 		default: 
 			System.out.println("Press a valid key!");
 		}
 
-		if(level == Level.LEVELONE)
-			moveGuard();
+		if(game.level == Level.LEVELONE)
+			game.moveGuard();
 
-		checkLostGame();
+		game.checkLostGame();
 	}
 
 	

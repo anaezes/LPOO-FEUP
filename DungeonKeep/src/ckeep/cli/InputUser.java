@@ -1,26 +1,21 @@
 package ckeep.cli;
 
-
 import java.util.Scanner;
 
-import dkeep.logic.GameLogic.Level;
-import dkeep.logic.GameLogic;
-
+import dkeep.logic.Game;
 
 public class InputUser {
-	GameLogic game = new GameLogic();
-	int numberRows=10;
-
-	public static void main(String[] args)
-	{
-		InputUser game = new InputUser();
-		game.run();
+	
+	private int numberRows;
+	private Game game;
+	
+	public InputUser(int numberRows) {
+		Game game = new Game();
+		this.numberRows = numberRows;
+		this.game = game;
 	}
-	//
 
 	public void run() {
-
-		game.level = Level.LEVELONE;	
 
 		printBoard();
 

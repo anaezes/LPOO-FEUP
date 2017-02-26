@@ -27,7 +27,6 @@ public class Ogre extends Coordinates {
 		case 0:
 			if(board.checkBoardColisions(this.GetXCoordinate(), this.GetYCoordinate()-1)) {
 				this.SetYCoordinate(this.GetYCoordinate()-1);
-				//checkAsterisk();
 
 			}
 			break;
@@ -35,21 +34,18 @@ public class Ogre extends Coordinates {
 		case 1:
 			if(board.checkBoardColisions(this.GetXCoordinate(), this.GetYCoordinate()+1)) {
 				this.SetYCoordinate(this.GetYCoordinate()+1);
-				//			checkAsterisk();
 			}
 			break;
 			//up
 		case 2:
 			if(board.checkBoardColisions(this.GetXCoordinate()-1, this.GetYCoordinate())){
 				this.SetXCoordinate(this.GetXCoordinate()-1);
-				//checkAsterisk();
 			}
 			break;
 			//down
 		case 3:
 			if(board.checkBoardColisions(this.GetXCoordinate()+1, this.GetYCoordinate())){
 				this.SetXCoordinate(this.GetXCoordinate()+1);
-				//checkAsterisk();
 			}
 			break;
 		}

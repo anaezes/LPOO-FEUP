@@ -32,6 +32,14 @@ public class Board {
 		}
 	}
 	
+	public void setLevelBoard(EnumLevel level) {
+		if(level == EnumLevel.LEVELONE) {
+			this.SelectedBoard = BoardOne;
+		} else {
+			this.SelectedBoard = BoardTwo;
+		}
+	}
+	
 	public char[][] GetBoard() {
 		return SelectedBoard;
 	}

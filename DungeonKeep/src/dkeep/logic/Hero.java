@@ -1,20 +1,24 @@
 package dkeep.logic;
 
-public class Hero {
+public class Hero extends Coordinates {
 	
-	private int[] position;
 	private boolean onLever;
 	
 	public Hero() {
-		this.position = new int[] {1, 1};
+		super(1, 1);
 		this.onLever = false;
-	}
-	
-	public int[] GetHeroPosition() {
-		return position;
 	}
 	
 	public boolean GetHeroOnLeverState() {
 		return onLever;
+	}
+	
+	public void moveHero(int x, int y) {
+		this.SetXCoordinate(x);
+		this.SetYCoordinate(y);
+	}
+	
+	public void SetHeroOnLever(boolean state) {
+		this.onLever = state;
 	}
 }

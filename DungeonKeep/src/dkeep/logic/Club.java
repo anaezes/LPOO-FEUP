@@ -32,35 +32,35 @@ public class Club extends Coordinates {
 			}
 		}
 
-		else if (crazyOgre[1] == 7){
-			if (crazyOgre[0]== 1){
+		else if (actorCoordinates.GetXCoordinate() == 7){
+			if (actorCoordinates.GetYCoordinate()== 1){
 				int[] array = {1,2};
-				moveOgreClub(array);
+				moveClub(array, level, actorCoordinates);
 			}
 
-			else if(crazyOgre[0]==7){
+			else if(actorCoordinates.GetYCoordinate()==7){
 				int[] array = {0,2};
-				moveOgreClub(array);
+				moveClub(array, level, actorCoordinates);
 			}
 			else{
 				int[] array = {0,1,2};
-				moveOgreClub(array);
+				moveClub(array, level, actorCoordinates);
 			}
 		}
 
-		else if(crazyOgre[0] == 1) {
+		else if(actorCoordinates.GetYCoordinate() == 1) {
 			int[] array = {1, 2, 3};
-			moveOgreClub(array);
+			moveClub(array, level, actorCoordinates);
 		}
 
-		else if(crazyOgre[0] == 7) {
+		else if(actorCoordinates.GetYCoordinate() == 7) {
 			int[] array = {0, 2, 3};
-			moveOgreClub(array);
+			moveClub(array, level, actorCoordinates);
 		}
 		else
 		{
 			int[] array = {0, 1, 2, 3 };
-			moveOgreClub(array);
+			moveClub(array, level, actorCoordinates);
 		}
 	}
 	

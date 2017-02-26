@@ -17,6 +17,7 @@ public class Level {
 	
 	public void SetLevel(EnumLevel level) {
 		selectedLevel = level;
+		board.setLevelBoard(level);
 	}
 	
 	public Board GetLevelBoard(){
@@ -29,7 +30,8 @@ public class Level {
 			board.setBoardExitKeys(5, 0);
 			board.setBoardExitKeys(6, 0);
 		}
-		else if(selectedLevel == EnumLevel.LEVELTWO)
+		else if(selectedLevel == EnumLevel.LEVELTWO){
 			board.setBoardExitKeys(1, 0);
+		}
 	}
 }

@@ -1,42 +1,70 @@
 package dkeep.logic;
 
-import java.util.Random;
-
-
 public class Game {
 	
 	private EnumGameState state;
 	private Level level;
-	private Board board;
+	private Hero hero;
+	private Guard guard;
+	private Ogre crazyOgre;
+	private Club club;
 	
 	public Game() {
 		this.state = EnumGameState.Running;
 		this.level = new Level(EnumLevel.LEVELONE);
-		this.board = level.GetLevelBoard();
+		this.hero = new Hero();
+		this.guard = new Guard();
+		this.crazyOgre = new Ogre();
+		this.club = new Club();
+
 	}
 	
 	public EnumGameState GetGameState() {
 		return state;
+	}
+	
+	public void SetGameState(EnumGameState state) {
+		this.state = state;
 	}
 				
 	public void checkLostGame()
 	{
 		if(level.GetLevel() == EnumLevel.LEVELONE)
 		{
-			if(((guard[indexGuard][0] == (hero[0]+1) || guard[indexGuard][0] == (hero[0]-1)) && guard[indexGuard][1] == hero[1]) || 
-					(guard[indexGuard][1] == (hero[1]+1) || guard[indexGuard][1] == (hero[1]-1)) && guard[indexGuard][0] == hero[0])
+			if(((guard.GetGuard()[guard.GetIndexGuard()][0] == (hero.GetYCoordinate()+1) || guard.GetGuard()[guard.GetIndexGuard()][0] == (hero.GetYCoordinate()-1)) && guard.GetGuard()[guard.GetIndexGuard()][1] == hero.GetXCoordinate()) || 
+					(guard.GetGuard()[guard.GetIndexGuard()][1] == (hero.GetXCoordinate()+1) || guard.GetGuard()[guard.GetIndexGuard()][1] == (hero.GetXCoordinate()-1)) && guard.GetGuard()[guard.GetIndexGuard()][0] == hero.GetYCoordinate())
 				state = EnumGameState.Lost;
 		}
 		else
 		{
-			if(((crazyOgre[0] == (hero[0]+1) || crazyOgre[0] == (hero[0]-1)) && crazyOgre[1] == (hero[1])) || 
-					(crazyOgre[1] == (hero[1]+1) || crazyOgre[1] == (hero[1]-1)) && crazyOgre[0] == (hero[0]))
+			if(((crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgre.GetXCoordinate() == (hero.GetXCoordinate())) || 
+					(crazyOgre.GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgre.GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()))
 				state = EnumGameState.Lost;
 
-			if(((club[0] == (hero[0]+1) || club[0] == (hero[0]-1)) && club[1] == (hero[1])) || 
-					(club[1] == (hero[1]+1) || club[1] == (hero[1]-1)) && club[0] == (hero[0]))
+			if(((club.GetYCoordinate() == (hero.GetYCoordinate()+1) || club.GetYCoordinate() == (hero.GetYCoordinate()-1)) && club.GetXCoordinate() == (hero.GetXCoordinate())) || 
+					(club.GetXCoordinate() == (hero.GetXCoordinate()+1) || club.GetXCoordinate() == (hero.GetXCoordinate()-1)) && club.GetYCoordinate() == (hero.GetYCoordinate()))
 				state = EnumGameState.Lost;
 		}
+	}
+	
+	public Level GetGameLevel() {
+		return level;
+	}
+	
+	public Hero GetHero() {
+		return hero;
+	}
+	
+	public Guard GetGuard() {
+		return guard;
+	}
+	
+	public Ogre GetOgre() {
+		return crazyOgre;
+	}
+	
+	public Club GetClub() {
+		return club;
 	}
 
 }

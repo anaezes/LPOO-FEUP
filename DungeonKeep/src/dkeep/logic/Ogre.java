@@ -22,6 +22,8 @@ public class Ogre extends Coordinates {
 		
 		Board board = level.GetLevelBoard();
 		
+		onLever = false;
+		
 		switch(num) { 
 		//left
 		case 0:

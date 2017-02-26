@@ -47,7 +47,81 @@ public class Game {
 		}
 	}
 	
-	public Level GetGameLevel() {
+	public void moveHero(EnumMoves movement) {
+		if(movement == EnumMoves.LEFT) {
+			
+			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == ' ')
+				hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()-1);
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == 'k')
+			{
+				if(level.GetLevel() == EnumLevel.LEVELONE){
+					hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()-1);
+					level.activateLever();
+					hero.SetHeroOnLever(true);
+				}
+
+			}
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == 'S')
+			{
+				if(level.GetLevel() == EnumLevel.LEVELONE)
+				{
+					hero.SetYCoordinate(1);
+					hero.SetXCoordinate(7);
+					level.SetLevel(EnumLevel.LEVELTWO);
+					hero.SetHeroOnLever(false);
+				}
+				else 
+				{
+					hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()-1);
+					SetGameState(EnumGameState.Win);
+				}
+			}
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == 'I')
+			{
+				level.activateLever();
+			}
+			
+		} else if(movement == EnumMoves.RIGHT) {
+			
+			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()+1] == ' ')
+				hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()+1);
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()+1] == 'k')
+			{
+				hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()+1);
+				hero.SetHeroOnLever(true);
+			}
+		} else if(movement == EnumMoves.UP) {
+			
+			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()-1][hero.GetYCoordinate()] == ' ')
+				hero.moveHero(hero.GetXCoordinate()-1, hero.GetYCoordinate());
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()-1][hero.GetYCoordinate()] == 'k')
+			{
+				hero.moveHero(hero.GetXCoordinate()-1, hero.GetYCoordinate());
+				hero.SetHeroOnLever(true);
+			}
+			
+		} else if(movement == EnumMoves.DOWN) {
+			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()+1][hero.GetYCoordinate()] == ' ')
+				hero.moveHero(hero.GetXCoordinate()+1, hero.GetYCoordinate());
+			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()+1][hero.GetYCoordinate()] == 'k')
+			{
+				hero.moveHero(hero.GetXCoordinate()+1, hero.GetYCoordinate());
+				hero.SetHeroOnLever(true);
+			}
+		}
+	}
+	
+	public void addEnemiesGame() {
+		if(level.GetLevel() == EnumLevel.LEVELONE ){
+			guard.moveGuard();
+
+		} else if(level.GetLevel() == EnumLevel.LEVELTWO) {
+			crazyOgre.movesCrazyOgre(level);
+			club.checkAsterisk(level, crazyOgre);
+		}
+	}
+	
+	public Level GetGameLevel(){
 		return level;
 	}
 	
@@ -66,7 +140,6 @@ public class Game {
 	public Club GetClub() {
 		return club;
 	}
-
 }
 
 

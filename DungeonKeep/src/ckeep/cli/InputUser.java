@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import dkeep.logic.EnumGameState;
 import dkeep.logic.EnumLevel;
+import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
 
 public class InputUser {
@@ -112,92 +113,31 @@ public class InputUser {
 
 		char option = keyCode.charAt(0);
 
-		char[][] board = game.GetGameLevel().GetLevelBoard().GetBoard();
-
+		game.addEnemiesGame();
 		
-		if(game.GetGameLevel().GetLevel() == EnumLevel.LEVELTWO) {
-			game.GetOgre().movesCrazyOgre(game.GetGameLevel());
-			game.GetClub().checkAsterisk(game.GetGameLevel(), game.GetOgre());
-		}
-
 		switch(option) { 
 		//left
 		case 'a':
 		case 'A':
-			
-			if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()-1] == ' ')
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate(), game.GetHero().GetYCoordinate()-1);
-			else if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()-1] == 'k')
-			{
-				if(game.GetGameLevel().GetLevel() == EnumLevel.LEVELONE){
-					game.GetHero().moveHero(game.GetHero().GetXCoordinate(), game.GetHero().GetYCoordinate()-1);
-					game.GetGameLevel().activateLever();
-					game.GetHero().SetHeroOnLever(true);
-				}
-		
-
-			}
-			else if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()-1] == 'S')
-			{
-
-				if(game.GetGameLevel().GetLevel() == EnumLevel.LEVELONE)
-				{
-					game.GetHero().SetYCoordinate(1);
-					game.GetHero().SetXCoordinate(7);
-					game.GetGameLevel().SetLevel(EnumLevel.LEVELTWO);
-					game.GetHero().SetHeroOnLever(false);
-				}
-				else 
-				{
-					game.GetHero().moveHero(game.GetHero().GetXCoordinate(), game.GetHero().GetYCoordinate()-1);
-					game.SetGameState(EnumGameState.Win);
-				}
-			}
-			else if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()-1] == 'I')
-			{
-				game.GetGameLevel().activateLever();
-			}
-
+			game.moveHero(EnumMoves.LEFT);
 			break;
 		case 'd':
 		case 'D':
-			if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()+1] == ' ')
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate(), game.GetHero().GetYCoordinate()+1);
-			else if(board[game.GetHero().GetXCoordinate()][game.GetHero().GetYCoordinate()+1] == 'k')
-			{
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate(), game.GetHero().GetYCoordinate()+1);
-				game.GetHero().SetHeroOnLever(true);
-			}
+			game.moveHero(EnumMoves.RIGHT);
 			break;
 			//up
 		case 'w':
 		case 'W':
-			if(board[game.GetHero().GetXCoordinate()-1][game.GetHero().GetYCoordinate()] == ' ')
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate()-1, game.GetHero().GetYCoordinate());
-			else if(board[game.GetHero().GetXCoordinate()-1][game.GetHero().GetYCoordinate()] == 'k')
-			{
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate()-1, game.GetHero().GetYCoordinate());
-				game.GetHero().SetHeroOnLever(true);
-
-			}
+			game.moveHero(EnumMoves.UP);
 			break;
 			//down
 		case 's':
 		case 'S':
-			if(board[game.GetHero().GetXCoordinate()+1][game.GetHero().GetYCoordinate()] == ' ')
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate()+1, game.GetHero().GetYCoordinate());
-			else if(board[game.GetHero().GetXCoordinate()+1][game.GetHero().GetYCoordinate()] == 'k')
-			{
-				game.GetHero().moveHero(game.GetHero().GetXCoordinate()+1, game.GetHero().GetYCoordinate());
-				game.GetHero().SetHeroOnLever(true);
-			}
+			game.moveHero(EnumMoves.DOWN);
 			break;
 		default: 
 			System.out.println("Press a valid key!");
 		}
-
-		if(game.GetGameLevel().GetLevel() == EnumLevel.LEVELONE )
-			game.GetGuard().moveGuard();
 
 		game.checkLostGame();
 	}

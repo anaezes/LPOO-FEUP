@@ -7,5 +7,4 @@ public class Main {
 		InputUser game = new InputUser(10);
 		game.run();
 	}
-	
 }

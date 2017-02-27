@@ -12,6 +12,7 @@ public class Game {
 	private Guard guard;
 	private Club[] ogreClubs;
 	private Ogre[] crazyOgres;
+	private Club heroClub;
 
 	public enum EnumGameState {
 		Running,
@@ -28,6 +29,7 @@ public class Game {
 		this.state = EnumGameState.Running;
 		this.level = new Level(EnumLevel.LEVELONE);
 		this.hero = new Hero();
+		this.heroClub = new Club(7,4);
 
 		//init ogres and clubs
 		initOgresClubs();
@@ -91,7 +93,7 @@ public class Game {
 				if(((crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
 						(crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()))
 					state = EnumGameState.Lost;
-				
+
 				if(((ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
 						(ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()))
 					state = EnumGameState.Lost;
@@ -161,7 +163,19 @@ public class Game {
 				hero.SetHeroOnLever(true);
 			}
 		}
+
+		verifyIfIsArmed();
+		hero.setCharacter();
 	}
+
+
+	public void verifyIfIsArmed(){
+		if(hero.GetXCoordinate() == heroClub.GetXCoordinate() && hero.GetYCoordinate() == heroClub.GetYCoordinate())
+		{
+			hero.setHeroArmed();
+		}
+	}
+
 
 	public void addEnemiesGame() {
 		if(level.GetLevel() == EnumLevel.LEVELONE ){
@@ -195,6 +209,10 @@ public class Game {
 
 	public Club[] GetClub() {
 		return ogreClubs;
+	}
+
+	public Club GetHeroClub() {
+		return heroClub;
 	}
 }
 

@@ -80,12 +80,9 @@ public class InputUser {
 				for(int j = 0; j < numberRows-1; j++)
 				{	
 					if(game.GetHero().GetYCoordinate() == j && game.GetHero().GetXCoordinate() == i)
-					{
-						if(game.GetHero().GetHeroOnLeverState())
-							System.out.print('K');
-						else
-							System.out.print('H');
-					}
+						System.out.print(game.GetHero().GetHeroCharacter());
+					else if((game.GetHeroClub().GetYCoordinate() == j && game.GetHeroClub().GetXCoordinate() == i) && !game.GetHero().isHeroArmed())
+						System.out.print('*');
 					else if(!printOgresAndClubs(i,j))
 						System.out.print(game.GetGameLevel().GetLevelBoard().GetBoard()[i][j]);
 

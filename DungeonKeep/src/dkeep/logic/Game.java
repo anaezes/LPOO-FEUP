@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+import java.util.Random;
+
 import ckeep.cli.InputUser.EnumMoves;
 
 public class Game {
@@ -26,9 +28,27 @@ public class Game {
 		this.state = EnumGameState.Running;
 		this.level = new Level(EnumLevel.LEVELONE);
 		this.hero = new Hero();
-		this.guard = new Guard();
 		this.crazyOgre = new Ogre();
 		this.club = new Club();
+		
+		Random oj = new Random();
+		int num = oj.nextInt(3);
+
+		System.out.print("GUARD: ");	
+		switch(num) {
+		case 0:
+			this.guard = new RookieGuard();
+			System.out.println("Rookie Guard");	
+			break;
+		case 1:
+			this.guard = new DrunkGuard();
+			System.out.println("Drunk Guard");	
+			break;
+		case 2:
+			this.guard = new ParanoidGuard();
+			System.out.println("Paranoid Guard");	
+			break;
+		}
 
 	}
 	

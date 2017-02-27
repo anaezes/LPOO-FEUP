@@ -64,7 +64,7 @@ public class InputUser {
 					if(game.GetHero().GetYCoordinate() == j && game.GetHero().GetXCoordinate() == i)
 						System.out.print('H');
 					else if (game.GetGuard().GetGuard()[game.GetGuard().GetIndexGuard()][0] == j && game.GetGuard().GetGuard()[game.GetGuard().GetIndexGuard()][1] == i)
-						System.out.print('G');
+						System.out.print(game.GetGuard().getCharacterGuard());
 					else
 						System.out.print(game.GetGameLevel().GetLevelBoard().GetBoard()[i][j]);
 

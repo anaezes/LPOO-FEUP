@@ -7,10 +7,28 @@ public class Ogre extends Coordinates {
 	private boolean onLever;
 
 	public Ogre() {
-		super(1, 4);
+		super(0,0);
+		Random y_oj = new Random();
+		int y = y_oj.nextInt(6)+1;
+		int x;
+		
+		if(y < 5)
+		{
+			Random x_oj = new Random();
+			x = x_oj.nextInt(6)+1;
+		}
+		else
+		{
+			Random x_oj = new Random();
+			x = x_oj.nextInt(4)+4;
+		}
+		
+		this.SetXCoordinate(x);
+		this.SetYCoordinate(y);
+		
 		this.onLever = false;
 	}
-
+	
 	public boolean GetOnLeverOgre() {
 		return onLever;
 	}

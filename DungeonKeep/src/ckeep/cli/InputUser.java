@@ -7,17 +7,17 @@ import dkeep.logic.Game.EnumGameState;
 import dkeep.logic.Game.EnumLevel;
 
 public class InputUser {
-	
+
 	private int numberRows;
 	private Game game;
-	
+
 	public enum EnumMoves {
 		UP,
 		DOWN,
 		LEFT,
 		RIGHT
 	}
-	
+
 	public InputUser(int numberRows) {
 		Game game = new Game();
 		this.numberRows = numberRows;
@@ -78,7 +78,7 @@ public class InputUser {
 			for(int i = 0; i < numberRows-1; i++)
 			{
 				for(int j = 0; j < numberRows-1; j++)
-				{
+				{	
 					if(game.GetHero().GetYCoordinate() == j && game.GetHero().GetXCoordinate() == i)
 					{
 						if(game.GetHero().GetHeroOnLeverState())
@@ -86,22 +86,7 @@ public class InputUser {
 						else
 							System.out.print('H');
 					}
-					else if (game.GetOgre().GetYCoordinate() == j && game.GetOgre().GetXCoordinate() == i)
-					{
-						if(game.GetOgre().GetOnLeverOgre())
-							System.out.print('$');
-						else
-							System.out.print('0');
-					}
-					else if (game.GetClub().GetYCoordinate()==j && game.GetClub().GetXCoordinate()==i)
-					{
-						if (game.GetClub().GetOnLeverState())
-							System.out.print('$');
-						else 
-							System.out.print('*');
-
-					}
-					else
+					else if(!printOgresAndClubs(i,j))
 						System.out.print(game.GetGameLevel().GetLevelBoard().GetBoard()[i][j]);
 
 					System.out.print(" ");
@@ -113,6 +98,30 @@ public class InputUser {
 		System.out.println();
 	}
 
+	public boolean printOgresAndClubs(int i, int j) {
+		for(int k = 0; k < game.GetOgres().length; k++)
+		{
+			if(game.GetOgres()[k].GetXCoordinate() == i && game.GetOgres()[k].GetYCoordinate() == j) {
+				if(game.GetOgres()[k].GetOnLeverOgre())
+					System.out.print('$');
+				else
+					System.out.print('0');
+				
+				return true;
+			}
+			
+			if (game.GetClub()[k].GetYCoordinate()==j && game.GetClub()[k].GetXCoordinate()==i)
+			{
+				if (game.GetClub()[k].GetOnLeverState())
+					System.out.print('$');
+				else 
+					System.out.print('*');
+				
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void keyPressed(String keyCode){
 
@@ -121,7 +130,7 @@ public class InputUser {
 		char option = (keyCode.toLowerCase()).charAt(0);
 
 		game.addEnemiesGame();
-		
+
 		switch(option) { 
 		//left
 		case 'a':
@@ -145,5 +154,5 @@ public class InputUser {
 		game.checkLostGame();
 	}
 
-	
+
 }

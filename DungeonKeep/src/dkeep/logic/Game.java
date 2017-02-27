@@ -5,32 +5,34 @@ import java.util.Random;
 import ckeep.cli.InputUser.EnumMoves;
 
 public class Game {
-	
+
 	private EnumGameState state;
 	private Level level;
 	private Hero hero;
 	private Guard guard;
-	private Ogre crazyOgre;
-	private Club club;
-	
+	private Club[] ogreClubs;
+	private Ogre[] crazyOgres;
+
 	public enum EnumGameState {
 		Running,
 		Win,
 		Lost,
 	}
-	
+
 	public enum EnumLevel {
 		LEVELONE, 
 		LEVELTWO,
 	}
-	
+
 	public Game() {
 		this.state = EnumGameState.Running;
 		this.level = new Level(EnumLevel.LEVELONE);
 		this.hero = new Hero();
-		this.crazyOgre = new Ogre();
-		this.club = new Club();
-		
+
+		//init ogres and clubs
+		initOgresClubs();
+
+		//init guard
 		Random oj = new Random();
 		int num = oj.nextInt(3);
 
@@ -51,38 +53,55 @@ public class Game {
 		}
 
 	}
-	
+
+	public void initOgresClubs() {
+
+		Random oj = new Random();
+		int num = oj.nextInt(3)+1;
+
+		crazyOgres = new Ogre[num];
+		ogreClubs = new Club[num];
+		for(int i = 0; i < num; i++)
+		{
+			this.crazyOgres[i] = new Ogre();
+			this.ogreClubs[i] = new Club(this.crazyOgres[i].GetXCoordinate(), this.crazyOgres[i].GetYCoordinate());
+		}
+	}
+
 	public EnumGameState GetGameState() {
 		return state;
 	}
-	
+
 	public void SetGameState(EnumGameState state) {
 		this.state = state;
 	}
-				
+
 	public void checkLostGame()
 	{
-		if(level.GetLevel() == EnumLevel.LEVELONE)
-		{
+		if(level.GetLevel() == EnumLevel.LEVELONE) {
 			if(((guard.GetGuard()[guard.GetIndexGuard()][0] == (hero.GetYCoordinate()+1) || guard.GetGuard()[guard.GetIndexGuard()][0] == (hero.GetYCoordinate()-1)) && guard.GetGuard()[guard.GetIndexGuard()][1] == hero.GetXCoordinate()) || 
 					(guard.GetGuard()[guard.GetIndexGuard()][1] == (hero.GetXCoordinate()+1) || guard.GetGuard()[guard.GetIndexGuard()][1] == (hero.GetXCoordinate()-1)) && guard.GetGuard()[guard.GetIndexGuard()][0] == hero.GetYCoordinate())
 				state = EnumGameState.Lost;
 		}
 		else
 		{
-			if(((crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgre.GetXCoordinate() == (hero.GetXCoordinate())) || 
-					(crazyOgre.GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgre.GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgre.GetYCoordinate() == (hero.GetYCoordinate()))
-				state = EnumGameState.Lost;
 
-			if(((club.GetYCoordinate() == (hero.GetYCoordinate()+1) || club.GetYCoordinate() == (hero.GetYCoordinate()-1)) && club.GetXCoordinate() == (hero.GetXCoordinate())) || 
-					(club.GetXCoordinate() == (hero.GetXCoordinate()+1) || club.GetXCoordinate() == (hero.GetXCoordinate()-1)) && club.GetYCoordinate() == (hero.GetYCoordinate()))
-				state = EnumGameState.Lost;
+			for(int i = 0; i < crazyOgres.length; i++)
+			{
+				if(((crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
+						(crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()))
+					state = EnumGameState.Lost;
+				
+				if(((ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
+						(ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()))
+					state = EnumGameState.Lost;
+			}
 		}
 	}
-	
+
 	public void moveHero(EnumMoves movement) {
 		if(movement == EnumMoves.LEFT) {
-			
+
 			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == ' ')
 				hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()-1);
 			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()-1] == 'k')
@@ -113,9 +132,9 @@ public class Game {
 			{
 				level.activateLever();
 			}
-			
+
 		} else if(movement == EnumMoves.RIGHT) {
-			
+
 			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()+1] == ' ')
 				hero.moveHero(hero.GetXCoordinate(), hero.GetYCoordinate()+1);
 			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()][hero.GetYCoordinate()+1] == 'k')
@@ -124,7 +143,7 @@ public class Game {
 				hero.SetHeroOnLever(true);
 			}
 		} else if(movement == EnumMoves.UP) {
-			
+
 			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()-1][hero.GetYCoordinate()] == ' ')
 				hero.moveHero(hero.GetXCoordinate()-1, hero.GetYCoordinate());
 			else if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()-1][hero.GetYCoordinate()] == 'k')
@@ -132,7 +151,7 @@ public class Game {
 				hero.moveHero(hero.GetXCoordinate()-1, hero.GetYCoordinate());
 				hero.SetHeroOnLever(true);
 			}
-			
+
 		} else if(movement == EnumMoves.DOWN) {
 			if(level.GetLevelBoard().GetBoard()[hero.GetXCoordinate()+1][hero.GetYCoordinate()] == ' ')
 				hero.moveHero(hero.GetXCoordinate()+1, hero.GetYCoordinate());
@@ -143,35 +162,39 @@ public class Game {
 			}
 		}
 	}
-	
+
 	public void addEnemiesGame() {
 		if(level.GetLevel() == EnumLevel.LEVELONE ){
 			guard.moveGuard();
+		} 
+		else if(level.GetLevel() == EnumLevel.LEVELTWO) {
+			for(int i = 0; i < crazyOgres.length; i++)
+			{
+				crazyOgres[i].movesCrazyOgre(level);
+				ogreClubs[i].checkAsterisk(level, crazyOgres[i]);
+			}
 
-		} else if(level.GetLevel() == EnumLevel.LEVELTWO) {
-			crazyOgre.movesCrazyOgre(level);
-			club.checkAsterisk(level, crazyOgre);
 		}
 	}
-	
+
 	public Level GetGameLevel(){
 		return level;
 	}
-	
+
 	public Hero GetHero() {
 		return hero;
 	}
-	
+
 	public Guard GetGuard() {
 		return guard;
 	}
-	
-	public Ogre GetOgre() {
-		return crazyOgre;
+
+	public Ogre[] GetOgres() {
+		return crazyOgres;
 	}
-	
-	public Club GetClub() {
-		return club;
+
+	public Club[] GetClub() {
+		return ogreClubs;
 	}
 }
 

@@ -6,8 +6,21 @@ public class Club extends Coordinates {
 	
 	private boolean onLever;
 	
-	public Club() {
-		super(2, 4);
+	public Club(int x, int y) {
+		
+		super(x,y);
+		
+		if(y == 7)
+		{
+			this.SetXCoordinate(x+1);
+		}
+		else if(x == 7)
+		{
+			this.SetYCoordinate(y-1);
+		}
+		else
+			this.SetYCoordinate(y+1);
+	
 		this.onLever = false;
 	}
 	

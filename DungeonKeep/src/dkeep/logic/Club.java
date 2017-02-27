@@ -80,40 +80,28 @@ public class Club extends Coordinates {
 		switch(num) { 
 		//left
 		case 0:
-			//if(board.checkBoardColisions(this.GetXCoordinate(), this.GetYCoordinate()-1)){
 				this.SetXCoordinate(actorCoordinates.GetXCoordinate());
 				this.SetYCoordinate(actorCoordinates.GetYCoordinate()-1);
-			//}
 			break;
 			//right
 		case 1:
-			//if(board.checkBoardColisions(this.GetXCoordinate(), this.GetYCoordinate() +1))
-			//{
 				this.SetXCoordinate(actorCoordinates.GetXCoordinate());
 				this.SetYCoordinate(actorCoordinates.GetYCoordinate()+1);
-			//}
 			break;
 			//up
 		case 2:
-			//if(board.checkBoardColisions(this.GetXCoordinate()-1, this.GetYCoordinate()))
-			//{
 				this.SetXCoordinate(actorCoordinates.GetXCoordinate()-1);
 				this.SetYCoordinate(actorCoordinates.GetYCoordinate());
-			//}
 			break;
 			//down
 		case 3:
-			//if(board.checkBoardColisions(this.GetXCoordinate()+1, this.GetYCoordinate()))
-			//{
 				this.SetXCoordinate(actorCoordinates.GetXCoordinate()+1);
 				this.SetYCoordinate(actorCoordinates.GetYCoordinate());
-			//}
 			break;
 		}
 		
 		if(board.checkBoardLeverAbove(this.GetXCoordinate(), this.GetYCoordinate()))
-		{
 			onLever = true;
-		}
+		
 	}
 }

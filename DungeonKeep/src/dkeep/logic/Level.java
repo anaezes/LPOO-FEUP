@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+import dkeep.logic.Game.EnumLevel;
+
 public class Level {
 	
 	private EnumLevel selectedLevel;

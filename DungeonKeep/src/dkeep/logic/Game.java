@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+import ckeep.cli.InputUser.EnumMoves;
+
 public class Game {
 	
 	private EnumGameState state;
@@ -8,6 +10,17 @@ public class Game {
 	private Guard guard;
 	private Ogre crazyOgre;
 	private Club club;
+	
+	public enum EnumGameState {
+		Running,
+		Win,
+		Lost,
+	}
+	
+	public enum EnumLevel {
+		LEVELONE, 
+		LEVELTWO,
+	}
 	
 	public Game() {
 		this.state = EnumGameState.Running;

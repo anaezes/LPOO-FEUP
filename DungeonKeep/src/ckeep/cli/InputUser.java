@@ -2,15 +2,21 @@ package ckeep.cli;
 
 import java.util.Scanner;
 
-import dkeep.logic.EnumGameState;
-import dkeep.logic.EnumLevel;
-import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
+import dkeep.logic.Game.EnumGameState;
+import dkeep.logic.Game.EnumLevel;
 
 public class InputUser {
 	
 	private int numberRows;
 	private Game game;
+	
+	public enum EnumMoves {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
+	}
 	
 	public InputUser(int numberRows) {
 		Game game = new Game();
@@ -30,7 +36,7 @@ public class InputUser {
 		{
 			String keyCode = input.nextLine();			
 			System.out.println(keyCode);
-			if (keyCode.length()==1){
+			if (keyCode.length()==1) {
 				keyPressed(keyCode);
 				printBoard();	
 			}
@@ -108,31 +114,28 @@ public class InputUser {
 	}
 
 
-
 	public void keyPressed(String keyCode){
 
-		char option = keyCode.charAt(0);
+		//transform string to lower case and
+		//pick the first character of the string 
+		char option = (keyCode.toLowerCase()).charAt(0);
 
 		game.addEnemiesGame();
 		
 		switch(option) { 
 		//left
 		case 'a':
-		case 'A':
 			game.moveHero(EnumMoves.LEFT);
 			break;
 		case 'd':
-		case 'D':
 			game.moveHero(EnumMoves.RIGHT);
 			break;
 			//up
 		case 'w':
-		case 'W':
 			game.moveHero(EnumMoves.UP);
 			break;
 			//down
 		case 's':
-		case 'S':
 			game.moveHero(EnumMoves.DOWN);
 			break;
 		default: 

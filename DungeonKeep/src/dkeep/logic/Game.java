@@ -29,7 +29,7 @@ public class Game {
 		this.state = EnumGameState.Running;
 		this.level = new Level(EnumLevel.LEVELONE);
 		this.hero = new Hero();
-		this.heroClub = new Club(7,4);
+		this.heroClub = new Club(7,3);
 
 		//init ogres and clubs
 		initOgresClubs();
@@ -90,9 +90,16 @@ public class Game {
 
 			for(int i = 0; i < crazyOgres.length; i++)
 			{
-				if(((crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
-						(crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()))
-					state = EnumGameState.Lost;
+				if(hero.isHeroArmed()) {
+					if(((crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
+							(crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()))
+						crazyOgres[i].putStunned();
+				}
+				else {	
+					if(((crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
+							(crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || crazyOgres[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && crazyOgres[i].GetYCoordinate() == (hero.GetYCoordinate()))
+						state = EnumGameState.Lost;
+				}
 
 				if(((ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()+1) || ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()-1)) && ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate())) || 
 						(ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()+1) || ogreClubs[i].GetXCoordinate() == (hero.GetXCoordinate()-1)) && ogreClubs[i].GetYCoordinate() == (hero.GetYCoordinate()))

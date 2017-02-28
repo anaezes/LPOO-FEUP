@@ -102,7 +102,7 @@ public class InputUser {
 				if(game.GetOgres()[k].GetOnLeverOgre())
 					System.out.print('$');
 				else
-					System.out.print('0');
+					System.out.print(game.GetOgres()[k].getCharater());
 				
 				return true;
 			}

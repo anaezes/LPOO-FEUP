@@ -178,24 +178,19 @@ public class Game {
 
 	public void verifyIfIsArmed(){
 		if(hero.GetXCoordinate() == heroClub.GetXCoordinate() && hero.GetYCoordinate() == heroClub.GetYCoordinate())
-		{
 			hero.setHeroArmed();
-		}
 	}
 
 
 	public void addEnemiesGame() {
-		if(level.GetLevel() == EnumLevel.LEVELONE ){
-			guard.moveGuard();
-		} 
-		else if(level.GetLevel() == EnumLevel.LEVELTWO) {
+		if(level.GetLevel() == EnumLevel.LEVELONE )
+			guard.moveGuard(); 
+		else if(level.GetLevel() == EnumLevel.LEVELTWO) 
 			for(int i = 0; i < crazyOgres.length; i++)
 			{
 				crazyOgres[i].movesCrazyOgre(level);
 				ogreClubs[i].checkAsterisk(level, crazyOgres[i]);
 			}
-
-		}
 	}
 
 	public Level GetGameLevel(){

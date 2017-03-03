@@ -2,12 +2,32 @@ package dkeep.logic;
 
 public class RookieGuard extends Guard {
 
+	public RookieGuard(int i, int j) {
+		super(i,j);
+	}
+
 	@Override
-	public void moveGuard() {
-		if(indexGuard < 22)
-			indexGuard++;
+	public void move(GameMap board) {
+		
+		int index = indexGuard;
+		if(index <= 22)
+			index++;
 		else
-			indexGuard = 0;
+			index = 0;
+		
+		this.indexGuard = index;
 	}
 	
+	@Override
+	public char getCharacter() {
+		return character;
+	}
+
+	@Override
+	public Club getClub() {
+		return null;
+	}
+
+	@Override
+	public void checkClub(GameMap board) {}
 }

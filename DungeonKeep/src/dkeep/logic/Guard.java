@@ -1,31 +1,54 @@
 package dkeep.logic;
 
-public abstract class Guard {
-	
-	protected int[][] position;
+public abstract class Guard extends Vilan {
+
+	protected int[] x_position;
+	protected int[] y_position;
 	protected int indexGuard;
-	protected char caracter;
-	
-	public Guard() {
-		this.position = new int[][] {{8,1},{7,1},{7,3},{7,4},{7,5},{6,5},{5,5},{4,5},{3,5},{2,5},
-				{1,5},{1,6},{2,6},{3,6},{4,6},{5,6},{6,6},{7,6},{8,6},{8,5},{8,4},{8,3},{8,2}};
-				
+	protected char character;
+	protected boolean hasPredifinedPath;
+
+	public Guard(int i, int j) {
+		super(i, j);
+		this.x_position = null;
+		this.y_position = null;
+		this.hasPredifinedPath = false;
 		this.indexGuard = 0;
-		this.caracter = 'G';
+		this.character = 'G';
 	}
-	
-	public int[][] GetGuard() {
-		return position;
+
+	public void setPath(int[] y, int[] x) {
+		this.hasPredifinedPath = true;
+		this.x_position = x;
+		this.y_position = y;
 	}
-	
-	public int GetIndexGuard() {
+
+	public int getIndexGuard() {
 		return indexGuard;
 	}
-	
-	public char getCharacterGuard() {
-		return caracter;
+
+	public char getCharacter() {
+		return character;
 	}
-	
-	public abstract void moveGuard();
-	
+
+	public int getYCoordinate() {
+		if(hasPredifinedPath)
+			return y_position[indexGuard];
+		else
+			return y;
+	}
+
+	public int getXCoordinate() {
+		if(hasPredifinedPath)
+			return x_position[indexGuard];
+		else
+			return x;
+	}
+
+	@Override
+	public EnumVillainType getType() {
+		return EnumVillainType.Guard;
+	}
+
+	public abstract void move(GameMap board);
 }

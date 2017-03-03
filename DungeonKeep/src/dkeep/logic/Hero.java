@@ -1,6 +1,6 @@
 package dkeep.logic;
 
-public class Hero extends Coordinates {
+public class Hero extends Character {
 	
 	private boolean onLever;
 	private boolean armed;
@@ -12,8 +12,15 @@ public class Hero extends Coordinates {
 		this.armed = false;
 		this.character = 'H';
 	}
-	
-	public boolean GetHeroOnLeverState() {
+
+	public Hero(int i, int j) {
+		super(i, j);
+		this.onLever = false;
+		this.armed = false;
+		this.character = 'h';
+	}
+
+	public boolean getHeroOnLeverState() {
 		return onLever;
 	}
 	
@@ -22,7 +29,7 @@ public class Hero extends Coordinates {
 		this.SetYCoordinate(y);
 	}
 	
-	public void SetHeroOnLever(boolean state) {
+	public void setHeroOnLever(boolean state) {
 		this.onLever = state;
 	}
 	
@@ -41,10 +48,10 @@ public class Hero extends Coordinates {
 		else if(armed)
 			this.character = 'A';
 		else
-			this.character = 'H';	
+			this.character = 'h';	
 	}
 	
-	public char GetHeroCharacter() {
+	public char getHeroCharacter() {
 		return character;
 	}
 }

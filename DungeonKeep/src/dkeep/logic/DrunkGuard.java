@@ -4,30 +4,34 @@ import java.util.Random;
 
 public class DrunkGuard extends Guard {
 
+	public DrunkGuard(int i, int j) {
+		super(i,j);
+	}
+
 	@Override
-	public void moveGuard() {
+	public void move(GameMap board) {
 
 		char caracter = 'G';
-
 		Random oj = new Random();
 		int num = oj.nextInt(3);
 
+		int index = indexGuard;
 		switch(num) {
 		// advance
 		case 0:
-			if(indexGuard < 22)
-				indexGuard++;
+			if(index <= 22)
+				index++;
 			else
-				indexGuard = 0;
+				index = 0;
 			break;
 			// go back
 		case 1:
-			if(indexGuard > 0 && indexGuard < 22)
-				indexGuard--;
-			else if(indexGuard == 0)
-				indexGuard = 22;
+			if(index > 0 && index <= 22)
+				index--;
+			else if(index == 0)
+				index = 23;
 			else
-				indexGuard = 0;
+				index = 0;
 			break;
 			// sleeps	
 		case 2:
@@ -35,7 +39,20 @@ public class DrunkGuard extends Guard {
 			break;
 		}
 
-		this.caracter = caracter;
+		this.indexGuard = index;
+		this.character = caracter;
 	}
 
+	@Override
+	public char getCharacter() {
+		return character;
+	}
+
+	@Override
+	public Club getClub() {
+		return null;
+	}
+
+	@Override
+	public void checkClub(GameMap board) {}
 }

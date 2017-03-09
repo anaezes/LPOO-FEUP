@@ -39,6 +39,10 @@ public class Game {
 
 	//saves if is the second trie to unlock the stairs (second level)
 	private boolean secondTrie;
+	
+	public boolean getSecondTrie(){
+		return secondTrie;
+	}
 
 	public enum EnumGameState {
 		Running,
@@ -74,7 +78,7 @@ public class Game {
 	/**
 	 * Identify all features from the game board
 	 * */
-	private void initGame(GameMap board) {
+	public void initGame(GameMap board) {
 
 		this.activeLever = false;
 		this.secondTrie = false;
@@ -370,6 +374,10 @@ public class Game {
 	
 	public boolean isActiveLever() {
 		return activeLever;
+	}
+	
+	public void setActiveLever(boolean lever){
+		this.activeLever=lever;
 	}
 }
 

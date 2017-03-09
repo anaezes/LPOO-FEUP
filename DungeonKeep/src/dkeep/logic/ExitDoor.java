@@ -26,5 +26,9 @@ public class ExitDoor{
 	public int getXCoordinate() {
 		return x;
 	}
+	
+	public String getCoordinates(){
+		return "("+this.getXCoordinate()+","+this.getYCoordinate()+")";
+	}
 
 }

@@ -32,4 +32,8 @@ public class Club {
 	public void setYCoordinate(int y) {
 		this.y = y;
 	}
+	
+	public String getCordinates() {
+		return "("+x+","+y+")";
+	}
 }

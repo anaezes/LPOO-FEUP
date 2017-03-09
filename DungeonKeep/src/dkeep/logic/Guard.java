@@ -51,4 +51,9 @@ public abstract class Guard extends Vilan {
 	}
 
 	public abstract void move(GameMap board);
+	
+	public void setPredifinedPath(boolean b){
+		this.hasPredifinedPath=b;
+	}
+
 }

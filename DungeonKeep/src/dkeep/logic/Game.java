@@ -379,6 +379,8 @@ public class Game {
 	public void setActiveLever(boolean lever){
 		this.activeLever=lever;
 	}
+	
+
 }
 
 

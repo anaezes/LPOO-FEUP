@@ -2,9 +2,6 @@ package dkeep.test;
 
 import static org.junit.Assert.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.junit.Test;
 
 import dkeep.logic.*;
@@ -28,6 +25,10 @@ public class TestDungeonGameLogic {
 			{'S', ' ', 'O', ' ', 'X'},
 			{'S', 'k', '*', ' ', 'X'},
 			{'X', 'X', 'X', 'X', 'X'}};
+	
+	int[] guard_y = new int[] {3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2};
+	int[] guard_x = new int[] {1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1};
+
 
 	//Task1
 	@Test
@@ -181,27 +182,7 @@ public class TestDungeonGameLogic {
 		lever.SetLeverState(false);
 		assertEquals(false, lever.GetLeverState());
 	}
-	
-	public void testInputUserMistakes(){
-		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
-		Game game2 = new Game(gameMap);
-		
-		InputUser user = new InputUser(game);
-		user.run();
-		user.keyPressed("d");
-		System.out.println(" hero");
-		
-		System.out.println(game.getHero().getCordinates());
-		//assertEquals(game.getHero().getCordinates(), "(3,1)");
-		
-		assertNotEquals(' ', game.getBoard().getBoardCaracter(1, 1));
 
-		assertEquals('H', game.getBoard().getBoardCaracter(1, 1));
-		
-		
-		
-	}
 	
 	@Test(timeout=100)
 	public void testClubMove(){
@@ -254,5 +235,44 @@ public class TestDungeonGameLogic {
 		assertNotEquals(game.getVilans().get(0).getClub().getCordinates(), "(3,3)");
 		
 	}
+	
+	
+	@Test
+	public void TestmoveVillan(){
+		GameMap gameMap = new GameMap(mapWithOgre);
+		Game game = new Game(gameMap);
+		
+		
+		
+		String coord=game.getVilans().get(0).getCordinates();
+		game.moveVilans();
+		assertNotEquals(coord, game.getVilans().get(0).getCordinates());
+	}
+	
+	@Test
+	public void TestmoveGuardPath(){
+		GameMap gameMap = new GameMap(map);
+		Game game = new Game(gameMap);
+		
+		Print print =new Print();
+		print.printBoard(game);
+		game.setGuardPath(guard_y, guard_x);
+		
+		
+		
+		System.out.println(game.getVilans().get(0).getIndexGuard());
+		
+		String coord=game.getVilans().get(0).getCordinates();
+		System.out.println(game.getVilans().get(0).getCordinates());
+		game.moveVilans();
+		//game.getVilans().get(0).move(gameMap);
+		print.printBoard(game);
+		System.out.println(game.getVilans().get(0).getIndexGuard());
+		System.out.println(game.getVilans().get(0).getCordinates());
+
+	
+		assertNotEquals(coord, game.getVilans().get(0).getCordinates());
+	}
+	
 
 }

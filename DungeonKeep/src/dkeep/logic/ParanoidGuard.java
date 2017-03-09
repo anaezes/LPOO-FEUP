@@ -29,11 +29,14 @@ public class ParanoidGuard extends Guard {
 				index--;
 			else if(index == 0)
 				index = 23;
+			
 			else
 				index = 0;
 			break;
 		}
 		this.indexGuard = index;
+		this.SetXCoordinate(x_position[index]);
+		this.SetYCoordinate(y_position[index]);
 	}
 	
 	@Override
@@ -48,5 +51,11 @@ public class ParanoidGuard extends Guard {
 
 	@Override
 	public void checkClub(GameMap board) {}
+	
+	public int getIndexGuard() {
+		return indexGuard;
+	}
+	
+	
 
 }

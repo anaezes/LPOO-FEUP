@@ -16,6 +16,8 @@ public class RookieGuard extends Guard {
 			index = 0;
 		
 		this.indexGuard = index;
+		this.SetXCoordinate(x_position[index]);
+		this.SetYCoordinate(y_position[index]);
 	}
 	
 	@Override
@@ -30,4 +32,8 @@ public class RookieGuard extends Guard {
 
 	@Override
 	public void checkClub(GameMap board) {}
+	
+	public int getIndexGuard() {
+		return indexGuard;
+	}
 }

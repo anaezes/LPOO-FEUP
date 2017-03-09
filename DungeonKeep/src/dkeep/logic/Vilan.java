@@ -33,4 +33,6 @@ public abstract class Vilan extends Character {
 
 	public abstract void checkClub(GameMap board);
 	
+	public abstract int getIndexGuard();
+	
 }

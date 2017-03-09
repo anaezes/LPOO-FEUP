@@ -170,4 +170,10 @@ public class Ogre extends Vilan {
 		if(board.checkBoardLeverAbove(this.getXCoordinate(), this.getYCoordinate()))
 			onLever = true;
 	}
+
+	@Override
+	public int getIndexGuard() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -41,6 +41,8 @@ public class DrunkGuard extends Guard {
 
 		this.indexGuard = index;
 		this.character = caracter;
+		this.SetXCoordinate(x_position[index]);
+		this.SetYCoordinate(y_position[index]);
 	}
 
 	@Override
@@ -55,4 +57,8 @@ public class DrunkGuard extends Guard {
 
 	@Override
 	public void checkClub(GameMap board) {}
+	
+	public int getIndexGuard() {
+		return indexGuard;
+	}
 }

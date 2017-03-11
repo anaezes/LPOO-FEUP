@@ -10,7 +10,6 @@ import dkeep.logic.Game.EnumGameState;
 import dkeep.logic.Game.EnumLevel;
 import ckeep.cli.InputUser;
 import ckeep.cli.Print;
-import ckeep.cli.InputUser.EnumMoves;
 
 public class TestDungeonGameLogic {
 

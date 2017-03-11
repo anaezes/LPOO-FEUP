@@ -2,6 +2,7 @@ package ckeep.cli;
 
 import java.util.Scanner;
 
+import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
 import dkeep.logic.Game.EnumGameState;
 
@@ -9,20 +10,13 @@ public class InputUser {
 
 	private Game game;
 
-	public enum EnumMoves {
-		UP,
-		DOWN,
-		LEFT,
-		RIGHT
-	}
-
 	public InputUser(Game game) {
 		this.game = game;
 	}
 
 	public void run() {
 		Print print = new Print();
-		print.printBoard(game);
+		System.out.print(print.printBoard(game));
 
 		System.out.println("How to play? S to down - W to up - A to left - D to right");
 
@@ -34,7 +28,7 @@ public class InputUser {
 			System.out.println(keyCode);
 			if (keyCode.length()==1) {
 				keyPressed(keyCode);
-				print.printBoard(game);
+				System.out.print(print.printBoard(game));
 			}
 		}
 

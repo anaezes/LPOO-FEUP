@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import ckeep.cli.InputUser.EnumMoves;
 import dkeep.logic.Vilan.EnumVillainType;
 
 public class Game {

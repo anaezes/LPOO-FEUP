@@ -73,7 +73,6 @@ public class Game {
 		this.byLevel = true;
 	}
 
-
 	/**
 	 * Identify all features from the game board
 	 * */
@@ -169,13 +168,11 @@ public class Game {
 	}
 
 	public void setGuardPath(int[] x, int[] y)  {
-
 		if(x != null) {
 			for(Vilan v : vilans) {
 				if(v.getType() == EnumVillainType.Guard)
 					((Guard) v).setPath(x, y);
 			}
-
 			this.canMoveGuard = true;
 		}
 	}
@@ -219,6 +216,7 @@ public class Game {
 					state = EnumGameState.Lost;
 			}
 		}
+			
 	}
 
 	public void moveHero(EnumMoves movement) {

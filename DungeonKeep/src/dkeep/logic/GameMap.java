@@ -23,7 +23,7 @@ public class GameMap {
 	public char getBoardCaracter(int i, int j) {
 		return selectedBoard[i][j];
 	}
-	
+
 	public void setBoardCaracter(int i, int j, char c) {
 		this.selectedBoard[i][j] = c;
 	}

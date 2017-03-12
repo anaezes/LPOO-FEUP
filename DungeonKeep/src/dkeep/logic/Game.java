@@ -10,6 +10,8 @@ public class Game {
 
 	private EnumGameState state;
 	private EnumLevel level;
+	
+	private EnumGuardType guardType;
 
 	//characters of game
 	private Hero hero;
@@ -55,6 +57,7 @@ public class Game {
 	}
 
 	public Game(GameMap board) {
+		this.guardType = null;
 		initGame(board);
 		this.selectedBoard = board;
 		this.state = EnumGameState.Running;
@@ -66,6 +69,18 @@ public class Game {
 	public Game(List<GameMap> boards) {
 		this.boards = boards;
 		this.selectedBoard = boards.get(indexBoard);
+		this.guardType = null;
+		initGame(selectedBoard);
+		this.state = EnumGameState.Running;
+		this.level = EnumLevel.LEVELONE;
+		this.canMoveGuard = false;
+		this.byLevel = true;
+	}
+	
+	public Game(List<GameMap> boards, EnumGuardType guardType) {
+		this.boards = boards;
+		this.selectedBoard = boards.get(indexBoard);
+		this.guardType = guardType;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = EnumLevel.LEVELONE;
@@ -136,8 +151,21 @@ public class Game {
 
 	public List<Vilan> initGuard(int i, int j) {
 
-		Random oj = new Random();
-		int num = oj.nextInt(3);
+		int num = 0;
+		if (this.guardType == null) {
+			Random oj = new Random();
+			num = oj.nextInt(3);
+		} else {
+			if (this.guardType == EnumGuardType.Rockie) {
+				num = 0;
+			}
+			if (this.guardType == EnumGuardType.Drunk) {
+				num = 1;
+			}
+			if (this.guardType == EnumGuardType.Paranoid) {
+				num = 2;
+			}
+		}
 
 		List<Vilan> v = new ArrayList<>();
 		System.out.print("GUARD: ");	

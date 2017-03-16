@@ -27,7 +27,7 @@ public abstract class Vilan extends Character {
 		return false;
 	}
 
-	public abstract char getCharacter();
+	//public abstract char getCharacter();
 
 	public abstract Club getClub();
 

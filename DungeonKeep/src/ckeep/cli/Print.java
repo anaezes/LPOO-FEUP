@@ -13,13 +13,14 @@ public class Print {
 		//System.out.println();
 
 		for(int i = 0; i < game.getBoard().getBoardSize(); i++) {
+			map+=" ";
 			for(int j = 0; j <  game.getBoard().getBoardSize(); j++) {						
 				if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
-					map += game.getHero().getHeroCharacter();
+					map += game.getHero().getCharacter();
 				else if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
-					map += game.getHero().getHeroCharacter();
+					map += game.getHero().getCharacter();
 				else if((game.getHeroClub().getYCoordinate() == j && game.getHeroClub().getXCoordinate() == i) && !game.getHero().isHeroArmed())
 					//System.out.print('*');
 					map += "*";

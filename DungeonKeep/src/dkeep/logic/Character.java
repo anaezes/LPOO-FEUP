@@ -1,10 +1,9 @@
 package dkeep.logic;
 
-public class Character {
+public abstract class Character {
 	
 	protected int x;
 	protected int y;
-	protected char caracter;
 	
 	public Character(int x, int y) {
 		this.x = x;
@@ -30,4 +29,6 @@ public class Character {
 	public String getCordinates() {
 		return "("+x+","+y+")";
 	}
+	
+	public abstract char getCharacter();
 }

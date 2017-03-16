@@ -13,6 +13,7 @@ public class Ogre extends Vilan {
 	public Ogre(int x_ogre, int y_ogre, int x_club, int y_club) {
 		super(x_ogre, y_ogre);
 		this.club = new Club(x_club, y_club);
+		this.character = 'O';
 	}
 
 	public boolean GetOnLeverOgre() {

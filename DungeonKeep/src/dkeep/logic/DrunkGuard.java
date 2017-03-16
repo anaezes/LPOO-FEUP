@@ -19,17 +19,17 @@ public class DrunkGuard extends Guard {
 		switch(num) {
 		// advance
 		case 0:
-			if(index <= 22)
+			if(index < board.getBoardSize())
 				index++;
 			else
 				index = 0;
 			break;
 			// go back
 		case 1:
-			if(index > 0 && index <= 22)
+			if(index > 0 && index < board.getBoardSize())
 				index--;
 			else if(index == 0)
-				index = 23;
+				index = board.getBoardSize();
 			else
 				index = 0;
 			break;

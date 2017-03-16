@@ -10,7 +10,7 @@ public class RookieGuard extends Guard {
 	public void move(GameMap board) {
 		
 		int index = indexGuard;
-		if(index <= 22)
+		if(index < board.getBoardSize())
 			index++;
 		else
 			index = 0;

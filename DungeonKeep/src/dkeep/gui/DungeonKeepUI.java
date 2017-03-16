@@ -1,29 +1,15 @@
 package dkeep.gui;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
 import ckeep.cli.Print;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
 import dkeep.logic.Game.EnumGameState;
-
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JTextField;
 import javax.swing.text.NumberFormatter;
-
-import java.awt.GridBagLayout;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JButton;
@@ -33,7 +19,6 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 
@@ -199,7 +184,7 @@ public class DungeonKeepUI {
 		frame = new JFrame();
 		frame.setAlwaysOnTop(true);
 		frame.setResizable(false);
-		frame.setBounds(100, 100, 627, 445);
+		frame.setBounds(100, 100, 627, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -249,11 +234,11 @@ public class DungeonKeepUI {
 		frame.getContentPane().add(btnExit);
 		
 		gameBoard = new JTextArea();
-		gameBoard.setFont(new Font("Courier 10 Pitch", Font.BOLD, 12));
+		gameBoard.setFont(new Font("monospaced", Font.BOLD, 24));
 		gameBoard.setEditable(false);
-		gameBoard.setBounds(12, 86, 374, 279);
+		gameBoard.setBounds(12, 86, 300, 320);
 		frame.getContentPane().add(gameBoard);
-		
+
 		UpBtn = new JButton("UP");
 		UpBtn.setEnabled(false);
 		UpBtn.addActionListener(new ActionListener() {
@@ -303,7 +288,7 @@ public class DungeonKeepUI {
 		frame.getContentPane().add(LeftBtn);
 		
 		gameStatusLabel = new JLabel("MessageStatus");
-		gameStatusLabel.setBounds(12, 381, 374, 15);
+		gameStatusLabel.setBounds(12, 420, 374, 15);
 		frame.getContentPane().add(gameStatusLabel);
 		setGameStatusLabelText("Please click New Game to start!");
 	}

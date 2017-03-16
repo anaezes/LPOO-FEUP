@@ -51,7 +51,7 @@ public class Hero extends Character {
 			this.character = 'h';	
 	}
 	
-	public char getHeroCharacter() {
+	public char getCharacter() {
 		return character;
 	}
 }

@@ -39,7 +39,6 @@ public class DungeonKeepUI {
 	private JButton UpBtn;
 	private JLabel gameStatusLabel;
 	private Game game;
-	//private Print printBoard;
 	private JPanel gamePanel;
 	private JPanel[][] gameBoard;
 
@@ -162,11 +161,14 @@ public class DungeonKeepUI {
 			for(int j = 0; j < aux; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
 
-				if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
-					character = game.getLever().getCharacter();
-
 				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
+				
+				else if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+					character = game.getLever().getCharacter();
+
+				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
+					character = game.getHeroClub().getCharacter();
 
 				if(game.getExitDoors().size() != 0) {
 					for(int k = 0; k < game.getExitDoors().size(); k++)
@@ -175,9 +177,10 @@ public class DungeonKeepUI {
 				}
 
 				if(game.getVilans().size() != 0) {
-					for(int k = 0; k < game.getVilans().size(); k++)
+					for(int k = 0; k < game.getVilans().size(); k++) {
 						if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
 							character = game.getVilans().get(k).getCharacter();
+					}
 				}
 				
 				
@@ -197,17 +200,17 @@ public class DungeonKeepUI {
 
 				if(character == 'X' && character == 'I')
 					continue;
-
-				if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
-					character = game.getLever().getCharacter();
 				
-				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
+				else if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
 
-				if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
-					character = 'a';
+				else if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+					character = game.getLever().getCharacter();
 
-				if(game.getExitDoors().size() != 0) {
+				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
+					character = game.getHeroClub().getCharacter();
+
+				else if(game.getExitDoors().size() != 0) {
 					for(int k = 0; k < game.getExitDoors().size(); k++)
 						if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
 							character = game.getExitDoors().get(k).getCharacter();
@@ -224,13 +227,7 @@ public class DungeonKeepUI {
 						if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j)
 							character = '*';
 				}
-
-				
-				if(character == 'K')
-					System.out.println("pim");
-				if(character == 'k')
-					System.out.println("pum");
-				
+			
 				((GameObject)gameBoard[i][j]).switchType(character);
 			}
 	}

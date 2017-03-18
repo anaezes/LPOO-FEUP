@@ -333,8 +333,10 @@ public class Game {
 
 		hero.moveHero(x_hero, y_hero);
 
-		if(findWeapon)
+		if(findWeapon) {
 			hero.setHeroArmed();
+			heroClub.findClub();
+		}
 
 		hero.setCharacter();
 

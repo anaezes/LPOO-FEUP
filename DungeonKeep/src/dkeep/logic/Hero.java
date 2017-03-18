@@ -43,9 +43,10 @@ public class Hero extends Character {
 	
 	
 	public void setCharacter() {
-		if(onLever || (armed && onLever))
+		if(onLever)
 			this.character = 'H';
-		else if(armed)
+		
+		if(armed)
 			this.character = 'A';
 		else
 			this.character = 'h';	

@@ -5,10 +5,12 @@ public class Club {
 	private int x;
 	private int y;
 	private boolean onLever;
+	private char character;
 
 	public Club(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.character = 'a';
 
 		this.onLever = false;
 	}
@@ -35,5 +37,14 @@ public class Club {
 	
 	public String getCordinates() {
 		return "("+x+","+y+")";
+	}
+
+	public void findClub() {
+		this.character = ' ';
+		
+	}
+
+	public char getCharacter() {
+		return character;
 	}
 }

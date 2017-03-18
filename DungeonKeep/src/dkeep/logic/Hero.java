@@ -10,7 +10,7 @@ public class Hero extends Character {
 		super(1, 1);
 		this.onLever = false;
 		this.armed = false;
-		this.character = 'H';
+		this.character = 'h';
 	}
 
 	public Hero(int i, int j) {
@@ -44,7 +44,7 @@ public class Hero extends Character {
 	
 	public void setCharacter() {
 		if(onLever || (armed && onLever))
-			this.character = 'K';
+			this.character = 'H';
 		else if(armed)
 			this.character = 'A';
 		else

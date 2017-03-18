@@ -277,7 +277,7 @@ public class Game {
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero-1] == 'k') {
 				activeLever = true;
 				hero.setHeroOnLever(true);
-				y_hero -= 1; 
+				//y_hero -= 1; 
 				unlockStairs();
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero-1] == ' ')
@@ -290,7 +290,7 @@ public class Game {
 				y_hero += 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero+1] == 'k') {
-				y_hero += 1;
+				//y_hero += 1;
 				hero.setHeroOnLever(true);
 				activeLever = true;
 				unlockStairs();
@@ -305,7 +305,7 @@ public class Game {
 				x_hero -= 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero-1][y_hero] == 'k') {
-				x_hero -= 1;
+				//x_hero -= 1;
 				hero.setHeroOnLever(true);
 				activeLever = true;
 				unlockStairs();
@@ -320,7 +320,7 @@ public class Game {
 				x_hero += 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero+1][y_hero] == 'k') {
-				x_hero += 1;
+				//x_hero += 1;
 				hero.setHeroOnLever(true);
 				activeLever = true;
 				unlockStairs();
@@ -361,7 +361,7 @@ public class Game {
 	public void unlockStairs() {
 		for(int i = 0; i < exitDoors.size(); i++)
 			if((hero.getXCoordinate() == exitDoors.get(i).getXCoordinate() && hero.getYCoordinate() == exitDoors.get(i).getYCoordinate()) && activeLever)
-				selectedBoard.setBoardCaracter(exitDoors.get(i).getXCoordinate(), exitDoors.get(i).getYCoordinate() , ' ');
+				selectedBoard.setBoardCaracter(exitDoors.get(i).getXCoordinate(), exitDoors.get(i).getYCoordinate() , 'K');
 	}
 
 	public void moveVilans() {

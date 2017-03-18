@@ -5,7 +5,7 @@ public class ExitDoor{
 	int y;
 	char character;
 
-	public ExitDoor(int x, int y) {
+	public ExitDoor(int x, int j) {
 		this.x = x;
 		this.y = y;
 		this.character = 'I';

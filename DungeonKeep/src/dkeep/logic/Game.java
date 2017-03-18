@@ -10,7 +10,7 @@ public class Game {
 
 	private EnumGameState state;
 	private EnumLevel level;
-	
+
 	private EnumGuardType guardType;
 
 	//characters of game
@@ -24,7 +24,7 @@ public class Game {
 	private boolean canMoveGuard;
 
 	// flag of Lever in game
-	private boolean activeLever;
+	private Lever lever;
 
 	//list of levels
 	private List<GameMap> boards;
@@ -40,7 +40,7 @@ public class Game {
 
 	//saves if is the second trie to unlock the stairs (second level)
 	private boolean secondTrie;
-	
+
 	public boolean getSecondTrie(){
 		return secondTrie;
 	}
@@ -76,7 +76,7 @@ public class Game {
 		this.canMoveGuard = false;
 		this.byLevel = true;
 	}
-	
+
 	public Game(List<GameMap> boards, EnumGuardType guardType) {
 		this.boards = boards;
 		this.selectedBoard = boards.get(indexBoard);
@@ -93,7 +93,6 @@ public class Game {
 	 * */
 	public void initGame(GameMap board) {
 
-		this.activeLever = false;
 		this.secondTrie = false;
 
 		List<ExitDoor> exit = new ArrayList<>();
@@ -113,6 +112,9 @@ public class Game {
 					board.setBoardCaracter(i, j , ' ');
 				}
 
+				else if(board.getBoardCaracter(i, j)== 'k') {			
+					this.lever = new Lever(i,j);
+				}
 				else if(board.getBoardCaracter(i, j)== 'a') {			
 					this.heroClub = new Club(i,j);
 					board.setBoardCaracter(i, j , ' ');
@@ -138,7 +140,7 @@ public class Game {
 
 				else if(board.getBoardCaracter(i,j) == 'S') {
 					exit.add(new ExitDoor(i, j));
-					board.setBoardCaracter(i, j , 'X');
+					board.setBoardCaracter(i, j , 'I');
 				}
 			}
 		}
@@ -244,7 +246,7 @@ public class Game {
 					state = EnumGameState.Lost;
 			}
 		}
-			
+
 	}
 
 	public void moveHero(EnumMoves movement) {
@@ -260,7 +262,7 @@ public class Game {
 				y_hero -= 1; 
 			}
 
-			else if(verifyIfThroughStaires(x_hero, y_hero-1) && activeLever) {
+			else if(verifyIfThroughStaires(x_hero, y_hero-1) && lever.getLeverState()) {
 
 				if(byLevel && boards.size() > (indexBoard+1)) {
 					this.indexBoard++;
@@ -275,9 +277,9 @@ public class Game {
 				}
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero-1] == 'k') {
-				activeLever = true;
+				lever.setLeverState(true);
 				hero.setHeroOnLever(true);
-				//y_hero -= 1; 
+				y_hero -= 1; 
 				unlockStairs();
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero-1] == ' ')
@@ -290,9 +292,9 @@ public class Game {
 				y_hero += 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero+1] == 'k') {
-				//y_hero += 1;
+				y_hero += 1;
 				hero.setHeroOnLever(true);
-				activeLever = true;
+				lever.setLeverState(true);
 				unlockStairs();
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero][y_hero+1] == ' ') {
@@ -305,9 +307,9 @@ public class Game {
 				x_hero -= 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero-1][y_hero] == 'k') {
-				//x_hero -= 1;
+				x_hero -= 1;
 				hero.setHeroOnLever(true);
-				activeLever = true;
+				lever.setLeverState(true);
 				unlockStairs();
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero-1][y_hero] == ' ')
@@ -320,9 +322,9 @@ public class Game {
 				x_hero += 1;
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero+1][y_hero] == 'k') {
-				//x_hero += 1;
+				x_hero += 1;
 				hero.setHeroOnLever(true);
-				activeLever = true;
+				lever.setLeverState(true);
 				unlockStairs();
 			}
 			else if(selectedBoard.getSelectedBoard()[x_hero+1][y_hero] == ' ')
@@ -360,8 +362,7 @@ public class Game {
 
 	public void unlockStairs() {
 		for(int i = 0; i < exitDoors.size(); i++)
-			if((hero.getXCoordinate() == exitDoors.get(i).getXCoordinate() && hero.getYCoordinate() == exitDoors.get(i).getYCoordinate()) && activeLever)
-				selectedBoard.setBoardCaracter(exitDoors.get(i).getXCoordinate(), exitDoors.get(i).getYCoordinate() , 'K');
+			selectedBoard.setBoardCaracter(exitDoors.get(i).getXCoordinate(), exitDoors.get(i).getYCoordinate() , 'K');
 	}
 
 	public void moveVilans() {
@@ -392,19 +393,14 @@ public class Game {
 	public List<ExitDoor> getExitDoors() {
 		return exitDoors;
 	}
-	
+
 	public boolean isGameOver() {
 		return this.state == EnumGameState.Lost;
 	}
-	
-	public boolean isActiveLever() {
-		return activeLever;
+
+	public Lever getLever() {
+		return lever;
 	}
-	
-	public void setActiveLever(boolean lever){
-		this.activeLever=lever;
-	}
-	
 
 }
 

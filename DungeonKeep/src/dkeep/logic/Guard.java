@@ -55,5 +55,9 @@ public abstract class Guard extends Vilan {
 	public void setPredifinedPath(boolean b){
 		this.hasPredifinedPath=b;
 	}
+	
+	public int getPathSize() {
+		return x_position.length;
+	}
 
 }

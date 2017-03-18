@@ -18,6 +18,9 @@ public class Print {
 				if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
 					map += game.getHero().getCharacter();
+				else if(game.getLever().getYCoordinate() == j && game.getLever().getXCoordinate() == i)
+					//System.out.print(game.getHero().getHeroCharacter());
+					map += game.getLever().getCharacter();
 				else if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
 					map += game.getHero().getCharacter();

@@ -94,7 +94,7 @@ public class TestDungeonGameLogic {
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
-		assertTrue(game.isActiveLever());
+		assertTrue(game.getLever().getLeverState());
 		assertFalse(game.isGameOver());
 		assertEquals(EnumGameState.Win, game.getGameState());
 	}
@@ -103,13 +103,13 @@ public class TestDungeonGameLogic {
 	public void testExitDoors(){
 		GameMap gameMap = new GameMap(map);
 		Game game = new Game(gameMap);
-		assertFalse(game.isActiveLever());
+		assertFalse(game.getLever().getLeverState());
 		assertNotEquals('S', game.getExitDoors().get(0).getCharacter());
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
-		assertTrue(game.isActiveLever());
+		assertTrue(game.getLever().getLeverState());
 		assertEquals('S', game.getExitDoors().get(0).getCharacter());
 		assertFalse(game.isGameOver());
 		assertEquals(EnumGameState.Win, game.getGameState());
@@ -141,9 +141,9 @@ public class TestDungeonGameLogic {
 		Game game = new Game(gameMap);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
-		assertEquals(game.getHero().getCharacter(),'K');
+		assertEquals(game.getHero().getCharacter(),'H');
 		game.moveHero(EnumMoves.UP);
-		assertEquals(game.getHero().getCharacter(),'K');
+		assertEquals(game.getHero().getCharacter(),'H');
 	}
 
 	@Test
@@ -164,7 +164,7 @@ public class TestDungeonGameLogic {
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
-		assertTrue(game.isActiveLever());
+		assertTrue(game.getLever().getLeverState());
 		assertFalse(game.isGameOver());
 		assertEquals(EnumGameState.Win, game.getGameState());
 	}
@@ -209,10 +209,10 @@ public class TestDungeonGameLogic {
 	//Task4
 	@Test
 	public void testLeverObject() {
-		Lever lever = new Lever(true);
-		assertEquals(true, lever.GetLeverState());
-		lever.SetLeverState(false);
-		assertEquals(false, lever.GetLeverState());
+		Lever lever = new Lever(0,0);
+		assertEquals(false, lever.getLeverState());
+		lever.setLeverState(true);
+		assertEquals(true, lever.getLeverState());
 	}
 
 

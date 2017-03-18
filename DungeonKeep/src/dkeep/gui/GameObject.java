@@ -35,13 +35,19 @@ public class GameObject extends JPanel {
 				break;
 			case 'H':
 			case 'h':
-				image = ImageIO.read(new File(IMAGES_DIR + "captainAmerica2.png"));
+				image = ImageIO.read(new File(IMAGES_DIR + "captainAmerica.png"));
 				break;
 			case 'A':
 				image = ImageIO.read(new File(IMAGES_DIR + "captainAmericaShield.png"));
 				break;
+			case 'a':
+				image = ImageIO.read(new File(IMAGES_DIR + "shield.png"));
+				break;
 			case 'I':
 				image = ImageIO.read(new File(IMAGES_DIR + "doorClosed.png"));
+				break;
+			case 'S':
+				image = ImageIO.read(new File(IMAGES_DIR + "doorOpen.png"));
 				break;
 			case 'O':
 				image = ImageIO.read(new File(IMAGES_DIR + "hulk.png"));

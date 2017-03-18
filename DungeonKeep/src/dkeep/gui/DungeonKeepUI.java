@@ -10,6 +10,7 @@ import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
+import dkeep.logic.Vilan.EnumVillainType;
 import dkeep.logic.Game.EnumGameState;
 import javax.swing.text.NumberFormatter;
 import javax.swing.JComboBox;
@@ -161,6 +162,9 @@ public class DungeonKeepUI {
 			for(int j = 0; j < aux; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
 
+				if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+					character = game.getLever().getCharacter();
+
 				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
 
@@ -175,7 +179,8 @@ public class DungeonKeepUI {
 						if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
 							character = game.getVilans().get(k).getCharacter();
 				}
-
+				
+				
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/aux, gamePanel.getHeight()/aux, character);
 				gamePanel.add(gameBoard[i][j]);	
 			}
@@ -190,24 +195,43 @@ public class DungeonKeepUI {
 			for(int j = 0; j < aux; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
 
-				if(character != 'X' && character != 'I') {
-					if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
-						character = game.getHero().getCharacter();
+				if(character == 'X' && character == 'I')
+					continue;
 
-					if(game.getExitDoors().size() != 0) {
-						for(int k = 0; k < game.getExitDoors().size(); k++)
-							if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
-								character = game.getExitDoors().get(k).getCharacter();
-					}
+				if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+					character = game.getLever().getCharacter();
+				
+				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
+					character = game.getHero().getCharacter();
 
-					if(game.getVilans().size() != 0) {
-						for(int k = 0; k < game.getVilans().size(); k++)
-							if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
-								character = game.getVilans().get(k).getCharacter();
-					}
+				if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
+					character = 'a';
 
-					((GameObject)gameBoard[i][j]).switchType(character);
+				if(game.getExitDoors().size() != 0) {
+					for(int k = 0; k < game.getExitDoors().size(); k++)
+						if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
+							character = game.getExitDoors().get(k).getCharacter();
 				}
+
+				if(game.getVilans().size() != 0) {
+					for(int k = 0; k < game.getVilans().size(); k++)
+						if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
+							character = game.getVilans().get(k).getCharacter();
+				}
+
+				if(game.getVilans().size() != 0 && game.getVilans().get(0).getType() == EnumVillainType.Ogre) {
+					for(int k = 0; k < game.getVilans().size(); k++)
+						if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j)
+							character = '*';
+				}
+
+				
+				if(character == 'K')
+					System.out.println("pim");
+				if(character == 'k')
+					System.out.println("pum");
+				
+				((GameObject)gameBoard[i][j]).switchType(character);
 			}
 	}
 

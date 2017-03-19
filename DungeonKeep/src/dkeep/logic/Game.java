@@ -27,6 +27,8 @@ public class Game {
 	// flag of Lever in game
 	private Lever lever;
 
+	private Key key;
+
 	//list of levels
 	private List<GameMap> boards;
 
@@ -87,13 +89,15 @@ public class Game {
 		this.canMoveGuard = false;
 		this.byLevel = true;
 	}
-	
+
 	public Game(List<GameMap> boards, int numOgres) {
 		this.boards = boards;
 		this.selectedBoard = boards.get(indexBoard);
 		this.guardType = null;
 		this.numOgres = numOgres;
 		this.numOgresPredefined = true;
+		this.lever = null;
+		this.key = null;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
@@ -105,7 +109,9 @@ public class Game {
 	 * Identify all features from the game board
 	 * */
 	public void initGame(GameMap board) {
-
+		this.lever = null;
+		this.key = null;
+		
 		List<ExitDoor> exit = new ArrayList<>();
 
 		numberOfTries = 0;
@@ -113,7 +119,7 @@ public class Game {
 		boolean ogres = false;
 
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = 0, y_ogre_club = 0;
-
+		int tmp_x = 0, tmp_y=0;
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
 
@@ -123,7 +129,8 @@ public class Game {
 				}
 
 				else if(board.getBoardCaracter(i, j)== 'k') {			
-					this.lever = new Lever(i,j);
+					tmp_x=i;
+					tmp_y=j;
 				}
 				else if(board.getBoardCaracter(i, j)== 'a') {			
 					this.heroClub = new Club(i,j);
@@ -157,8 +164,12 @@ public class Game {
 		}
 
 		this.exitDoors = exit;
-		if(ogres) 
+		if(ogres) {
 			initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
+			this.key = new Key(tmp_x,tmp_y);
+		}
+		else
+			this.lever = new Lever(tmp_x,tmp_y);
 	}
 
 
@@ -300,18 +311,22 @@ public class Game {
 		if(selectedBoard.getSelectedBoard()[x_hero][y_hero] == ' ')
 			return true;
 
-		if(isExitDoor(x_hero, y_hero) && lever.getLeverState())
+		if(isExitDoor(x_hero, y_hero))
 		{
-			if(isSecondTrie()) {
+			if((lever != null && lever.getLeverState()) ||
+					(key != null && key.getKeyState() && isSecondTrie()))
+					
 				if(byLevel && boards.size() > (indexBoard+1)) {
 					this.indexBoard++;
 					this.selectedBoard = boards.get(indexBoard);
 					initGame(selectedBoard);
 					y_hero = this.hero.getYCoordinate();
 					x_hero = this.hero.getXCoordinate();
-				} else 
-					setGameState(EnumGameState.Win); 
-			}
+				} else {
+					setGameState(EnumGameState.Win);
+					hero.setCaracter(' ');
+				}
+			
 			return false;
 		}
 
@@ -323,11 +338,16 @@ public class Game {
 			return true;
 		}
 
-		else if(lever.getXCoordinate() == x_hero && lever.getYCoordinate() == y_hero) {
+		else if(lever != null && lever.getXCoordinate() == x_hero && lever.getYCoordinate() == y_hero) {
 			lever.setLeverState(true);
 			hero.setHeroOnLever(true);
 			unlockDoors();
-
+			transformToStaires();
+			return true;
+		}
+		
+		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {
+			key.setKeyState(true);
 			for(int i = 0; i < exitDoors.size(); i++)
 				exitDoors.get(i).openExitDoor();
 			return true;
@@ -401,6 +421,10 @@ public class Game {
 
 	public Lever getLever() {
 		return lever;
+	}
+
+	public Key getKey() {
+		return key;
 	}
 
 }

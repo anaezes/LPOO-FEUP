@@ -90,16 +90,6 @@ public class DungeonKeepUI {
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','X','X','X','X','X','X','X','X'}};
-
-		char[][] BoardTree = {{'X','X','X','X','X','X','X','X','X'},
-				{'S',' ',' ','*','O', ' ', ' ', 'k', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', 'G', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','X','X','X','X','X','X','X','X'}};
 		
 		int numOfOgres = Integer.parseInt(numberOfOgres.getText());
 		EnumGuardType guardType = EnumGuardType.valueOf(guardsCombo.getSelectedItem().toString());
@@ -107,10 +97,8 @@ public class DungeonKeepUI {
 		List<GameMap> gameMaps = new ArrayList<>();
 		GameMap gameMap1 = new GameMap(BoardOne);
 		GameMap gameMap2 = new GameMap(BoardTwo);
-		GameMap gameMap3 = new GameMap(BoardTree);
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
-		gameMaps.add(gameMap3);
 
 		Game newGame = new Game(gameMaps, guardType, numOfOgres);
 		newGame.setGuardPath(guard_y, guard_x);
@@ -170,8 +158,11 @@ public class DungeonKeepUI {
 				else if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
 
-				else if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+				else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
 					character = game.getLever().getCharacter();
+				
+				else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
+					character = game.getKey().getCharacter();
 
 				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
 					character = game.getHeroClub().getCharacter();

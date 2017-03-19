@@ -55,4 +55,8 @@ public class Hero extends Character {
 	public char getCharacter() {
 		return character;
 	}
+
+	public void setCaracter(char c) {
+		this.character = c;
+	}
 }

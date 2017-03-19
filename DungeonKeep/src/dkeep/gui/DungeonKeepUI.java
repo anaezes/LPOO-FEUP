@@ -82,7 +82,7 @@ public class DungeonKeepUI {
 				{'X','X','X','X','X','X','X','X','X','X'}};
 
 		char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', 'k', 'X'},
+				{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
@@ -91,61 +91,28 @@ public class DungeonKeepUI {
 				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','X','X','X','X','X','X','X','X'}};
 
+		char[][] BoardTree = {{'X','X','X','X','X','X','X','X','X'},
+				{'S',' ',' ','*','O', ' ', ' ', 'k', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', 'G', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X','X','X','X','X','X','X','X','X'}};
+		
 		int numOfOgres = Integer.parseInt(numberOfOgres.getText());
-		System.out.println(numOfOgres);
 		EnumGuardType guardType = EnumGuardType.valueOf(guardsCombo.getSelectedItem().toString());
-		System.out.println(guardType);
-
-		switch(numOfOgres) {
-		case 1: //in case 1 ogre
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			break;
-		case 2: // in case 2 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			break;
-		case 3: // in case 3 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			BoardTwo[6][5] = 'O';
-			BoardTwo[6][6] = '*';
-			break;
-		case 4: // in case 4 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			BoardTwo[6][5] = 'O';
-			BoardTwo[6][6] = '*';
-			BoardTwo[2][3] = 'O';
-			BoardTwo[2][4] = '*';
-			break;
-		case 5: // in case 5 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			BoardTwo[6][5] = 'O';
-			BoardTwo[6][6] = '*';
-			BoardTwo[2][3] = 'O';
-			BoardTwo[2][4] = '*';
-			BoardTwo[4][1] = 'O';
-			BoardTwo[4][2] = '*';
-			break;	
-		}
 
 		List<GameMap> gameMaps = new ArrayList<>();
 		GameMap gameMap1 = new GameMap(BoardOne);
 		GameMap gameMap2 = new GameMap(BoardTwo);
+		GameMap gameMap3 = new GameMap(BoardTree);
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
+		gameMaps.add(gameMap3);
 
-		Game newGame = new Game(gameMaps, guardType);
+		Game newGame = new Game(gameMaps, guardType, numOfOgres);
 		newGame.setGuardPath(guard_y, guard_x);
 		this.game = newGame;
 		setMovementButtons(true);
@@ -182,7 +149,6 @@ public class DungeonKeepUI {
 							character = game.getVilans().get(k).getCharacter();
 					}
 				}
-				
 				
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/aux, gamePanel.getHeight()/aux, character);
 				gamePanel.add(gameBoard[i][j]);	

@@ -26,7 +26,7 @@ public class Main {
 				{'X','X','X','X','X','X','X','X','X','X'}};
 
 		char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', 'k', 'X'},
+				{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
@@ -36,28 +36,7 @@ public class Main {
 				{'X','X','X','X','X','X','X','X','X'}};
 	
 		Random oj = new Random();
-		int num = oj.nextInt(3);
-
-		switch(num) {
-		case 0: //in case 1 ogre
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			break;
-		case 1: // in case 2 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			break;
-		case 2: // in case 3 ogres
-			BoardTwo[1][4] = 'O';
-			BoardTwo[1][5] = '*';
-			BoardTwo[3][3] = 'O';
-			BoardTwo[3][4] = '*';
-			BoardTwo[6][5] = 'O';
-			BoardTwo[6][6] = '*';
-			break;	
-		}
+		int numOgres = oj.nextInt(5)+1;
 
 		List<GameMap> gameMaps = new ArrayList<>();
 		GameMap gameMap1 = new GameMap(BoardOne);
@@ -65,7 +44,7 @@ public class Main {
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
 		
-		Game newGame = new Game(gameMaps);
+		Game newGame = new Game(gameMaps, numOgres);
 		newGame.setGuardPath(guard_y, guard_x);
 
 		InputUser inputUser = new InputUser(newGame);

@@ -44,12 +44,14 @@ public class GameObject extends JPanel {
 				image = ImageIO.read(new File(IMAGES_DIR + "shield.png"));
 				break;
 			case 'I':
+			case 'x':
 				image = ImageIO.read(new File(IMAGES_DIR + "doorClosed.png"));
 				break;
 			case 'S':
 				image = ImageIO.read(new File(IMAGES_DIR + "doorOpen.png"));
 				break;
 			case 'O':
+			case '$':
 				image = ImageIO.read(new File(IMAGES_DIR + "hulk.png"));
 				break;
 			case '8':
@@ -59,6 +61,7 @@ public class GameObject extends JPanel {
 				image = ImageIO.read(new File(IMAGES_DIR + "club.png"));
 				break;
 			case 'G':
+			case 'g':
 				image = ImageIO.read(new File(IMAGES_DIR + "ultron.png"));
 				break;
 			case 'k':
@@ -74,7 +77,6 @@ public class GameObject extends JPanel {
 				this.setBackground(Color.WHITE);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	} 

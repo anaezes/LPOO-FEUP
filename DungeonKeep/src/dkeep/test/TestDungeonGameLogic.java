@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import dkeep.logic.*;
 import dkeep.logic.Game.EnumGameState;
-import dkeep.logic.Game.EnumLevel;
+//import dkeep.logic.Game.EnumLevel;
+import dkeep.logic.Vilan.EnumVillainType;
 
 public class TestDungeonGameLogic {
 
@@ -17,14 +18,14 @@ public class TestDungeonGameLogic {
 
 	char[][] mapWithOgre = {{'X', 'X', 'X', 'X', 'X'},
 			{'X', 'H', ' ', ' ', 'X'},
-			{'S', ' ', 'O', ' ', 'X'},
-			{'S', 'k', '*', ' ', 'X'},
+			{'S', ' ', 'O', '*', 'X'},
+			{'S', 'k', ' ', ' ', 'X'},
 			{'X', 'X', 'X', 'X', 'X'}};
 
 	char[][] mapWithOgreAndArm = {{'X', 'X', 'X', 'X', 'X'},
 			{'X', 'H', ' ', ' ', 'X'},
-			{'S', 'a', 'O', ' ', 'X'},
-			{'S', 'k', '*', ' ', 'X'},
+			{'S', 'a', 'O', '*', 'X'},
+			{'S', 'k', ' ', ' ', 'X'},
 			{'X', 'X', 'X', 'X', 'X'}};
 
 	int[] guard_x = new int[] {3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2};
@@ -136,14 +137,14 @@ public class TestDungeonGameLogic {
 	}
 
 	@Test 
-	public void keyChangesRepresentation(){
+	public void leverChangesRepresentation(){
 		GameMap gameMap = new GameMap(map);
 		Game game = new Game(gameMap);
 		game.moveHero(EnumMoves.DOWN);
+		assertEquals(game.getLever().getCharacter(),'k');
 		game.moveHero(EnumMoves.DOWN);
-		assertEquals(game.getHero().getCharacter(),'H');
 		game.moveHero(EnumMoves.UP);
-		assertEquals(game.getHero().getCharacter(),'H');
+		assertEquals(game.getLever().getCharacter(),'K');
 	}
 
 	@Test
@@ -177,8 +178,9 @@ public class TestDungeonGameLogic {
 	public void testOgreMove(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
-		game.setGameLevel(EnumLevel.LEVELTWO);
-		assertEquals(game.getGameLevel(), EnumLevel.LEVELTWO);
+		int currLevel = game.getGameLevel();
+		game.nextLevel();
+		assertNotEquals(game.getGameLevel(), currLevel);
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
 			String oldCoords = game.getVilans().get(0).getCordinates();
@@ -220,8 +222,9 @@ public class TestDungeonGameLogic {
 	public void testClubMove(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
-		game.setGameLevel(EnumLevel.LEVELTWO);
-		assertEquals(game.getGameLevel(), EnumLevel.LEVELTWO);
+		int currLevel = game.getGameLevel();
+		game.nextLevel();
+		assertEquals(game.getGameLevel(), currLevel+1);
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
 
@@ -249,9 +252,9 @@ public class TestDungeonGameLogic {
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
 
-		assertEquals( "(3,2)", game.getVilans().get(0).getClub().getCordinates());
-		game.getVilans().get(0).getClub().setYCoordinate(3);
-		assertNotEquals("(3,2)", game.getVilans().get(0).getClub().getCordinates());
+		assertEquals( "(2,3)", game.getVilans().get(0).getClub().getCordinates());
+		game.getVilans().get(0).getClub().setYCoordinate(2);
+		assertNotEquals("(2,3)", game.getVilans().get(0).getClub().getCordinates());
 
 		game.getVilans().get(0).checkClub(gameMap);
 		assertNotEquals("(3,3)", game.getVilans().get(0).getClub().getCordinates());
@@ -292,6 +295,7 @@ public class TestDungeonGameLogic {
 	public void testOnLeverAndCharacter(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
+		assertEquals(true, game.getVilans().get(0).getType() == EnumVillainType.Ogre);
 		assertEquals(false, game.getVilans().get(0).GetOnLeverOgre());
 		assertEquals('O', game.getVilans().get(0).getCharacter());
 	}

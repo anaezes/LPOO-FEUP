@@ -1,50 +1,39 @@
 package dkeep.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import ckeep.cli.Print;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
 import dkeep.logic.Vilan.EnumVillainType;
 import dkeep.logic.Game.EnumGameState;
-import javax.swing.text.NumberFormatter;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.SwingConstants;
 
 
 public class DungeonKeepUI{
 
 	private JFrame frame;
-	private JFormattedTextField numberOfOgres;
-	private JComboBox<EnumGuardType> guardsCombo;
-	private JButton DownBtn;
-	private JButton RightBtn;
-	private JButton LeftBtn;
-	private JButton UpBtn;
 	private JLabel gameStatusLabel;
 	private Game game;
 	private JPanel gamePanel;
 	private JPanel[][] gameBoard;
 	private KeyListener keyListener;
+	private GameOptions gameOptions;
 	
 	/**
 	 * Launch the application.
@@ -81,7 +70,6 @@ public class DungeonKeepUI{
 				
 				boolean moved = false;
 				int key = e.getKeyCode();
-				System.out.println(key);
 				switch(key) {
 				case KeyEvent.VK_LEFT: 
 					game.moveHero(EnumMoves.LEFT);
@@ -109,11 +97,9 @@ public class DungeonKeepUI{
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				System.out.println("pim2");
 
 			}
 		};
-		
 		
 		initialize();
 	}
@@ -143,8 +129,8 @@ public class DungeonKeepUI{
 				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','X','X','X','X','X','X','X','X'}};
 
-		int numOfOgres = Integer.parseInt(numberOfOgres.getText());
-		EnumGuardType guardType = EnumGuardType.valueOf(guardsCombo.getSelectedItem().toString());
+		int numOfOgres = gameOptions.getNumberOfOgres();
+		EnumGuardType guardType = gameOptions.getGuardType();
 
 		List<GameMap> gameMaps = new ArrayList<>();
 		GameMap gameMap1 = new GameMap(BoardOne);
@@ -155,7 +141,7 @@ public class DungeonKeepUI{
 		Game newGame = new Game(gameMaps, guardType, numOfOgres);
 		newGame.setGuardPath(guard_y, guard_x);
 		this.game = newGame;
-		setMovementButtons(true);
+
 		setGameStatusLabelText("Prepare to figth!!! Click on buttons to move hero!");
 	}
 
@@ -249,72 +235,48 @@ public class DungeonKeepUI{
 
 	private void validateGameRunning() {
 		if(game.getGameState() == EnumGameState.Win)
-		{
 			setGameStatusLabelText("YOU WIN!");
-			setMovementButtons(false);
-
-		}
-		else if(game.getGameState() == EnumGameState.Lost){
+		
+		else if(game.getGameState() == EnumGameState.Lost)
 			setGameStatusLabelText("Game Over!");
-			setMovementButtons(false);
-		}
 	}
 
-	private void setMovementButtons(boolean stateBtn) {
-		UpBtn.setEnabled(stateBtn);
-		RightBtn.setEnabled(stateBtn);
-		DownBtn.setEnabled(stateBtn);
-		LeftBtn.setEnabled(stateBtn);
-	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBackground(Color.GRAY);
 		frame.getContentPane().setBackground(Color.GRAY);
 		frame.setAlwaysOnTop(true);
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 800, 730);
+		frame.setBounds(100, 100, 670, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		gameOptions = new GameOptions(frame);
+		gameOptions.setVisible(false);
 
-		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
-		lblNumberOfOgres.setBounds(12, 14, 135, 15);
-		frame.getContentPane().add(lblNumberOfOgres);
-
-		NumberFormat format = NumberFormat.getInstance();
-		NumberFormatter formatter = new NumberFormatter(format);
-		formatter.setValueClass(Integer.class);
-		formatter.setMinimum(1);
-		formatter.setMaximum(5);
-		formatter.setAllowsInvalid(false);
-		formatter.setCommitsOnValidEdit(true);
-
-		numberOfOgres = new JFormattedTextField(formatter);
-		numberOfOgres.setBounds(155, 12, 49, 19);
-		frame.getContentPane().add(numberOfOgres);
-		numberOfOgres.setColumns(10);
-		numberOfOgres.setText("1");
-
-		JLabel lblGuardPersonality = new JLabel("Guard personality");
-		lblGuardPersonality.setBounds(235, 14, 150, 15);
-		frame.getContentPane().add(lblGuardPersonality);
-
-		guardsCombo = new JComboBox<EnumGuardType>();
-		guardsCombo.setModel(new DefaultComboBoxModel<EnumGuardType>(EnumGuardType.values()));
-		guardsCombo.setBounds(400, 9, 129, 20);
-		frame.getContentPane().add(guardsCombo);
-
-		JButton btnNewGame = new JButton("New Game");
-		btnNewGame.addActionListener(new ActionListener() {
+		gameStatusLabel = new JLabel("MessageStatus");
+		gameStatusLabel.setBounds(12, 666, 374, 15);
+		frame.getContentPane().add(gameStatusLabel);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setFont(new Font("Dialog", Font.BOLD, 15));
+		frame.setJMenuBar(menuBar);
+		
+		JMenuItem mntmNewGame = new JMenuItem("        New Game");
+		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
+		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
+		menuBar.add(mntmNewGame);
+		mntmNewGame.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				newGame();
 				gamePanel = new JPanel();
 				gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
-				gamePanel.setBounds(12, 50, 600, 600);
+				gamePanel.setBounds(30, 30, 600, 600);
 				gamePanel.setBackground(Color.WHITE);
 				gamePanel.setFocusable(true);
 				gamePanel.addKeyListener(keyListener);
@@ -324,76 +286,31 @@ public class DungeonKeepUI{
 				initGraphics();
 			}
 		});
-		btnNewGame.setBounds(645, 53, 115, 25);
-		frame.getContentPane().add(btnNewGame);
-
-		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
+		
+		JMenuItem mntmOptions = new JMenuItem("        Options");
+		mntmOptions.setFont(new Font("Dialog", Font.BOLD, 15));
+		menuBar.add(mntmOptions);
+		mntmOptions.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameOptions.setVisible(true);
+			}
+		});
+	
+		
+		JMenuItem mntmEditMap = new JMenuItem("        Edit Map");
+		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
+		menuBar.add(mntmEditMap);
+		
+		JMenuItem mntmExit = new JMenuItem("        Exit");
+		mntmExit.setFont(new Font("Dialog", Font.BOLD, 15));
+		menuBar.add(mntmExit);
+		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
-		btnExit.setBounds(645, 202, 115, 25);
-		frame.getContentPane().add(btnExit);
-
-		UpBtn = new JButton("UP");
-		UpBtn.setEnabled(false);
-		UpBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.UP);
-				updateGraphics();
-				gamePanel.repaint();
-				validateGameRunning();
-			}
-		});
-		UpBtn.setBounds(667, 90, 80, 20);
-		frame.getContentPane().add(UpBtn);
-
-		DownBtn = new JButton("DOWN");
-		DownBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.DOWN);
-				updateGraphics();
-				gamePanel.repaint();
-				validateGameRunning();
-			}
-		});
-		DownBtn.setEnabled(false);
-		DownBtn.setBounds(667, 154, 80, 20);
-		frame.getContentPane().add(DownBtn);
-
-		RightBtn = new JButton("RIGHT");
-		RightBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.RIGHT);
-				updateGraphics();
-				gamePanel.repaint();
-				validateGameRunning();
-			}
-		});
-		RightBtn.setEnabled(false);
-		RightBtn.setBounds(708, 122, 80, 20);
-		frame.getContentPane().add(RightBtn);
-
-		LeftBtn = new JButton("LEFT");
-		LeftBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.LEFT);
-				updateGraphics();
-				gamePanel.repaint();
-				validateGameRunning();
-			}
-		});
-		LeftBtn.setEnabled(false);
-		LeftBtn.setBounds(622, 122, 80, 20);
-		frame.getContentPane().add(LeftBtn);
-
-		gameStatusLabel = new JLabel("MessageStatus");
-		gameStatusLabel.setBounds(12, 666, 374, 15);
-		frame.getContentPane().add(gameStatusLabel);
 
 		setGameStatusLabelText("Please click New Game to start!");
 	}
-
-
 }

@@ -6,11 +6,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GameObject extends JPanel {
+	private static final long serialVersionUID = 1L;
 	private static final String IMAGES_DIR = System.getProperty("user.dir") + "/images/";
 	private Image image;
 

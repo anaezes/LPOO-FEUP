@@ -2,6 +2,8 @@ package dkeep.gui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import dkeep.logic.EnumGuardType;
@@ -16,6 +18,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -23,18 +28,19 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
+import java.awt.Window.Type;
 
 
 public class DungeonKeepUI{
 
-	private JFrame frame;
+	private JFrame frmDungeonKeepGame;
 	private JLabel gameStatusLabel;
 	private Game game;
 	private JPanel gamePanel;
 	private JPanel[][] gameBoard;
 	private KeyListener keyListener;
 	private GameOptions gameOptions;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -43,13 +49,11 @@ public class DungeonKeepUI{
 			public void run() {
 				try {
 					DungeonKeepUI window = new DungeonKeepUI();
-					window.frame.setVisible(true);
+					window.frmDungeonKeepGame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-		}
-				);
+			}});
 	}
 
 	/**
@@ -59,15 +63,15 @@ public class DungeonKeepUI{
 		keyListener = new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
+
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				
+
 				if(game.getGameState() != EnumGameState.Running)
 					return;
-				
+
 				boolean moved = false;
 				int key = e.getKeyCode();
 				switch(key) {
@@ -87,7 +91,7 @@ public class DungeonKeepUI{
 					game.moveHero(EnumMoves.DOWN);
 					moved = true;
 				}
-		
+
 				if(moved) {
 					updateGraphics();
 					gamePanel.repaint();
@@ -100,7 +104,7 @@ public class DungeonKeepUI{
 
 			}
 		};
-		
+
 		initialize();
 	}
 
@@ -142,7 +146,7 @@ public class DungeonKeepUI{
 		newGame.setGuardPath(guard_y, guard_x);
 		this.game = newGame;
 
-		setGameStatusLabelText("Prepare to figth!!! Click on buttons to move hero!");
+		setGameStatusLabelText("Prepare to figth!!! Click on keybord arrows to move hero!");
 	}
 
 	private void initGraphics() {
@@ -236,7 +240,7 @@ public class DungeonKeepUI{
 	private void validateGameRunning() {
 		if(game.getGameState() == EnumGameState.Win)
 			setGameStatusLabelText("YOU WIN!");
-		
+
 		else if(game.getGameState() == EnumGameState.Lost)
 			setGameStatusLabelText("Game Over!");
 	}
@@ -246,29 +250,33 @@ public class DungeonKeepUI{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBackground(Color.GRAY);
-		frame.getContentPane().setBackground(Color.GRAY);
-		frame.setAlwaysOnTop(true);
-		frame.setBounds(100, 100, 670, 720);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		gameOptions = new GameOptions(frame);
+		frmDungeonKeepGame = new JFrame();
+		frmDungeonKeepGame.setType(Type.UTILITY);
+		frmDungeonKeepGame.setTitle("Dungeon Keep Game");
+		frmDungeonKeepGame.setFont(new Font("Dialog", Font.BOLD, 18));
+		frmDungeonKeepGame.setResizable(false);
+		frmDungeonKeepGame.setBackground(Color.GRAY);
+		frmDungeonKeepGame.getContentPane().setBackground(Color.LIGHT_GRAY);
+		frmDungeonKeepGame.setAlwaysOnTop(true);
+		frmDungeonKeepGame.setBounds(100, 100, 670, 720);
+		frmDungeonKeepGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmDungeonKeepGame.getContentPane().setLayout(null);
+
+		gameOptions = new GameOptions(frmDungeonKeepGame);
 		gameOptions.setVisible(false);
 
 		gameStatusLabel = new JLabel("MessageStatus");
-		gameStatusLabel.setBounds(12, 666, 374, 15);
-		frame.getContentPane().add(gameStatusLabel);
-		
+		gameStatusLabel.setBounds(12, 635, 374, 15);
+		frmDungeonKeepGame.getContentPane().add(gameStatusLabel);
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Dialog", Font.BOLD, 15));
-		frame.setJMenuBar(menuBar);
-		
-		JMenuItem mntmNewGame = new JMenuItem("        New Game");
+		frmDungeonKeepGame.setJMenuBar(menuBar);
+
+		JMenuItem mntmNewGame = new JMenuItem("         New Game");
 		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
 		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
+		mntmNewGame.setBackground(Color.LIGHT_GRAY);
 		menuBar.add(mntmNewGame);
 		mntmNewGame.addActionListener(new ActionListener() {
 			@Override
@@ -280,34 +288,135 @@ public class DungeonKeepUI{
 				gamePanel.setBackground(Color.WHITE);
 				gamePanel.setFocusable(true);
 				gamePanel.addKeyListener(keyListener);
-			
-				frame.getContentPane().add(gamePanel);
+
+				frmDungeonKeepGame.getContentPane().add(gamePanel);
 				gamePanel.requestFocus();
 				initGraphics();
 			}
 		});
-		
-		JMenuItem mntmOptions = new JMenuItem("        Options");
+
+		mntmNewGame.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource();                 
+				item.setFont(new Font("Dialog", Font.BOLD, 16));
+				item.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource(); 
+				item.setFont(new Font("Dialog", Font.BOLD, 15));
+				item.setBackground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		JMenuItem mntmOptions = new JMenuItem("          Options");
 		mntmOptions.setFont(new Font("Dialog", Font.BOLD, 15));
 		menuBar.add(mntmOptions);
+		mntmOptions.setBackground(Color.LIGHT_GRAY);
 		mntmOptions.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				gameOptions.setVisible(true);
 			}
 		});
-	
-		
-		JMenuItem mntmEditMap = new JMenuItem("        Edit Map");
+
+		mntmOptions.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource();                 
+				item.setFont(new Font("Dialog", Font.BOLD, 16));
+				item.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource(); 
+				item.setFont(new Font("Dialog", Font.BOLD, 15));
+				item.setBackground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		JMenuItem mntmEditMap = new JMenuItem("          Edit Map");
 		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
 		menuBar.add(mntmEditMap);
+		mntmEditMap.setBackground(Color.LIGHT_GRAY);
 		
-		JMenuItem mntmExit = new JMenuItem("        Exit");
+		mntmEditMap.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource();                 
+				item.setFont(new Font("Dialog", Font.BOLD, 16));
+				item.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource(); 
+				item.setFont(new Font("Dialog", Font.BOLD, 15));
+				item.setBackground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+
+		JMenuItem mntmExit = new JMenuItem("              Exit");
 		mntmExit.setFont(new Font("Dialog", Font.BOLD, 15));
 		menuBar.add(mntmExit);
+		mntmExit.setBackground(Color.LIGHT_GRAY);
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
+			}
+		});
+		mntmExit.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource();                 
+				item.setFont(new Font("Dialog", Font.BOLD, 16));
+				item.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource(); 
+				item.setFont(new Font("Dialog", Font.BOLD, 15));
+				item.setBackground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 			}
 		});
 

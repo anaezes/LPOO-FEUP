@@ -23,6 +23,7 @@ public class Ogre extends Vilan {
 	public char getCharacter() {
 		return character;
 	}
+	
 
 	public void putStunned() {
 		this.numberTurnsLeftStunned = 2;
@@ -51,6 +52,8 @@ public class Ogre extends Vilan {
 	}
 
 	public void move(GameMap board) {
+		
+		this.character = 'G';
 		if(!this.isStunned())
 		{		
 			Random oj = new Random();
@@ -90,8 +93,10 @@ public class Ogre extends Vilan {
 					moved = true;
 			}
 
-			if(board.checkBoardLeverAbove(this.getXCoordinate(), this.getYCoordinate()))
+			if(board.checkBoardLeverAbove(this.getXCoordinate(), this.getYCoordinate())) {
 				onLever = true;
+				this.character = '$';
+			}
 		}
 		else
 			updateTurnsLeftStunned();	

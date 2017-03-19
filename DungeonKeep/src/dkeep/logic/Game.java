@@ -271,7 +271,8 @@ public class Game {
 				x_ogre = vilans.get(i).getClub().getXCoordinate();
 				y_ogre = vilans.get(i).getClub().getYCoordinate();
 				if(((y_ogre == (hero.getYCoordinate()+1) || y_ogre == (hero.getYCoordinate()-1)) && x_ogre == (hero.getXCoordinate())) || 
-						(x_ogre== (hero.getXCoordinate()+1) || x_ogre == (hero.getXCoordinate()-1)) && y_ogre == (hero.getYCoordinate()))
+						(x_ogre== (hero.getXCoordinate()+1) || x_ogre == (hero.getXCoordinate()-1)) && y_ogre == (hero.getYCoordinate())
+						|| (x_ogre == hero.getXCoordinate()) && y_ogre == hero.getYCoordinate())
 					state = EnumGameState.Lost;
 			}
 		}

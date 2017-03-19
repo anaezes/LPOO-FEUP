@@ -20,6 +20,9 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPanel;
 
 
-public class DungeonKeepUI {
+public class DungeonKeepUI{
 
 	private JFrame frame;
 	private JFormattedTextField numberOfOgres;
@@ -41,7 +44,8 @@ public class DungeonKeepUI {
 	private Game game;
 	private JPanel gamePanel;
 	private JPanel[][] gameBoard;
-
+	private KeyListener keyListener;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -63,6 +67,54 @@ public class DungeonKeepUI {
 	 * Create the application.
 	 */
 	public DungeonKeepUI() {
+		keyListener = new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+				if(game.getGameState() != EnumGameState.Running)
+					return;
+				
+				boolean moved = false;
+				int key = e.getKeyCode();
+				System.out.println(key);
+				switch(key) {
+				case KeyEvent.VK_LEFT: 
+					game.moveHero(EnumMoves.LEFT);
+					moved = true;
+					break;
+				case KeyEvent.VK_RIGHT: 
+					game.moveHero(EnumMoves.RIGHT);
+					moved = true;
+					break;
+				case KeyEvent.VK_UP:
+					game.moveHero(EnumMoves.UP);
+					moved = true;
+					break;
+				case KeyEvent.VK_DOWN: 
+					game.moveHero(EnumMoves.DOWN);
+					moved = true;
+				}
+		
+				if(moved) {
+					updateGraphics();
+					gamePanel.repaint();
+					validateGameRunning();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				System.out.println("pim2");
+
+			}
+		};
+		
+		
 		initialize();
 	}
 
@@ -90,7 +142,7 @@ public class DungeonKeepUI {
 				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
 				{'X','X','X','X','X','X','X','X','X'}};
-		
+
 		int numOfOgres = Integer.parseInt(numberOfOgres.getText());
 		EnumGuardType guardType = EnumGuardType.valueOf(guardsCombo.getSelectedItem().toString());
 
@@ -118,7 +170,7 @@ public class DungeonKeepUI {
 
 				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
-				
+
 				else if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
 					character = game.getLever().getCharacter();
 
@@ -137,7 +189,7 @@ public class DungeonKeepUI {
 							character = game.getVilans().get(k).getCharacter();
 					}
 				}
-				
+
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/aux, gamePanel.getHeight()/aux, character);
 				gamePanel.add(gameBoard[i][j]);	
 			}
@@ -154,13 +206,13 @@ public class DungeonKeepUI {
 
 				if(character == 'X' && character == 'I')
 					continue;
-				
+
 				else if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
 
 				else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
 					character = game.getLever().getCharacter();
-				
+
 				else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
 					character = game.getKey().getCharacter();
 
@@ -184,7 +236,7 @@ public class DungeonKeepUI {
 						if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j)
 							character = '*';
 				}
-			
+
 				((GameObject)gameBoard[i][j]).switchType(character);
 			}
 	}
@@ -227,6 +279,7 @@ public class DungeonKeepUI {
 		frame.setBounds(100, 100, 800, 730);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
 
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres");
 		lblNumberOfOgres.setBounds(12, 14, 135, 15);
@@ -263,9 +316,11 @@ public class DungeonKeepUI {
 				gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
 				gamePanel.setBounds(12, 50, 600, 600);
 				gamePanel.setBackground(Color.WHITE);
+				gamePanel.setFocusable(true);
+				gamePanel.addKeyListener(keyListener);
+			
 				frame.getContentPane().add(gamePanel);
-
-
+				gamePanel.requestFocus();
 				initGraphics();
 			}
 		});
@@ -339,4 +394,6 @@ public class DungeonKeepUI {
 
 		setGameStatusLabelText("Please click New Game to start!");
 	}
+
+
 }

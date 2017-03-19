@@ -165,7 +165,7 @@ public class TestDungeonGameLogic {
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
-		assertTrue(game.getLever().getLeverState());
+		assertTrue(game.getKey().getKeyState());
 		assertFalse(game.isGameOver());
 		assertEquals(EnumGameState.Win, game.getGameState());
 	}
@@ -273,7 +273,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void TestmoveGuardPath(){
 		int i = 0;
-		while(i < 10)
+		while(i < 4)
 		{	
 			char[][] mapCopy = getMapCopy();
 			GameMap gameMap = new GameMap(mapCopy);
@@ -284,7 +284,7 @@ public class TestDungeonGameLogic {
 			String coord=game.getVilans().get(0).getCordinates();
 
 			game.moveVilans();
-			if(game.getVilans().get(0).getCharacter()!= 'g')
+			if(game.getVilans().get(0).getCharacter() != 'g')
 				assertNotEquals(coord, game.getVilans().get(0).getCordinates());
 			coord=game.getVilans().get(0).getCordinates();
 			i++;

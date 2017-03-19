@@ -2,26 +2,26 @@ package dkeep.logic;
 
 public class Hero extends Character {
 	
-	private boolean onLever;
+	private boolean withKey;
 	private boolean armed;
 	private char character;
 	
 	public Hero() {
 		super(1, 1);
-		this.onLever = false;
+		this.withKey = false;
 		this.armed = false;
 		this.character = 'h';
 	}
 
 	public Hero(int i, int j) {
 		super(i, j);
-		this.onLever = false;
+		this.withKey = false;
 		this.armed = false;
 		this.character = 'h';
 	}
 
 	public boolean getHeroOnLeverState() {
-		return onLever;
+		return withKey;
 	}
 	
 	public void moveHero(int x, int y) {
@@ -30,7 +30,7 @@ public class Hero extends Character {
 	}
 	
 	public void setHeroOnLever(boolean state) {
-		this.onLever = state;
+		this.withKey = state;
 	}
 	
 	public void setHeroArmed() {
@@ -43,7 +43,7 @@ public class Hero extends Character {
 	
 	
 	public void setCharacter() {
-		if(onLever)
+		if(withKey)
 			this.character = 'H';
 		
 		if(armed)

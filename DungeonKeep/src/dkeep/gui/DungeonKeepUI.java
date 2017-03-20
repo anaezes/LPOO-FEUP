@@ -186,7 +186,7 @@ public class DungeonKeepUI{
 					}
 				}
 
-				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character);
+				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character, i, j);
 				gamePanel.add(gameBoard[i][j]);	
 			}
 	}

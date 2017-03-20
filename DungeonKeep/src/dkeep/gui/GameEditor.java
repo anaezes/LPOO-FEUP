@@ -131,7 +131,7 @@ public class GameEditor extends JDialog {
 
 		for(int i = 0; i < 10 ; i++ )
 			for(int j = 0; j < 10; j++) {
-				gameBoard[i][j] = new GameObject(board.getWidth()/10, board.getHeight()/10, ' ');
+				gameBoard[i][j] = new GameObject(board.getWidth()/10, board.getHeight()/10, ' ', i, j);
 				board.add(gameBoard[i][j]);
 			}
 
@@ -155,9 +155,14 @@ public class GameEditor extends JDialog {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+
+				if(character == 'h' && heroAlreadyExists())
+					return;
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
-
+				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
+				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
+				matrix[x][y] = character;
 			}
 		});
 
@@ -179,5 +184,14 @@ public class GameEditor extends JDialog {
 				}
 			}
 		});
+	}
+
+	private boolean heroAlreadyExists() {
+		for(int i = 0; i < matrix.length ; i++ )
+			for(int j = 0; j < matrix[i].length; j++) {
+				if(matrix[i][j] == 'h')
+					return true;
+			}
+		return false;
 	}
 }

@@ -13,10 +13,14 @@ public class GameObject extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final String IMAGES_DIR = System.getProperty("user.dir") + "/images/";
 	private Image image;
+	private int x;
+	private int y;
 
-	public GameObject(int width, int height, char objectType) {
+	public GameObject(int width, int height, char objectType, int x, int y) {
 		super();
 		this.setSize(new Dimension(width, height));
+		this.x = x;
+		this.y = y;
 		switchType(objectType);
 	}
 
@@ -89,4 +93,11 @@ public class GameObject extends JPanel {
 		repaint();
 	} 
 
+	public int getRow() {
+		return x;
+	}
+	
+	public int getColumn() {
+		return y;
+	}
 }

@@ -20,6 +20,17 @@ public class GameEditor extends JDialog {
 	private JPanel board;
 	private char character;
 
+	private static final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
+			{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}};
+
 	public GameEditor(JFrame parent) {
 		super(parent);
 
@@ -62,11 +73,11 @@ public class GameEditor extends JDialog {
 		board.setBounds(30, 30, 600, 600);
 		board.setBackground(Color.gray);
 		this.getContentPane().add(board);
-		
-		
+
+
 		//bottoms
 		//char character;
-		
+
 		JButton btnHero = new JButton("Hero");
 		btnHero.setBounds(707, 150, 98, 25);
 		getContentPane().add(btnHero);
@@ -76,7 +87,7 @@ public class GameEditor extends JDialog {
 				character = hero.getCharacter();
 			}
 		});
-		
+
 		JButton btnOgre = new JButton("Ogre");
 		btnOgre.setBounds(707, 225, 98, 25);
 		getContentPane().add(btnOgre);
@@ -86,7 +97,7 @@ public class GameEditor extends JDialog {
 				character = ogre.getCharacter();
 			}
 		});
-		
+
 		JButton btnWall = new JButton("Wall");
 		btnWall.setBounds(707, 300, 98, 25);
 		getContentPane().add(btnWall);
@@ -95,7 +106,7 @@ public class GameEditor extends JDialog {
 				character = 'X';
 			}
 		});
-		
+
 		JButton btnDoor = new JButton("Door");
 		btnDoor.setBounds(707, 375, 98, 25);
 		getContentPane().add(btnDoor);
@@ -104,7 +115,7 @@ public class GameEditor extends JDialog {
 				character = 'I';
 			}
 		});
-		
+
 		JButton btnKey = new JButton("Key");
 		btnKey.setBounds(707, 450, 98, 25);
 		getContentPane().add(btnKey);
@@ -121,7 +132,7 @@ public class GameEditor extends JDialog {
 				gameBoard[i][j] = new GameObject(board.getWidth()/10, board.getHeight()/10, ' ');
 				board.add(gameBoard[i][j]);
 			}
-		
+
 		board.addMouseListener(new MouseListener() {
 
 			@Override
@@ -132,17 +143,18 @@ public class GameEditor extends JDialog {
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				JPanel item = (JPanel) e.getSource(); 
-				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
+
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				JPanel item = (JPanel) e.getSource(); 
+				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
+				
 			}
 		});
-
 	}
 }

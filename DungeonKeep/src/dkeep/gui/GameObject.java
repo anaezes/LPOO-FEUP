@@ -86,6 +86,7 @@ public class GameObject extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		repaint();
 	} 
 
 }

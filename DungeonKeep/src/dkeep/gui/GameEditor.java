@@ -3,7 +3,12 @@ package dkeep.gui;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import ckeep.cli.Print;
+import dkeep.logic.Game;
+import dkeep.logic.GameMap;
 import dkeep.logic.Hero;
 import dkeep.logic.Ogre;
 import java.awt.Color;
@@ -21,8 +26,9 @@ public class GameEditor extends JDialog {
 	private JPanel board;
 	private char character;
 	private boolean mouseIsPressed;
+	private JPanel[][] gameBoard;
 
-	private static final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
+	private final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
 			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
 			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
 			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
@@ -59,14 +65,28 @@ public class GameEditor extends JDialog {
 		getContentPane().add(btnOk);
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
+				System.out.println("pimmmmm");
+				if(verifyIfMapIsComplete())
+				{
+					setVisible(false);
+				}
+				else {
+					JOptionPane.showMessageDialog(parent,
+							"Map isn't valid! Try again...",
+							"Editor error",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 
 		JButton btnReset = new JButton("Reset");
 		btnReset.setBounds(630, 646, 98, 25);
 		getContentPane().add(btnReset);
-
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				resetGameBoard();
+			}
+		});
 
 
 		//board
@@ -127,7 +147,7 @@ public class GameEditor extends JDialog {
 			}
 		});
 
-		JPanel[][] gameBoard = new JPanel[10][10];
+		gameBoard = new JPanel[10][10];
 
 		for(int i = 0; i < 10 ; i++ )
 			for(int j = 0; j < 10; j++) {
@@ -163,6 +183,8 @@ public class GameEditor extends JDialog {
 				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 				matrix[x][y] = character;
+
+				printBoard();
 			}
 		});
 
@@ -180,6 +202,10 @@ public class GameEditor extends JDialog {
 					int y = e.getY();
 					if(x >= 0 && y >= 0 && x <= board.getWidth() && y <= board.getHeight()) {
 						((GameObject)item.getComponentAt(x,y)).switchType(character);
+						int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
+						int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
+						matrix[row][col] = character;
+						printBoard();
 					}
 				}
 			}
@@ -193,5 +219,46 @@ public class GameEditor extends JDialog {
 					return true;
 			}
 		return false;
+	}
+
+	private void resetGameBoard() {
+		for(int i = 0; i < matrix.length ; i++ )
+			for(int j = 0; j < matrix[i].length; j++) {
+				matrix[i][j] = ' ';
+				((GameObject)gameBoard[i][j]).switchType(' ');
+			}
+	}
+
+	private boolean verifyIfMapIsComplete() {
+
+		for(int i = 0; i < matrix.length ; i++ )
+		{	
+			if((matrix[i][0] != 'X' && matrix[i][0] != 'I') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'I'))
+				return false;
+
+
+			for(int j = 0; j < matrix[i].length ; j++ )
+			{
+				if(matrix[0][j] != 'X' && matrix[0][j] != 'I' && matrix[matrix[0].length-1][j] != 'X' && matrix[matrix[0].length-1][j] != 'I')
+					return false;
+
+			}	
+		}
+
+		return true;	
+	}
+
+	public void printBoard(){
+		for(int i = 0; i < matrix.length ; i++ )
+		{
+
+			for(int j = 0; j < matrix[i].length ; j++ )
+			{
+				System.out.print(matrix[i][j] + " ");
+			}	
+			System.out.println();
+		}
+
+		System.out.println();
 	}
 }

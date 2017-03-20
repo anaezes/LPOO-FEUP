@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Window.Type;
 
@@ -149,12 +150,31 @@ public class DungeonKeepUI{
 
 		setGameStatusLabelText("Prepare to figth!!! Click on keybord arrows to move hero!");
 	}
+	
+	public void newGame(char[][] boardEdit) {
+		
+		GameMap gameMap = new GameMap(boardEdit);
+		Game newGame = new Game(gameMap);
+		this.game = newGame;
+
+		gamePanel = new JPanel();
+		gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
+		gamePanel.setBounds(30, 30, 600, 600);
+		gamePanel.setBackground(Color.WHITE);
+		gamePanel.setFocusable(true);
+		gamePanel.addKeyListener(keyListener);
+
+		frmDungeonKeepGame.getContentPane().add(gamePanel);
+		gamePanel.requestFocus();
+		initGraphics();
+		
+		setGameStatusLabelText("Prepare to figth!!! Click on keybord arrows to move hero!");
+	}
 
 	private void initGraphics() {
 
 		currentBoardSize = game.getBoard().getBoardSize();
 		this.gameBoard = new JPanel[currentBoardSize][currentBoardSize];
-		//this.currentLevel = game.getGameLevel();
 
 		char character;
 		for(int i = 0; i < currentBoardSize ; i++ )
@@ -245,10 +265,18 @@ public class DungeonKeepUI{
 		if(game.getGameState() == EnumGameState.Win){
 			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 			setGameStatusLabelText("YOU WIN!");
+			JOptionPane.showMessageDialog(frmDungeonKeepGame,
+				    "Congratulations! You escaped!!!",
+				    "Win",
+				    JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if(game.getGameState() == EnumGameState.Lost){
 			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 			setGameStatusLabelText("GAME OVER!");
+			JOptionPane.showMessageDialog(frmDungeonKeepGame,
+				    "Ah ah you lose! Best luck next time..",
+				    "Game Over!",
+				    JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

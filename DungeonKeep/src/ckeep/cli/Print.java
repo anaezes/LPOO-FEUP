@@ -18,9 +18,12 @@ public class Print {
 				if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
 					map += game.getHero().getCharacter();
-				else if(game.getLever().getYCoordinate() == j && game.getLever().getXCoordinate() == i)
+				else if(game.getLever() != null && game.getLever().getYCoordinate() == j && game.getLever().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
 					map += game.getLever().getCharacter();
+				else if(game.getKey() != null && game.getKey().getYCoordinate() == j && game.getKey().getXCoordinate() == i)
+					//System.out.print(game.getHero().getHeroCharacter());
+					map += game.getKey().getCharacter();
 				else if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
 					//System.out.print(game.getHero().getHeroCharacter());
 					map += game.getHero().getCharacter();
@@ -43,7 +46,10 @@ public class Print {
 	}
 
 	private boolean printClubs(Game game, int i, int j) {
-
+		
+		if(game.getVilans() == null)
+			return true;
+		
 		for(int k = 0; k < game.getVilans().size(); k++) {
 			if(game.getVilans().get(k).getType() == EnumVillainType.Ogre)	
 				if (game.getVilans().get(k).getClub().getYCoordinate() == j && game.getVilans().get(k).getClub().getXCoordinate() == i)
@@ -62,6 +68,9 @@ public class Print {
 
 	public boolean printVilans(Game game, int i, int j) {
 
+		if(game.getVilans() == null)
+			return true;
+		
 		for(int k = 0; k < game.getVilans().size(); k++)
 			if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j) {
 				if(game.getVilans().get(k).GetOnLeverOgre())
@@ -77,7 +86,10 @@ public class Print {
 	}
 
 	public boolean printExitDoors(Game game, int i, int j) {
-
+		
+		if(game.getExitDoors() == null)
+			return true;
+		
 		for(int k = 0; k < game.getExitDoors().size(); k++) {
 			if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j) {
 				//System.out.print(game.getExitDoors().get(k).getCharacter());

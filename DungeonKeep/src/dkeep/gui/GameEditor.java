@@ -13,12 +13,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class GameEditor extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel board;
 	private char character;
+	private boolean mouseIsPressed;
 
 	private static final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
 			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
@@ -137,9 +139,11 @@ public class GameEditor extends JDialog {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				mouseIsPressed = false;
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
+				mouseIsPressed = true;
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -153,7 +157,26 @@ public class GameEditor extends JDialog {
 			public void mouseClicked(MouseEvent e) {
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
-				
+
+			}
+		});
+
+		board.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				if(character == 'X' && mouseIsPressed) {	
+					JPanel item = (JPanel) e.getSource(); 
+					int x = e.getX();
+					int y = e.getY();
+					if(x >= 0 && y >= 0 && x <= board.getWidth() && y <= board.getHeight()) {
+						((GameObject)item.getComponentAt(x,y)).switchType(character);
+					}
+				}
 			}
 		});
 	}

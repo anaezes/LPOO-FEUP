@@ -10,6 +10,13 @@ public class Ogre extends Vilan {
 	private char character;
 	private Club club;
 
+	
+	public Ogre() {
+		super(1, 1);
+		this.club = new Club(1, 2);
+		this.character = 'O';
+	}
+	
 	public Ogre(int x_ogre, int y_ogre, int x_club, int y_club) {
 		super(x_ogre, y_ogre);
 		this.club = new Club(x_club, y_club);
@@ -23,7 +30,7 @@ public class Ogre extends Vilan {
 	public char getCharacter() {
 		return character;
 	}
-	
+
 
 	public void putStunned() {
 		this.numberTurnsLeftStunned = 2;
@@ -52,10 +59,11 @@ public class Ogre extends Vilan {
 	}
 
 	public void move(GameMap board) {
-		
-		this.character = 'G';
-		if(!this.isStunned())
-		{		
+
+
+		if(!this.isStunned()) {		
+			
+			this.character = 'O';
 			Random oj = new Random();
 			onLever = false;
 			String currentCoord;

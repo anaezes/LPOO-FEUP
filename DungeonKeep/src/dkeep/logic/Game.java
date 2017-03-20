@@ -320,6 +320,7 @@ public class Game {
 				if(byLevel && boards.size() > (indexBoard+1)) {
 					this.indexBoard++;
 					this.selectedBoard = boards.get(indexBoard);
+					this.level = indexBoard+1;
 					initGame(selectedBoard);
 					y_hero = this.hero.getYCoordinate();
 					x_hero = this.hero.getXCoordinate();

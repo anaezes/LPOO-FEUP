@@ -3,7 +3,6 @@ package dkeep.gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import dkeep.logic.EnumGuardType;
@@ -18,7 +17,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -40,6 +38,9 @@ public class DungeonKeepUI{
 	private JPanel[][] gameBoard;
 	private KeyListener keyListener;
 	private GameOptions gameOptions;
+	private GameEditor gameEditor;
+	//private int currentLevel;
+	private int currentBoardSize;
 
 	/**
 	 * Launch the application.
@@ -150,19 +151,24 @@ public class DungeonKeepUI{
 	}
 
 	private void initGraphics() {
-		int aux = game.getBoard().getBoardSize();
-		this.gameBoard = new JPanel[aux][aux];
+
+		currentBoardSize = game.getBoard().getBoardSize();
+		this.gameBoard = new JPanel[currentBoardSize][currentBoardSize];
+		//this.currentLevel = game.getGameLevel();
 
 		char character;
-		for(int i = 0; i < aux ; i++ )
-			for(int j = 0; j < aux; j++) {
+		for(int i = 0; i < currentBoardSize ; i++ )
+			for(int j = 0; j < currentBoardSize; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
 
 				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
 					character = game.getHero().getCharacter();
 
-				else if(game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+				else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
 					character = game.getLever().getCharacter();
+
+				else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
+					character = game.getKey().getCharacter();
 
 				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
 					character = game.getHeroClub().getCharacter();
@@ -180,18 +186,17 @@ public class DungeonKeepUI{
 					}
 				}
 
-				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/aux, gamePanel.getHeight()/aux, character);
+				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character);
 				gamePanel.add(gameBoard[i][j]);	
 			}
 	}
 
 	private void updateGraphics() {
 
-		int aux = game.getBoard().getBoardSize();
-
+		currentBoardSize = game.getBoard().getBoardSize();
 		char character;
-		for(int i = 0; i < aux ; i++ )
-			for(int j = 0; j < aux; j++) {
+		for(int i = 0; i < currentBoardSize ; i++ )
+			for(int j = 0; j < currentBoardSize; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
 
 				if(character == 'X' && character == 'I')
@@ -231,18 +236,20 @@ public class DungeonKeepUI{
 			}
 	}
 
-
-
 	private void setGameStatusLabelText(String text) {
 		gameStatusLabel.setText(text);
 	}
 
 	private void validateGameRunning() {
-		if(game.getGameState() == EnumGameState.Win)
+			
+		if(game.getGameState() == EnumGameState.Win){
+			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 			setGameStatusLabelText("YOU WIN!");
-
-		else if(game.getGameState() == EnumGameState.Lost)
-			setGameStatusLabelText("Game Over!");
+		}
+		else if(game.getGameState() == EnumGameState.Lost){
+			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
+			setGameStatusLabelText("GAME OVER!");
+		}
 	}
 
 
@@ -264,9 +271,13 @@ public class DungeonKeepUI{
 
 		gameOptions = new GameOptions(frmDungeonKeepGame);
 		gameOptions.setVisible(false);
+		
+		gameEditor = new GameEditor(frmDungeonKeepGame);
+		gameEditor.setVisible(false);
 
 		gameStatusLabel = new JLabel("MessageStatus");
-		gameStatusLabel.setBounds(12, 635, 374, 15);
+		gameStatusLabel.setBounds(37, 635, 601, 15);
+		gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 15));
 		frmDungeonKeepGame.getContentPane().add(gameStatusLabel);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -360,7 +371,12 @@ public class DungeonKeepUI{
 		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
 		menuBar.add(mntmEditMap);
 		mntmEditMap.setBackground(Color.LIGHT_GRAY);
-		
+		mntmEditMap.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameEditor.setVisible(true);
+			}
+		});
 		mntmEditMap.addMouseListener(new MouseListener() {
 
 			@Override
@@ -420,6 +436,6 @@ public class DungeonKeepUI{
 			}
 		});
 
-		setGameStatusLabelText("Please click New Game to start!");
+		setGameStatusLabelText("Please click on options to choose number of Ogres and guard personality! ");
 	}
 }

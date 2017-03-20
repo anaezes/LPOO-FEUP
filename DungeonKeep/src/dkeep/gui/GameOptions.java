@@ -22,18 +22,19 @@ public class GameOptions extends JDialog {
 	
 	public GameOptions(JFrame parent) {
 		super(parent);
-		getContentPane().setBackground(Color.LIGHT_GRAY);
+		getContentPane().setForeground(Color.LIGHT_GRAY);
+		//getContentPane().setBackground(Color.LIGHT_GRAY);
 		
 		nOgres = 1;
 		guardType = EnumGuardType.Drunk;
 		
 		setBounds(100, 100, 670, 720);
-		setForeground(Color.lightGray);
 		getContentPane().setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		setSize(new Dimension(250, 367));
 		setResizable(false);
-		setTitle("Options");
 		setFont(new Font("Dialog", Font.BOLD, 18));
+		setTitle("Options");
+		
 
 		getContentPane().setLayout(null);
 		
@@ -43,12 +44,15 @@ public class GameOptions extends JDialog {
 		getContentPane().add(lblNumberOfOgres);
 		
 		JSlider slider = new JSlider();
-		slider.setBackground(Color.LIGHT_GRAY);
+		slider.setForeground(Color.LIGHT_GRAY);
+		slider.setMinorTickSpacing(1);
+		//slider.setBackground(Color.LIGHT_GRAY);
 		slider.setFont(new Font("Dialog", Font.BOLD, 10));
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
 		slider.setMinimum(1);
 		slider.setMaximum(5);
+		slider.setValue(1);
 		slider.setBounds(12, 78, 199, 33);
 		slider.setMajorTickSpacing(1);
 		getContentPane().add(slider);
@@ -59,7 +63,7 @@ public class GameOptions extends JDialog {
 		getContentPane().add(lblGuardType);
 		
 		JRadioButton rdbtnDrunkGuard = new JRadioButton("Drunk Guard");
-		rdbtnDrunkGuard.setBackground(Color.LIGHT_GRAY);
+		//rdbtnDrunkGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnDrunkGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnDrunkGuard.setBounds(44, 168, 167, 23);
 		getContentPane().add(rdbtnDrunkGuard);
@@ -67,14 +71,14 @@ public class GameOptions extends JDialog {
 
 		
 		JRadioButton rdbtnRookieGuard = new JRadioButton("Rookie Guard");
-		rdbtnRookieGuard.setBackground(Color.LIGHT_GRAY);
+		//rdbtnRookieGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnRookieGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnRookieGuard.setBounds(44, 195, 167, 23);
 		getContentPane().add(rdbtnRookieGuard);
 		
 		
 		JRadioButton rdbtnParanoidGuard = new JRadioButton("Paranoid Guard");
-		rdbtnParanoidGuard.setBackground(Color.LIGHT_GRAY);
+		//rdbtnParanoidGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnParanoidGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnParanoidGuard.setBounds(44, 222, 167, 23);
 		getContentPane().add(rdbtnParanoidGuard);

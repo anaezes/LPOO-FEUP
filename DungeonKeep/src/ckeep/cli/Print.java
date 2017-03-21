@@ -16,7 +16,7 @@ public class Print {
 
 	public static String boardToString(Game game)
 	{
-		map = "";
+		map = game.getBoard().getBoardSize() + "\n";
 		for(int i = 0; i < game.getBoard().getBoardSize(); i++) {
 			for(int j = 0; j <  game.getBoard().getBoardSize(); j++) {						
 				if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)

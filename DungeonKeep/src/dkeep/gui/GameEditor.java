@@ -5,10 +5,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import ckeep.cli.Print;
-import dkeep.logic.Game;
-import dkeep.logic.GameMap;
 import dkeep.logic.Hero;
 import dkeep.logic.Ogre;
 import java.awt.Color;
@@ -19,35 +15,32 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class GameEditor extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel board;
 	private char character;
-	private boolean mouseIsPressed;
 	private JPanel[][] gameBoard;
 	private boolean validBoard;
+	private int matrixSize;
+	private char[][] matrix = null;
+	private GameResources instance;
 
-	private final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
-			{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '}};
-
-	public GameEditor(JFrame parent) {
+	public GameEditor(JFrame parent, int size) {
 		super(parent);
 		validBoard = false;
-
+		this.matrixSize = size;
+		initMatrix();
+		instance = GameResources.getInstance();
+		
+		
 		setFont(new Font("Dialog", Font.BOLD, 18));
 		setTitle("Game editor");
 		getContentPane().setLayout(null);
-		//setSize(new Dimension(800, 700));
 		setResizable(false);
 		setBounds(100, 100, 850, 730);
 
@@ -120,7 +113,7 @@ public class GameEditor extends JDialog {
 		getContentPane().add(btnOgre);
 		btnOgre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Ogre ogre= new Ogre();
+				Ogre ogre = new Ogre();
 				character = ogre.getCharacter();
 			}
 		});
@@ -152,11 +145,44 @@ public class GameEditor extends JDialog {
 			}
 		});
 
-		gameBoard = new JPanel[10][10];
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(40, 646, 98, 25);
+		getContentPane().add(btnSave);
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(verifyIfMapIsComplete()){
+					String s = (String)JOptionPane.showInputDialog(
+							parent,
+							"Name for this game:\n",
+							"Save Game",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							null,
+							"game");
+					//saveState();	
+				}
+				else {
+					JOptionPane.showMessageDialog(parent,
+							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
+							"Editor error",
+							JOptionPane.ERROR_MESSAGE);
+					validBoard = false;
+				}
+			}
+		});
 
-		for(int i = 0; i < 10 ; i++ )
-			for(int j = 0; j < 10; j++) {
-				gameBoard[i][j] = new GameObject(board.getWidth()/10, board.getHeight()/10, ' ', i, j);
+		
+
+		
+		gameBoard = new JPanel[matrixSize][matrixSize];
+		board.setLayout(new GridLayout(matrixSize,matrixSize));
+
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				System.out.println("w: " + board.getWidth());
+				System.out.println("h: " + board.getHeight());
+				System.out.println("size: " + size);
+				gameBoard[i][j] = new GameObject(board.getWidth()/matrixSize, board.getHeight()/matrixSize, ' ', i, j);
 				board.add(gameBoard[i][j]);
 			}
 
@@ -164,11 +190,9 @@ public class GameEditor extends JDialog {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				mouseIsPressed = false;
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
-				mouseIsPressed = true;
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -181,15 +205,22 @@ public class GameEditor extends JDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 
-				if(character == 'h' && heroAlreadyExists())
+				if((character == 'h' && heroAlreadyExists()) | (character == 'c' && keyAlreadyExists()))
 					return;
+				
+				if(character == 'O' && verifyMaxOgres())
+					return;
+				
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
 				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
+				//instance.getScaledImage(((GameObject)item.getComponentAt(x,y)).getImage(), board.getWidth()/matrixSize);
 				matrix[x][y] = character;
 
-				//printBoard();
+				if(character == 'O')
+					initClubs(x, y);
+
 			}
 		});
 
@@ -201,12 +232,13 @@ public class GameEditor extends JDialog {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if(character == 'X' && mouseIsPressed) {	
+				if(character == 'X' ) {	
 					JPanel item = (JPanel) e.getSource(); 
 					int x = e.getX();
 					int y = e.getY();
-					if(x >= 0 && y >= 0 && x <= board.getWidth() && y <= board.getHeight()) {
+					if(x > 0 && y > 0 && x < board.getWidth() && y < board.getHeight()) {
 						((GameObject)item.getComponentAt(x,y)).switchType(character);
+						//instance.getScaledImage(((GameObject)item.getComponentAt(x,y)).getImage(), board.getWidth()/matrixSize);
 						int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 						int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 						matrix[row][col] = character;
@@ -217,18 +249,48 @@ public class GameEditor extends JDialog {
 		});
 	}
 
+	private void initMatrix() {
+		matrix = new char[matrixSize][matrixSize];
+		
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				matrix[i][j] = ' ' ;
+			}
+	}
+
 	private boolean heroAlreadyExists() {
-		for(int i = 0; i < matrix.length ; i++ )
-			for(int j = 0; j < matrix[i].length; j++) {
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
 				if(matrix[i][j] == 'h')
+					return true;
+			}
+		return false;
+	}
+	
+	private boolean verifyMaxOgres() {
+		int nOgres = 0;
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				if(matrix[i][j] == 'O')
+					nOgres++;
+			}
+		
+		return (nOgres == 5);
+	}
+	
+
+	private boolean keyAlreadyExists() {
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				if(matrix[i][j] == 'c')
 					return true;
 			}
 		return false;
 	}
 
 	private void resetGameBoard() {
-		for(int i = 0; i < matrix.length ; i++ )
-			for(int j = 0; j < matrix[i].length; j++) {
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
 				matrix[i][j] = ' ';
 				((GameObject)gameBoard[i][j]).switchType(' ');
 			}
@@ -236,33 +298,33 @@ public class GameEditor extends JDialog {
 
 	private boolean verifyIfMapIsComplete() {
 
-		for(int i = 0; i < matrix.length ; i++ )
+		for(int i = 0; i < matrixSize ; i++ )
 		{	
 			if((matrix[i][0] != 'X' && matrix[i][0] != 'I') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'I'))
 				return false;
 
-			for(int j = 0; j < matrix[i].length ; j++ )
+			for(int j = 0; j < matrixSize ; j++ )
 				if(matrix[0][j] != 'X' && matrix[0][j] != 'I' && matrix[matrix[0].length-1][j] != 'X' && matrix[matrix[0].length-1][j] != 'I')
 					return false;	
 		}
 
 
 		boolean existOgre = false;
-		for(int i = 0; i < matrix.length; i++)
-			for(int j = 0; j < matrix[i].length; j++)
-				if(matrix[i][j] == 'O') {
-					initClubs(i, j);
-				}
+		for(int i = 0; i < matrixSize; i++)
+			for(int j = 0; j < matrixSize; j++)
+				if(matrix[i][j] == 'O') 
+					existOgre = true;
+
 
 		boolean existHero = false;
-		for(int i = 0; i < matrix.length; i++)
-			for(int j = 0; j < matrix[i].length; j++)
+		for(int i = 0; i < matrixSize; i++)
+			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'h')
 					existHero = true;
 
 		boolean existKey = false;
-		for(int i = 0; i < matrix.length; i++)
-			for(int j = 0; j < matrix[i].length; j++)
+		for(int i = 0; i < matrixSize; i++)
+			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'c')
 				{
 					matrix[i][j] = 'k';
@@ -270,8 +332,8 @@ public class GameEditor extends JDialog {
 				}
 
 		boolean existDoor = false;
-		for(int i = 0; i < matrix.length; i++)
-			for(int j = 0; j < matrix[i].length; j++)
+		for(int i = 0; i < matrixSize; i++)
+			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'I')
 				{
 					existDoor = true;
@@ -279,16 +341,14 @@ public class GameEditor extends JDialog {
 				}
 
 		printBoard();
-		return (existHero && existKey && existDoor);	
+		return (existHero && existKey && existDoor && existOgre);	
 	}
 
 	public void printBoard(){
-		for(int i = 0; i < matrix.length ; i++ )
+		for(int i = 0; i < matrixSize ; i++ )
 		{
-			for(int j = 0; j < matrix[i].length ; j++ )
-			{
+			for(int j = 0; j < matrixSize ; j++ )
 				System.out.print(matrix[i][j] + " ");
-			}	
 			System.out.println();
 		}
 
@@ -307,17 +367,40 @@ public class GameEditor extends JDialog {
 		int x_club = x_ogre;
 		int y_club = y_ogre;
 
-		if(matrix[x_ogre][y_ogre+1] == ' ')
+		if(y_ogre+1 < matrixSize-1 && matrix[x_ogre][y_ogre+1] == ' ')
 			y_club++;
-		else if(matrix[x_ogre][ y_ogre-1] == ' ')
+		else if(y_ogre-1 > 0 && matrix[x_ogre][ y_ogre-1] == ' ')
 			y_club--;
-		else if(matrix[x_ogre+1][ y_ogre-1] == ' ')
+		else if(x_ogre+1 < matrixSize-1 && matrix[x_ogre+1][ y_ogre] == ' ')
 			x_club++;
-		else if(matrix[x_ogre-1][ y_ogre] == ' ')
+		else if(x_ogre-1 > 0 && matrix[x_ogre-1][ y_ogre] == ' ')
 			x_club--;
 
 		matrix[x_club][y_club] = '*';
+		((GameObject) gameBoard[x_club][y_club]).switchType('*');
 
 	}
 	
+//	private void reSizeImage() {
+//		 Image image = icon.getImage().getScaledInstance(
+//		 icon.getIconWidth() * NEW / OLD,
+//		 icon.getIconHeight() * NEW / OLD,
+//		          Image.SCALE_SMOOTH);
+//		     icon = new ImageIcon(image, icon.getDescription());
+//	}
+	
+//	protected void saveState() {
+//        FileOutputStream fileOut;
+//        try {
+//            fileOut = new FileOutputStream("saveGame.ser");
+//            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+//            out.writeObject(this);
+//            out.close();
+//            fileOut.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (Exception w){
+//            w.printStackTrace();
+//        }
+//    }
 }

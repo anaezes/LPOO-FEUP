@@ -3,6 +3,7 @@ package dkeep.gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import dkeep.logic.EnumGuardType;
@@ -23,25 +24,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.Window.Type;
 
 
 public class DungeonKeepUI{
 
 	private JFrame frmDungeonKeepGame;
-	private JLabel gameStatusLabel;
 	private Game game;
 	private JPanel gamePanel;
 	private JPanel[][] gameBoard;
 	private KeyListener keyListener;
 	private GameOptions gameOptions;
 	private GameEditor gameEditor;
-	//private int currentLevel;
 	private int currentBoardSize;
+	private char[][] board;
+	private boolean editorIsUsed;
 
 	/**
 	 * Launch the application.
@@ -107,18 +112,23 @@ public class DungeonKeepUI{
 			}
 		};
 
+		editorIsUsed = false;
 		initialize();
+
 	}
 
 	public void newGame() {
 
-		char[][] board = this.gameEditor.getGameBoard();
+		if(editorIsUsed)
+			board = getMapCopy(this.gameEditor.getGameBoard());
+		else
+			board = null;
+
 		Game newGame;
-		
+
 		if(board != null){
 			GameMap gameMap = new GameMap(board);
 			newGame = new Game(gameMap);
-			
 		}
 		else {
 			int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
@@ -156,10 +166,10 @@ public class DungeonKeepUI{
 
 			newGame = new Game(gameMaps, guardType, numOfOgres);
 			newGame.setGuardPath(guard_y, guard_x);
-			
+
 		}
-		
 		this.game = newGame;
+		frmDungeonKeepGame.repaint();
 	}
 
 	private void initGraphics() {
@@ -198,7 +208,8 @@ public class DungeonKeepUI{
 				}
 
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character, i, j);
-				gamePanel.add(gameBoard[i][j]);	
+				gamePanel.add(gameBoard[i][j]);
+				frmDungeonKeepGame.repaint();
 			}
 	}
 
@@ -247,25 +258,20 @@ public class DungeonKeepUI{
 			}
 	}
 
-	private void setGameStatusLabelText(String text) {
-		gameStatusLabel.setText(text);
-	}
-
 	private void validateGameRunning() {
 
 		if(game.getGameState() == EnumGameState.Win){
-			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Congratulations! You escaped!!!",
 					"Win",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if(game.getGameState() == EnumGameState.Lost){
-			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Ah ah you lose! Best luck next time..",
 					"Game Over!",
 					JOptionPane.INFORMATION_MESSAGE);
+			board = null;
 		}
 	}
 
@@ -289,19 +295,11 @@ public class DungeonKeepUI{
 		gameOptions = new GameOptions(frmDungeonKeepGame);
 		gameOptions.setVisible(false);
 
-		gameEditor = new GameEditor(frmDungeonKeepGame);
-		gameEditor.setVisible(false);
-
-		gameStatusLabel = new JLabel("MessageStatus");
-		gameStatusLabel.setBounds(37, 635, 601, 15);
-		gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 15));
-		frmDungeonKeepGame.getContentPane().add(gameStatusLabel);
-
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Dialog", Font.BOLD, 15));
 		frmDungeonKeepGame.setJMenuBar(menuBar);
 
-		JMenuItem mntmNewGame = new JMenuItem("         New Game");
+		JMenuItem mntmNewGame = new JMenuItem("       New Game");
 		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
 		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
 		mntmNewGame.setBackground(Color.LIGHT_GRAY);
@@ -320,7 +318,6 @@ public class DungeonKeepUI{
 				frmDungeonKeepGame.getContentPane().add(gamePanel);
 				gamePanel.requestFocus();
 				initGraphics();
-				frmDungeonKeepGame.repaint();
 			}
 		});
 
@@ -390,11 +387,26 @@ public class DungeonKeepUI{
 		menuBar.add(mntmEditMap);
 		mntmEditMap.setBackground(Color.LIGHT_GRAY);
 		mntmEditMap.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				editorIsUsed = true;
+				Object[] sizes = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+				int size = (int)JOptionPane.showInputDialog(
+						frmDungeonKeepGame,
+						"Please choose the number of rows/columns:\n",				                   
+						"Game Editor",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						sizes,
+						10);
+
+				gameEditor = new GameEditor(frmDungeonKeepGame, size);
 				gameEditor.setVisible(true);
 			}
 		});
+
+
 		mntmEditMap.addMouseListener(new MouseListener() {
 
 			@Override
@@ -420,16 +432,24 @@ public class DungeonKeepUI{
 			}
 		});
 
-		JMenuItem mntmExit = new JMenuItem("              Exit");
-		mntmExit.setFont(new Font("Dialog", Font.BOLD, 15));
-		menuBar.add(mntmExit);
-		mntmExit.setBackground(Color.LIGHT_GRAY);
-		mntmExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
+		menuBar.add(mntmLoadGame);
+		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
+		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
+		mntmLoadGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {			
+				Object[] possibilities = {"Game 1", "Game 2", "Game 3"};
+				String s = (String)JOptionPane.showInputDialog(
+						frmDungeonKeepGame,
+						"Please choose the game:\n",				                   
+						"Load Game",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						possibilities,
+						"Game 1");
 			}
 		});
-		mntmExit.addMouseListener(new MouseListener() {
+		mntmLoadGame.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -453,5 +473,15 @@ public class DungeonKeepUI{
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+	}
+
+	public char[][] getMapCopy(char[][] map) {
+		char[][] mapCopy = new char[map.length][map[0].length];
+
+		for(int i = 0; i < map.length; i++)
+			for(int j = 0; j < map[i].length; j++)
+				mapCopy[i][j] = map[i][j];
+
+		return mapCopy;
 	}
 }

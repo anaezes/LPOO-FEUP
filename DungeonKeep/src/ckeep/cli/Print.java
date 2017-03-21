@@ -3,6 +3,8 @@ package ckeep.cli;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import dkeep.gui.DungeonKeepUI;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
 import dkeep.logic.Vilan.EnumVillainType;
@@ -10,7 +12,7 @@ import dkeep.logic.Vilan.EnumVillainType;
 public class Print {
 
 	private static String map;
-	private static final String BOARDS_DIR = System.getProperty("user.dir") + "/boards/";
+	
 
 	public static String boardToString(Game game)
 	{
@@ -94,7 +96,7 @@ public class Print {
 //	}
 	
 	public static void boardToFile(char[][] board, String nameFile) throws IOException {
-		File file = new File(BOARDS_DIR + nameFile + ".txt");
+		File file = new File(DungeonKeepUI.BOARDS_DIR + nameFile + ".txt");
 		file.createNewFile();
 		FileWriter writer = new FileWriter(file);
 		writer.write(boardToString(new Game(new GameMap(board))));

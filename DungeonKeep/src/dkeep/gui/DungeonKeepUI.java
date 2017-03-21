@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ import java.awt.Window.Type;
 
 
 public class DungeonKeepUI{
+	public static final String BOARDS_DIR = System.getProperty("user.dir") + "/boards/";
 
 	private JFrame frmDungeonKeepGame;
 	private Game game;
@@ -438,7 +440,7 @@ public class DungeonKeepUI{
 		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
 		mntmLoadGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {			
-				Object[] possibilities = {"Game 1", "Game 2", "Game 3"};
+				Object[] possibilities = listSavedMaps();
 				String s = (String)JOptionPane.showInputDialog(
 						frmDungeonKeepGame,
 						"Please choose the game:\n",				                   
@@ -483,5 +485,16 @@ public class DungeonKeepUI{
 				mapCopy[i][j] = map[i][j];
 
 		return mapCopy;
+	}
+
+	private Object[] listSavedMaps() {
+		File folder = new File(BOARDS_DIR);
+		File[] listOfFiles = folder.listFiles();
+
+		String[] listString = new String[listOfFiles.length];
+		for (int i = 0; i < listOfFiles.length; i++)
+			listString[i] = listOfFiles[i].getName();
+
+		return listString;
 	}
 }

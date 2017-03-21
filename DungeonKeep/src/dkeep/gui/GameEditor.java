@@ -319,4 +319,5 @@ public class GameEditor extends JDialog {
 		matrix[x_club][y_club] = '*';
 
 	}
+	
 }

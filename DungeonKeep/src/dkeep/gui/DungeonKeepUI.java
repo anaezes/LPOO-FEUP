@@ -118,6 +118,7 @@ public class DungeonKeepUI{
 		if(board != null){
 			GameMap gameMap = new GameMap(board);
 			newGame = new Game(gameMap);
+			
 		}
 		else {
 			int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
@@ -319,6 +320,7 @@ public class DungeonKeepUI{
 				frmDungeonKeepGame.getContentPane().add(gamePanel);
 				gamePanel.requestFocus();
 				initGraphics();
+				frmDungeonKeepGame.repaint();
 			}
 		});
 

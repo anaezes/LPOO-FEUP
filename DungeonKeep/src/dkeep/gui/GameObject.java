@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 public class GameObject extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static final String IMAGES_DIR = System.getProperty("user.dir") + "/images/";
+	
 	private Image image;
 	private int x;
 	private int y;
@@ -32,64 +32,63 @@ public class GameObject extends JPanel {
 	}
 	
 	public void switchType(char type) {
-		try {
+		
+		GameResources instance = GameResources.getInstance();
 			switch(type) {
 			case 'X':
-				image = ImageIO.read(new File(IMAGES_DIR + "wall.png"));
+				image = instance.wall;
 				break;
 			case 'H':
 			case 'h':
-				image = ImageIO.read(new File(IMAGES_DIR + "captainAmerica.png"));
+				image = instance.captainAmerica;
 				break;
 			case 'A':
-				image = ImageIO.read(new File(IMAGES_DIR + "captainAmericaShield.png"));
+				image = instance.captainAmericaShield;
 				break;
 			case 'a':
-				image = ImageIO.read(new File(IMAGES_DIR + "shield.png"));
+				image = instance.shield;
 				break;
 			case 'I':
 			case 'x':
-				image = ImageIO.read(new File(IMAGES_DIR + "doorClosed.png"));
+				image = instance.doorClosed;
 				break;
 			case 'S':
-				image = ImageIO.read(new File(IMAGES_DIR + "doorOpen.png"));
+				image = instance.doorOpen;
 				break;
 			case 'O':
-				image = ImageIO.read(new File(IMAGES_DIR + "hulk.png"));
+				image = instance.hulk;
 				break;
 			case '$':
-				image = ImageIO.read(new File(IMAGES_DIR + "hulkDolar.png"));
+				image = instance.hulkDolar;
 				break;
 			case '8':
-				image = ImageIO.read(new File(IMAGES_DIR + "hulkStunned.png"));
+				image = instance.hulkStunned;
 				break;
 			case '*':
-				image = ImageIO.read(new File(IMAGES_DIR + "club.png"));
+				image = instance.club;
 				break;
 			case 'G':
-				image = ImageIO.read(new File(IMAGES_DIR + "ultron.png"));
+				image = instance.ultron;
 				break;
 			case 'g':
-				image = ImageIO.read(new File(IMAGES_DIR + "ultronSleep.png"));
+				image = instance.ultronSleep;
 				break;
 			case 'k':
-				image = ImageIO.read(new File(IMAGES_DIR + "leverOff.png"));
+				image = instance.leverOff;
 				break;
 			case 'K':
-				image = ImageIO.read(new File(IMAGES_DIR + "leverOn.png"));
+				image = instance.leverOn;
 				break;
 			case 'c':
-				image = ImageIO.read(new File(IMAGES_DIR + "key.png"));
+				image = instance.key;
 				break;
 			case ' ':
-				image = ImageIO.read(new File(IMAGES_DIR + "floor.png"));
+				image = instance.floor;
 				break;
 			default:
 				this.setBackground(Color.WHITE);
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 		repaint();
 	} 
 

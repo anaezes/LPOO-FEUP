@@ -27,6 +27,7 @@ public class GameEditor extends JDialog {
 	private char character;
 	private boolean mouseIsPressed;
 	private JPanel[][] gameBoard;
+	private boolean validBoard;
 
 	private final char[][] matrix = {{' ',' ',' ',' ',' ',' ',' ',' ',' ',' '},
 			{' ',' ',' ',' ',' ', ' ', ' ', ' ', ' ', ' '},
@@ -41,6 +42,7 @@ public class GameEditor extends JDialog {
 
 	public GameEditor(JFrame parent) {
 		super(parent);
+		validBoard = false;
 
 		setFont(new Font("Dialog", Font.BOLD, 18));
 		setTitle("Game editor");
@@ -68,13 +70,15 @@ public class GameEditor extends JDialog {
 				System.out.println("pimmmmm");
 				if(verifyIfMapIsComplete())
 				{
+					validBoard = true;
 					setVisible(false);
 				}
 				else {
 					JOptionPane.showMessageDialog(parent,
-							"Map isn't valid! Try again...",
+							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
 							"Editor error",
 							JOptionPane.ERROR_MESSAGE);
+					validBoard = false;
 				}
 			}
 		});
@@ -85,6 +89,7 @@ public class GameEditor extends JDialog {
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				resetGameBoard();
+				validBoard = false;
 			}
 		});
 
@@ -184,7 +189,7 @@ public class GameEditor extends JDialog {
 				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 				matrix[x][y] = character;
 
-				printBoard();
+				//printBoard();
 			}
 		});
 
@@ -205,7 +210,7 @@ public class GameEditor extends JDialog {
 						int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 						int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 						matrix[row][col] = character;
-						printBoard();
+						//printBoard();
 					}
 				}
 			}
@@ -236,22 +241,50 @@ public class GameEditor extends JDialog {
 			if((matrix[i][0] != 'X' && matrix[i][0] != 'I') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'I'))
 				return false;
 
-
 			for(int j = 0; j < matrix[i].length ; j++ )
-			{
 				if(matrix[0][j] != 'X' && matrix[0][j] != 'I' && matrix[matrix[0].length-1][j] != 'X' && matrix[matrix[0].length-1][j] != 'I')
-					return false;
-
-			}	
+					return false;	
 		}
 
-		return true;	
+
+		boolean existOgre = false;
+		for(int i = 0; i < matrix.length; i++)
+			for(int j = 0; j < matrix[i].length; j++)
+				if(matrix[i][j] == 'O') {
+					initClubs(i, j);
+				}
+
+		boolean existHero = false;
+		for(int i = 0; i < matrix.length; i++)
+			for(int j = 0; j < matrix[i].length; j++)
+				if(matrix[i][j] == 'h')
+					existHero = true;
+
+		boolean existKey = false;
+		for(int i = 0; i < matrix.length; i++)
+			for(int j = 0; j < matrix[i].length; j++)
+				if(matrix[i][j] == 'c')
+				{
+					matrix[i][j] = 'k';
+					existKey = true;
+				}
+
+		boolean existDoor = false;
+		for(int i = 0; i < matrix.length; i++)
+			for(int j = 0; j < matrix[i].length; j++)
+				if(matrix[i][j] == 'I')
+				{
+					existDoor = true;
+					matrix[i][j] = 'S';
+				}
+
+		printBoard();
+		return (existHero && existKey && existDoor);	
 	}
 
 	public void printBoard(){
 		for(int i = 0; i < matrix.length ; i++ )
 		{
-
 			for(int j = 0; j < matrix[i].length ; j++ )
 			{
 				System.out.print(matrix[i][j] + " ");
@@ -260,5 +293,30 @@ public class GameEditor extends JDialog {
 		}
 
 		System.out.println();
+	}
+
+	public char[][] getGameBoard() {
+		if(validBoard)
+			return matrix;
+		return null;
+	}
+
+
+	private void initClubs(int x_ogre, int y_ogre) {
+
+		int x_club = x_ogre;
+		int y_club = y_ogre;
+
+		if(matrix[x_ogre][y_ogre+1] == ' ')
+			y_club++;
+		else if(matrix[x_ogre][ y_ogre-1] == ' ')
+			y_club--;
+		else if(matrix[x_ogre+1][ y_ogre-1] == ' ')
+			x_club++;
+		else if(matrix[x_ogre-1][ y_ogre] == ' ')
+			x_club--;
+
+		matrix[x_club][y_club] = '*';
+
 	}
 }

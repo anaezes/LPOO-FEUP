@@ -111,64 +111,54 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame() {
-		int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
-		int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
 
-		char[][] BoardOne = {{'X','X','X','X','X','X','X','X','X','X'},
-				{'X','h',' ',' ','I', ' ', 'X', ' ', 'G', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-				{'X',' ','I',' ','I', ' ', 'X', ' ', ' ', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', 'X', ' ', 'X'},
-				{'X',' ','I',' ','I', ' ', 'X', 'k', ' ', 'X'},
-				{'X','X','X','X','X','X','X','X','X','X'}};
-
-		char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
-				{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','X','X','X','X','X','X','X','X'}};
-
-		int numOfOgres = gameOptions.getNumberOfOgres();
-		EnumGuardType guardType = gameOptions.getGuardType();
-
-		List<GameMap> gameMaps = new ArrayList<>();
-		GameMap gameMap1 = new GameMap(BoardOne);
-		GameMap gameMap2 = new GameMap(BoardTwo);
-		gameMaps.add(gameMap1);
-		gameMaps.add(gameMap2);
-
-		Game newGame = new Game(gameMaps, guardType, numOfOgres);
-		newGame.setGuardPath(guard_y, guard_x);
-		this.game = newGame;
-
-		setGameStatusLabelText("Prepare to figth!!! Click on keybord arrows to move hero!");
-	}
-	
-	public void newGame(char[][] boardEdit) {
+		char[][] board = this.gameEditor.getGameBoard();
+		Game newGame;
 		
-		GameMap gameMap = new GameMap(boardEdit);
-		Game newGame = new Game(gameMap);
-		this.game = newGame;
+		if(board != null){
+			GameMap gameMap = new GameMap(board);
+			newGame = new Game(gameMap);
+		}
+		else {
+			int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
+			int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
 
-		gamePanel = new JPanel();
-		gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
-		gamePanel.setBounds(30, 30, 600, 600);
-		gamePanel.setBackground(Color.WHITE);
-		gamePanel.setFocusable(true);
-		gamePanel.addKeyListener(keyListener);
+			char[][] BoardOne = {{'X','X','X','X','X','X','X','X','X','X'},
+					{'X','h',' ',' ','I', ' ', 'X', ' ', 'G', 'X'},
+					{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
+					{'X',' ','I',' ','I', ' ', 'X', ' ', ' ', 'X'},
+					{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
+					{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
+					{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
+					{'X','X','X',' ','X', 'X', 'X', 'X', ' ', 'X'},
+					{'X',' ','I',' ','I', ' ', 'X', 'k', ' ', 'X'},
+					{'X','X','X','X','X','X','X','X','X','X'}};
 
-		frmDungeonKeepGame.getContentPane().add(gamePanel);
-		gamePanel.requestFocus();
-		initGraphics();
+			char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
+					{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
+					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
+					{'X','X','X','X','X','X','X','X','X'}};
+
+			int numOfOgres = gameOptions.getNumberOfOgres();
+			EnumGuardType guardType = gameOptions.getGuardType();
+
+			List<GameMap> gameMaps = new ArrayList<>();
+			GameMap gameMap1 = new GameMap(BoardOne);
+			GameMap gameMap2 = new GameMap(BoardTwo);
+			gameMaps.add(gameMap1);
+			gameMaps.add(gameMap2);
+
+			newGame = new Game(gameMaps, guardType, numOfOgres);
+			newGame.setGuardPath(guard_y, guard_x);
+			
+		}
 		
-		setGameStatusLabelText("Prepare to figth!!! Click on keybord arrows to move hero!");
+		this.game = newGame;
 	}
 
 	private void initGraphics() {
@@ -261,22 +251,20 @@ public class DungeonKeepUI{
 	}
 
 	private void validateGameRunning() {
-			
+
 		if(game.getGameState() == EnumGameState.Win){
 			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
-			setGameStatusLabelText("YOU WIN!");
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
-				    "Congratulations! You escaped!!!",
-				    "Win",
-				    JOptionPane.INFORMATION_MESSAGE);
+					"Congratulations! You escaped!!!",
+					"Win",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if(game.getGameState() == EnumGameState.Lost){
 			gameStatusLabel.setFont(new Font("Dialog", Font.BOLD, 16));
-			setGameStatusLabelText("GAME OVER!");
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
-				    "Ah ah you lose! Best luck next time..",
-				    "Game Over!",
-				    JOptionPane.INFORMATION_MESSAGE);
+					"Ah ah you lose! Best luck next time..",
+					"Game Over!",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -299,7 +287,7 @@ public class DungeonKeepUI{
 
 		gameOptions = new GameOptions(frmDungeonKeepGame);
 		gameOptions.setVisible(false);
-		
+
 		gameEditor = new GameEditor(frmDungeonKeepGame);
 		gameEditor.setVisible(false);
 
@@ -463,7 +451,5 @@ public class DungeonKeepUI{
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-
-		setGameStatusLabelText("Please click on options to choose number of Ogres and guard personality! ");
 	}
 }

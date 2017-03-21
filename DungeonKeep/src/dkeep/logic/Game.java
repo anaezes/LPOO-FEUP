@@ -57,11 +57,11 @@ public class Game {
 		this.guardType = null;
 		this.numOgres = 1;
 		this.numOgresPredefined = true;
+		this.canMoveGuard = false;
 		initGame(board);
 		this.selectedBoard = board;
 		this.state = EnumGameState.Running;
 		this.level = 0;
-		this.canMoveGuard = false;
 		this.byLevel = false;
 	}
 
@@ -70,10 +70,10 @@ public class Game {
 		this.selectedBoard = boards.get(indexBoard);
 		this.guardType = null;
 		this.numOgresPredefined = false;
+		this.canMoveGuard = false;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
-		this.canMoveGuard = false;
 		this.byLevel = true;
 	}
 
@@ -83,10 +83,10 @@ public class Game {
 		this.guardType = guardType;
 		this.numOgres = numOgres;
 		this.numOgresPredefined = true;
+		this.canMoveGuard = false;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
-		this.canMoveGuard = false;
 		this.byLevel = true;
 	}
 
@@ -98,10 +98,11 @@ public class Game {
 		this.numOgresPredefined = true;
 		this.lever = null;
 		this.key = null;
+		this.canMoveGuard = false;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
-		this.canMoveGuard = false;
+		
 		this.byLevel = true;
 	}
 
@@ -111,14 +112,14 @@ public class Game {
 	public void initGame(GameMap board) {
 		this.lever = null;
 		this.key = null;
-		
+
 		List<ExitDoor> exit = new ArrayList<>();
 
 		numberOfTries = 0;
 		this.heroClub = new Club(-1, -1);
 		boolean ogres = false;
 
-		int x_ogre= 0, y_ogre = 0, x_ogre_club = 0, y_ogre_club = 0;
+		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
@@ -222,6 +223,7 @@ public class Game {
 		}
 
 		this.vilans = v;
+		this.canMoveGuard = true;
 	}
 
 	public void setGuardPath(int[] x, int[] y)  {
@@ -316,7 +318,7 @@ public class Game {
 		{
 			if((lever != null && lever.getLeverState()) ||
 					(key != null && key.getKeyState() && isSecondTrie()))
-					
+
 				if(byLevel && boards.size() > (indexBoard+1)) {
 					this.indexBoard++;
 					this.selectedBoard = boards.get(indexBoard);
@@ -328,7 +330,7 @@ public class Game {
 					setGameState(EnumGameState.Win);
 					hero.setCaracter(' ');
 				}
-			
+
 			return false;
 		}
 
@@ -347,7 +349,7 @@ public class Game {
 			transformToStaires();
 			return true;
 		}
-		
+
 		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {
 			key.setKeyState(true);
 			for(int i = 0; i < exitDoors.size(); i++)

@@ -5,6 +5,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import ckeep.cli.Print;
 import dkeep.logic.Hero;
 import dkeep.logic.Ogre;
 import java.awt.Color;
@@ -15,9 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 public class GameEditor extends JDialog {
 
@@ -28,15 +28,12 @@ public class GameEditor extends JDialog {
 	private boolean validBoard;
 	private int matrixSize;
 	private char[][] matrix = null;
-	private GameResources instance;
 
 	public GameEditor(JFrame parent, int size) {
 		super(parent);
 		validBoard = false;
 		this.matrixSize = size;
-		initMatrix();
-		instance = GameResources.getInstance();
-		
+		initMatrix();		
 		
 		setFont(new Font("Dialog", Font.BOLD, 18));
 		setTitle("Game editor");
@@ -60,7 +57,6 @@ public class GameEditor extends JDialog {
 		getContentPane().add(btnOk);
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("pimmmmm");
 				if(verifyIfMapIsComplete())
 				{
 					validBoard = true;
@@ -99,12 +95,21 @@ public class GameEditor extends JDialog {
 		//char character;
 
 		JButton btnHero = new JButton("Hero");
-		btnHero.setBounds(707, 150, 98, 25);
+		btnHero.setBounds(707, 75, 98, 25);
 		getContentPane().add(btnHero);
 		btnHero.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Hero hero = new Hero();
 				character = hero.getCharacter();
+			}
+		});
+		
+		JButton btnShield = new JButton("Shield");
+		btnShield.setBounds(707, 150, 98, 25);
+		getContentPane().add(btnShield);
+		btnShield.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				character = 'a';
 			}
 		});
 
@@ -151,7 +156,7 @@ public class GameEditor extends JDialog {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(verifyIfMapIsComplete()){
-					String s = (String)JOptionPane.showInputDialog(
+					String nameFile = (String)JOptionPane.showInputDialog(
 							parent,
 							"Name for this game:\n",
 							"Save Game",
@@ -159,7 +164,17 @@ public class GameEditor extends JDialog {
 							null,
 							null,
 							"game");
-					//saveState();	
+					if(nameFile != null)
+						try {
+							Print.boardToFile(matrix, nameFile);
+							resetGameBoard();
+						} catch (IOException e) {
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(parent,
+									"Error while saving a board to file",
+									"Error",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
 				}
 				else {
 					JOptionPane.showMessageDialog(parent,
@@ -215,7 +230,6 @@ public class GameEditor extends JDialog {
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
 				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
-				//instance.getScaledImage(((GameObject)item.getComponentAt(x,y)).getImage(), board.getWidth()/matrixSize);
 				matrix[x][y] = character;
 
 				if(character == 'O')
@@ -236,13 +250,11 @@ public class GameEditor extends JDialog {
 					JPanel item = (JPanel) e.getSource(); 
 					int x = e.getX();
 					int y = e.getY();
-					if(x > 0 && y > 0 && x < board.getWidth() && y < board.getHeight()) {
+					if(x > 5 && y > 5 && x < board.getWidth()-5 && y < board.getHeight()-5) {
 						((GameObject)item.getComponentAt(x,y)).switchType(character);
-						//instance.getScaledImage(((GameObject)item.getComponentAt(x,y)).getImage(), board.getWidth()/matrixSize);
 						int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 						int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 						matrix[row][col] = character;
-						//printBoard();
 					}
 				}
 			}
@@ -380,27 +392,4 @@ public class GameEditor extends JDialog {
 		((GameObject) gameBoard[x_club][y_club]).switchType('*');
 
 	}
-	
-//	private void reSizeImage() {
-//		 Image image = icon.getImage().getScaledInstance(
-//		 icon.getIconWidth() * NEW / OLD,
-//		 icon.getIconHeight() * NEW / OLD,
-//		          Image.SCALE_SMOOTH);
-//		     icon = new ImageIcon(image, icon.getDescription());
-//	}
-	
-//	protected void saveState() {
-//        FileOutputStream fileOut;
-//        try {
-//            fileOut = new FileOutputStream("saveGame.ser");
-//            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-//            out.writeObject(this);
-//            out.close();
-//            fileOut.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (Exception w){
-//            w.printStackTrace();
-//        }
-//    }
 }

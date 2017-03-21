@@ -55,14 +55,18 @@ public class Game {
 
 	public Game(GameMap board) {
 		this.guardType = null;
+		this.selectedBoard = board;
 		this.numOgres = 1;
 		this.numOgresPredefined = true;
 		this.canMoveGuard = false;
-		initGame(board);
 		this.selectedBoard = board;
 		this.state = EnumGameState.Running;
 		this.level = 0;
 		this.byLevel = false;
+		
+		this.numOgres = getNumOgres();
+		
+		initGame(board);
 	}
 
 	public Game(List<GameMap> boards) {
@@ -102,7 +106,7 @@ public class Game {
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
-		
+
 		this.byLevel = true;
 	}
 
@@ -110,6 +114,9 @@ public class Game {
 	 * Identify all features from the game board
 	 * */
 	public void initGame(GameMap board) {
+		
+		
+
 		this.lever = null;
 		this.key = null;
 
@@ -121,6 +128,7 @@ public class Game {
 
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
+
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
 
@@ -398,6 +406,16 @@ public class Game {
 				vilans.get(i).checkClub(selectedBoard);
 		}
 	}
+	
+	private int getNumOgres() {
+		int nOgres = 0;
+		for(int i = 0; i < selectedBoard.getBoardSize() ; i++ )
+			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
+				if(selectedBoard.getBoardCaracter(i, j) == 'O')
+					nOgres++;
+			}
+		return nOgres;
+	}
 
 	public Hero getHero() {
 		return hero;
@@ -429,6 +447,10 @@ public class Game {
 
 	public Key getKey() {
 		return key;
+	}
+
+	public void setCanMoveGuard(boolean b) {
+		canMoveGuard = b;		
 	}
 
 }

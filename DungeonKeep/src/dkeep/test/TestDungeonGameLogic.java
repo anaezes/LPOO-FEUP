@@ -121,6 +121,7 @@ public class TestDungeonGameLogic {
 	public void testDefeatOgre(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
+		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.checkLostGame();
 		assertEquals(EnumGameState.Lost, game.getGameState());
@@ -130,6 +131,7 @@ public class TestDungeonGameLogic {
 	public void testDefeatOgreWithArm(){
 		GameMap gameMap = new GameMap(mapWithOgreAndArm);
 		Game game = new Game(gameMap);
+		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.checkLostGame();
 		assertNotEquals(EnumGameState.Lost, game.getGameState());
@@ -161,12 +163,13 @@ public class TestDungeonGameLogic {
 	public void testHeroMoveAndOpensDoor(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap);
+		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
 		assertTrue(game.getKey().getKeyState());
-		assertFalse(game.isGameOver());
+		assertNotEquals(EnumGameState.Lost, game.getGameState());
 		assertEquals(EnumGameState.Win, game.getGameState());
 	}
 

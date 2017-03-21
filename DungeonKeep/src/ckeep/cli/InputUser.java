@@ -15,8 +15,8 @@ public class InputUser {
 	}
 
 	public void run() {
-		Print print = new Print();
-		System.out.print(print.printBoard(game));
+		//Print print = new Print();
+		System.out.print(Print.boardToString(game));
 
 		System.out.println("How to play? S to down - W to up - A to left - D to right");
 
@@ -28,7 +28,7 @@ public class InputUser {
 			System.out.println(keyCode);
 			if (keyCode.length()==1) {
 				keyPressed(keyCode);
-				System.out.print(print.printBoard(game));
+				System.out.print(Print.boardToString(game));
 			}
 		}
 

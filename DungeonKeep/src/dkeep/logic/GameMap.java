@@ -38,6 +38,6 @@ public class GameMap {
 		if(selectedBoard[x][y] == 'k' || selectedBoard[x][y] == 'K')
 			return true;
 		return false;
-
 	}
+	
 }

@@ -27,167 +27,47 @@ public class GameEditor extends JDialog {
 	private boolean validBoard;
 	private int matrixSize;
 	private char[][] matrix = null;
+	private JFrame parent;
 
 	public GameEditor(JFrame parent, int size) {
 		super(parent);
+		this.
 		validBoard = false;
 		this.matrixSize = size;
 		initMatrix();		
-		
-		setFont(new Font("Dialog", Font.BOLD, 18));
-		setTitle("Game editor");
-		getContentPane().setLayout(null);
-		setResizable(false);
-		setBounds(100, 100, 850, 730);
 
-		JButton btnExit = new JButton("Exit");
-		btnExit.setBounds(520, 646, 98, 25);
-		getContentPane().add(btnExit);
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setVisible(false);
-			}
-		});
+		initFrame();
+		initButtonExit();
+		initButtonOk();
+		initButtonReset();
+		initBoardPanel();
+	}
 
-		JButton btnOk = new JButton("Ok");
-		btnOk.setBounds(740, 646, 98, 25);
-		getContentPane().add(btnOk);
-		btnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(verifyIfMapIsComplete())
-				{
-					validBoard = true;
-					setVisible(false);
-				}
-				else {
-					JOptionPane.showMessageDialog(parent,
-							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
-							"Editor error",
-							JOptionPane.ERROR_MESSAGE);
-					validBoard = false;
-				}
-			}
-		});
+	private void initBoardPanel() {
 
-		JButton btnReset = new JButton("Reset");
-		btnReset.setBounds(630, 646, 98, 25);
-		getContentPane().add(btnReset);
-		btnReset.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				resetGameBoard();
-				validBoard = false;
-			}
-		});
-
-
-		//board
 		board = new JPanel();
 		board.setLayout(new GridLayout(10, 10));
 		board.setBounds(30, 30, 600, 600);
 		board.setBackground(Color.gray);
 		this.getContentPane().add(board);
 
-		JButton btnHero = new JButton("Hero");
-		btnHero.setBounds(707, 75, 98, 25);
-		getContentPane().add(btnHero);
-		btnHero.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Hero hero = new Hero();
-				character = hero.getCharacter();
-			}
-		});
-		
-		JButton btnShield = new JButton("Shield");
-		btnShield.setBounds(707, 150, 98, 25);
-		getContentPane().add(btnShield);
-		btnShield.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				character = 'a';
-			}
-		});
+		initBottonHero();
+		initBottonShield();
+		initBottonOgre();
+		initBottonWall();
+		initBottonDoor();
+		initBottonKey();
 
-		JButton btnOgre = new JButton("Ogre");
-		btnOgre.setBounds(707, 225, 98, 25);
-		getContentPane().add(btnOgre);
-		btnOgre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Ogre ogre = new Ogre();
-				character = ogre.getCharacter();
-			}
-		});
+		initButtonSave();
 
-		JButton btnWall = new JButton("Wall");
-		btnWall.setBounds(707, 300, 98, 25);
-		getContentPane().add(btnWall);
-		btnWall.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				character = 'X';
-			}
-		});
-
-		JButton btnDoor = new JButton("Door");
-		btnDoor.setBounds(707, 375, 98, 25);
-		getContentPane().add(btnDoor);
-		btnDoor.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				character = 'S';
-			}
-		});
-
-		JButton btnKey = new JButton("Key");
-		btnKey.setBounds(707, 450, 98, 25);
-		getContentPane().add(btnKey);
-		btnKey.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				character = 'c';
-			}
-		});
-
-		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(40, 646, 98, 25);
-		getContentPane().add(btnSave);
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(verifyIfMapIsComplete()){				
-					String nameFile = (String)JOptionPane.showInputDialog(
-							parent,
-							"Name for this game:\n",
-							"Save Game",
-							JOptionPane.PLAIN_MESSAGE,
-							null,
-							null,
-							"game");
-					if(nameFile != null)
-						try {
-							Print.boardToFile(matrix, nameFile);
-							resetGameBoard();
-						} catch (IOException e) {
-							e.printStackTrace();
-							JOptionPane.showMessageDialog(parent,
-									"Error while saving a board to file",
-									"Error",
-									JOptionPane.INFORMATION_MESSAGE);
-						}
-				}
-				else {
-					JOptionPane.showMessageDialog(parent,
-							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
-							"Editor error",
-							JOptionPane.ERROR_MESSAGE);
-					validBoard = false;
-				}
-			}
-		});
-	
 		gameBoard = new JPanel[matrixSize][matrixSize];
 		board.setLayout(new GridLayout(matrixSize,matrixSize));
 
-		for(int i = 0; i < matrixSize ; i++ )
-			for(int j = 0; j < matrixSize; j++) {
-				gameBoard[i][j] = new GameObject(board.getWidth()/matrixSize, board.getHeight()/matrixSize, ' ', i, j);
-				board.add(gameBoard[i][j]);
-			}
+		initBoard();
+		initBoardMouseListener();
+	}
 
+	private void initBoardMouseListener() {
 		board.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -237,11 +117,180 @@ public class GameEditor extends JDialog {
 				}
 			}
 		});
+
+	}
+
+	private void initBoard() {
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				gameBoard[i][j] = new GameObject(board.getWidth()/matrixSize, board.getHeight()/matrixSize, ' ', i, j);
+				board.add(gameBoard[i][j]);
+			}		
+	}
+
+	private void initButtonSave() {
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(40, 646, 98, 25);
+		getContentPane().add(btnSave);
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(verifyIfMapIsComplete()){				
+					String nameFile = (String)JOptionPane.showInputDialog(
+							parent,
+							"Name for this game:\n",
+							"Save Game",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							null,
+							"game");
+					if(nameFile != null)
+						try {
+							Print.boardToFile(matrix, nameFile);
+							resetGameBoard();
+						} catch (IOException e) {
+							e.printStackTrace();
+							JOptionPane.showMessageDialog(parent,
+									"Error while saving a board to file",
+									"Error",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+				}
+				else {
+					JOptionPane.showMessageDialog(parent,
+							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
+							"Editor error",
+							JOptionPane.ERROR_MESSAGE);
+					validBoard = false;
+				}
+			}
+		});
+	}
+
+	private void initBottonKey() {
+		JButton btnKey = new JButton("Key");
+		btnKey.setBounds(707, 450, 98, 25);
+		getContentPane().add(btnKey);
+		btnKey.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				character = 'c';
+			}
+		});		
+	}
+
+	private void initBottonDoor() {
+		JButton btnDoor = new JButton("Door");
+		btnDoor.setBounds(707, 375, 98, 25);
+		getContentPane().add(btnDoor);
+		btnDoor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				character = 'S';
+			}
+		});		
+	}
+
+	private void initBottonWall() {
+		JButton btnWall = new JButton("Wall");
+		btnWall.setBounds(707, 300, 98, 25);
+		getContentPane().add(btnWall);
+		btnWall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				character = 'X';
+			}
+		});
+	}
+
+	private void initBottonOgre() {
+		JButton btnOgre = new JButton("Ogre");
+		btnOgre.setBounds(707, 225, 98, 25);
+		getContentPane().add(btnOgre);
+		btnOgre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ogre ogre = new Ogre();
+				character = ogre.getCharacter();
+			}
+		});		
+	}
+
+	private void initBottonShield() {
+		JButton btnShield = new JButton("Shield");
+		btnShield.setBounds(707, 150, 98, 25);
+		getContentPane().add(btnShield);
+		btnShield.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				character = 'a';
+			}
+		});
+	}
+
+	private void initBottonHero() {
+		JButton btnHero = new JButton("Hero");
+		btnHero.setBounds(707, 75, 98, 25);
+		getContentPane().add(btnHero);
+		btnHero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Hero hero = new Hero();
+				character = hero.getCharacter();
+			}
+		});
+	}
+
+	private void initButtonReset() {
+		JButton btnReset = new JButton("Reset");
+		btnReset.setBounds(630, 646, 98, 25);
+		getContentPane().add(btnReset);
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				resetGameBoard();
+				validBoard = false;
+			}
+		});	
+	}
+
+	private void initButtonOk() {
+		JButton btnOk = new JButton("Ok");
+		btnOk.setBounds(740, 646, 98, 25);
+		getContentPane().add(btnOk);
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(verifyIfMapIsComplete())
+				{
+					validBoard = true;
+					setVisible(false);
+				}
+				else {
+					JOptionPane.showMessageDialog(parent,
+							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
+							"Editor error",
+							JOptionPane.ERROR_MESSAGE);
+					validBoard = false;
+				}
+			}
+		});		
+	}
+
+	private void initButtonExit() {
+		JButton btnExit = new JButton("Exit");
+		btnExit.setBounds(520, 646, 98, 25);
+		getContentPane().add(btnExit);
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+			}
+		});
+	}
+
+	private void initFrame() {
+		setFont(new Font("Dialog", Font.BOLD, 18));
+		setTitle("Game editor");
+		getContentPane().setLayout(null);
+		setResizable(false);
+		setBounds(100, 100, 850, 730);
+
 	}
 
 	private void initMatrix() {
 		matrix = new char[matrixSize][matrixSize];
-		
+
 		for(int i = 0; i < matrixSize ; i++ )
 			for(int j = 0; j < matrixSize; j++) {
 				matrix[i][j] = ' ' ;
@@ -256,7 +305,7 @@ public class GameEditor extends JDialog {
 			}
 		return false;
 	}
-	
+
 	private boolean verifyMaxOgres() {
 		int nOgres = 0;
 		for(int i = 0; i < matrixSize ; i++ )
@@ -264,10 +313,10 @@ public class GameEditor extends JDialog {
 				if(matrix[i][j] == 'O')
 					nOgres++;
 			}
-		
+
 		return (nOgres == 5);
 	}
-	
+
 	private boolean keyAlreadyExists() {
 		for(int i = 0; i < matrixSize ; i++ )
 			for(int j = 0; j < matrixSize; j++) {
@@ -321,7 +370,7 @@ public class GameEditor extends JDialog {
 			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'S')
 					existDoor = true;
-		
+
 		return (existHero && existKey && existDoor && existOgre);	
 	}
 

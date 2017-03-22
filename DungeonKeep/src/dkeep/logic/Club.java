@@ -11,7 +11,6 @@ public class Club {
 		this.x = x;
 		this.y = y;
 		this.character = 'a';
-
 		this.onLever = false;
 	}
 
@@ -41,7 +40,6 @@ public class Club {
 
 	public void findClub() {
 		this.character = ' ';
-		
 	}
 
 	public char getCharacter() {

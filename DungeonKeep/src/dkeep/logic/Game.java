@@ -453,7 +453,6 @@ public class Game {
 	public void setCanMoveGuard(boolean b) {
 		canMoveGuard = b;		
 	}
-
 }
 
 

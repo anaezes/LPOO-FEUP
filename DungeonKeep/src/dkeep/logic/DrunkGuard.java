@@ -57,7 +57,6 @@ public class DrunkGuard extends Guard {
 		this.character = caracter;
 		this.SetXCoordinate(x_position[index]);
 		this.SetYCoordinate(y_position[index]);
-
 	}
 
 	@Override

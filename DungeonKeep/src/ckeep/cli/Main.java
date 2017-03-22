@@ -44,10 +44,7 @@ public class Main {
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
 		
-		Game newGame = new Game(gameMaps, numOgres);
-		newGame.setGuardPath(guard_y, guard_x);
-
-		InputUser inputUser = new InputUser(newGame);
+		InputUser inputUser = new InputUser(gameMaps, numOgres, guard_x, guard_y);
 		inputUser.run();
 	}
 }

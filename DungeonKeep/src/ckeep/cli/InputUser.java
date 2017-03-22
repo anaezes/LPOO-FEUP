@@ -1,17 +1,21 @@
 package ckeep.cli;
 
+import java.util.List;
 import java.util.Scanner;
 
 import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
+import dkeep.logic.GameMap;
 import dkeep.logic.Game.EnumGameState;
 
 public class InputUser {
 
 	private Game game;
 
-	public InputUser(Game game) {
-		this.game = game;
+	public InputUser(List<GameMap> gameMaps, int numOgres, int[] guard_x, int[] guard_y) {
+		
+		game = new Game(gameMaps, numOgres);
+		game.setGuardPath(guard_y, guard_x);
 	}
 
 	public void run() {

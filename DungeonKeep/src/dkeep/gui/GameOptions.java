@@ -17,13 +17,14 @@ import javax.swing.JFrame;
 public class GameOptions extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
-	private int nOgres;
 	private EnumGuardType guardType;
+	private int nOgres;
+	private JSlider slider;
 	
 	public GameOptions(JFrame parent) {
 		super(parent);
 		getContentPane().setForeground(Color.LIGHT_GRAY);	
-		nOgres = 1;
+		nOgres = 3;
 		guardType = EnumGuardType.Drunk;
 		
 		setBounds(100, 100, 670, 720);
@@ -33,13 +34,20 @@ public class GameOptions extends JDialog {
 		setFont(new Font("Dialog", Font.BOLD, 18));
 		setTitle("Options");
 		getContentPane().setLayout(null);
-		
+	
+		initSliderNumberOgres();
+		iniLabelTypeGuard();
+		initButtonExit();
+		initButtonOk();
+	}
+
+	private void initSliderNumberOgres() {
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres: ");
 		lblNumberOfOgres.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblNumberOfOgres.setBounds(12, 41, 199, 25);
 		getContentPane().add(lblNumberOfOgres);
 		
-		JSlider slider = new JSlider();
+		slider = new JSlider();
 		slider.setForeground(Color.LIGHT_GRAY);
 		slider.setMinorTickSpacing(1);
 		slider.setFont(new Font("Dialog", Font.BOLD, 10));
@@ -51,7 +59,9 @@ public class GameOptions extends JDialog {
 		slider.setBounds(12, 78, 199, 33);
 		slider.setMajorTickSpacing(1);
 		getContentPane().add(slider);
-		
+	}
+
+	private void iniLabelTypeGuard(){
 		JLabel lblGuardType = new JLabel("Guard personality:");
 		lblGuardType.setFont(new Font("Dialog", Font.BOLD, 16));
 		lblGuardType.setBounds(12, 145, 167, 15);
@@ -96,8 +106,9 @@ public class GameOptions extends JDialog {
 				rdbtnParanoidGuard.setSelected(false);
 			}
 		});
-		
-		
+	}
+	
+	private void initButtonExit() {
 		JButton btnExit = new JButton("Exit");
 		btnExit.setBounds(134, 293, 98, 25);
 		getContentPane().add(btnExit);
@@ -106,19 +117,23 @@ public class GameOptions extends JDialog {
 				setVisible(false);
 				
 			}
-		});
-		
+		});		
+	}
+
+
+
+	public void initButtonOk() {
 		JButton btnOk = new JButton("Ok");
 		btnOk.setBounds(12, 293, 98, 25);
 		getContentPane().add(btnOk);
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				nOgres = slider.getValue();
 				setVisible(false);
+				nOgres = slider.getValue();
 			}
 		});
 	}
-
+	
 	public int getNumberOfOgres() {
 		return nOgres;
 	}

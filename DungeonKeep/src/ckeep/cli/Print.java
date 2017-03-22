@@ -47,14 +47,15 @@ public class Print {
 	}
 
 	private static boolean clubsToString(Game game, int i, int j) {
-		if(game.getVilans() == null)
+		List<Vilan> vilans = game.getVilans();
+		if(vilans == null)
 			return true;
 
-		for(int k = 0; k < game.getVilans().size(); k++) {
-			if(game.getVilans().get(k).getType() == EnumVillainType.Ogre)	
-				if (game.getVilans().get(k).getClub().getYCoordinate() == j && game.getVilans().get(k).getClub().getXCoordinate() == i)
+		for(int k = 0; k < vilans.size(); k++) {
+			if(vilans.get(k).getType() == EnumVillainType.Ogre)	
+				if (vilans.get(k).getClub().getYCoordinate() == j && vilans.get(k).getClub().getXCoordinate() == i)
 				{
-					if (game.getVilans().get(k).getClub().getOnLeverState())
+					if (vilans.get(k).getClub().getOnLeverState())
 						map += "$";
 					else 
 						map += "*";

@@ -3,10 +3,17 @@ package dkeep.gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+
+import dkeep.logic.Club;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
+import dkeep.logic.ExitDoor;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
+import dkeep.logic.Hero;
+import dkeep.logic.Key;
+import dkeep.logic.Lever;
+import dkeep.logic.Vilan;
 import dkeep.logic.Vilan.EnumVillainType;
 import dkeep.logic.Game.EnumGameState;
 import java.awt.Font;
@@ -198,25 +205,31 @@ public class DungeonKeepUI{
 			}
 	}
 
-	private char getObjectTypeAt( int i, int j) {
+	private char getObjectTypeAt(int i, int j) {
+		Hero hero = game.getHero();
+		Lever lever = game.getLever();
+		Key key = game.getKey();
+		Club heroClub = game.getHeroClub();
+		
 		char character = game.getBoard().getBoardCaracter(i, j);
 
-		if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
-			character = game.getHero().getCharacter();
+		if(hero.getXCoordinate() == i && hero.getYCoordinate() == j) 
+			character = hero.getCharacter();
 
-		else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
-			character = game.getLever().getCharacter();
+		else if(lever != null && lever.getXCoordinate() == i && lever.getYCoordinate() == j) 
+			character = lever.getCharacter();
 
-		else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
-			character = game.getKey().getCharacter();
+		else if(key != null && key.getXCoordinate() == i && key.getYCoordinate() == j) 
+			character = key.getCharacter();
 
-		else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
-			character = game.getHeroClub().getCharacter();
+		else if(heroClub.getXCoordinate() == i && heroClub.getYCoordinate()  == j) 
+			character = heroClub.getCharacter();
 
-		if(game.getExitDoors().size() != 0) {
-			for(int k = 0; k < game.getExitDoors().size(); k++)
-				if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
-					character = game.getExitDoors().get(k).getCharacter();
+		List<ExitDoor> exitsDoors = game.getExitDoors();
+		if(exitsDoors.size() != 0) {
+			for(int k = 0; k < exitsDoors.size(); k++)
+				if(exitsDoors.get(k).getXCoordinate() == i && exitsDoors.get(k).getYCoordinate() == j)
+					character = exitsDoors.get(k).getCharacter();
 		}
 
 		char aux = vilansGraphics(i, j);
@@ -227,16 +240,17 @@ public class DungeonKeepUI{
 	}
 
 	private char vilansGraphics(int i, int j) {
+		List<Vilan> vilans = game.getVilans();
 		char character = '\0';
-		if(game.getVilans().size() != 0) {
-			for(int k = 0; k < game.getVilans().size(); k++) 
-				if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j) {
-					return game.getVilans().get(k).getCharacter();
+		if(vilans.size() != 0) {
+			for(int k = 0; k < vilans.size(); k++) 
+				if(vilans.get(k).getXCoordinate() == i && vilans.get(k).getYCoordinate() == j) {
+					return vilans.get(k).getCharacter();
 				}
 
-			if(game.getVilans().get(0).getType() == EnumVillainType.Ogre) 
-				for(int k = 0; k < game.getVilans().size(); k++)
-					if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j) {
+			if(vilans.get(0).getType() == EnumVillainType.Ogre) 
+				for(int k = 0; k < vilans.size(); k++)
+					if(vilans.get(k).getClub().getXCoordinate() == i && vilans.get(k).getClub().getYCoordinate() == j) {
 						return '*';
 					}
 		}

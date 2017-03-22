@@ -12,7 +12,7 @@ import dkeep.logic.Vilan.EnumVillainType;
 public class Print {
 
 	private static String map;
-	
+
 	public static String boardToString(Game game) {
 		map = game.getBoard().getBoardSize() + "\n";
 		for(int i = 0; i < game.getBoard().getBoardSize(); i++) {
@@ -86,9 +86,20 @@ public class Print {
 		File file = new File(DungeonKeepUI.BOARDS_DIR + nameFile + ".txt");
 		file.createNewFile();
 		FileWriter writer = new FileWriter(file);
-		writer.write(boardToString(new Game(new GameMap(board))));
+		writer.write(toString(board));
 		writer.close();
 	}
-	
-	
+
+	public static String toString(char[][] board) {
+		String map = board.length + "\n";
+		for(int i = 0; i < board.length; i++){
+			for(int j = 0; j < board[i].length; j++)
+				map += board[i][j];
+			map+='\n';
+		}
+
+		return map;
+	}
+
+
 }

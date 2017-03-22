@@ -176,15 +176,27 @@ public class DungeonKeepUI{
 		for(int i = 0; i < currentBoardSize ; i++ )
 			for(int j = 0; j < currentBoardSize; j++)
 			{
-				character = auxGraphics(i, j);
+				character = getObjectTypeAt(i, j);
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character, i, j);
 				gamePanel.add(gameBoard[i][j]);
 			}
 
 		frmDungeonKeepGame.repaint();
 	}
+	
+	private void updateGraphics() {
+		currentBoardSize = game.getBoard().getBoardSize();
+		char character;
 
-	private char auxGraphics( int i, int j) {
+		for(int i = 0; i < currentBoardSize ; i++ )
+			for(int j = 0; j < currentBoardSize; j++) {
+
+				character = getObjectTypeAt(i, j);
+				((GameObject)gameBoard[i][j]).switchType(character);
+			}
+	}
+
+	private char getObjectTypeAt( int i, int j) {
 		char character = game.getBoard().getBoardCaracter(i, j);
 
 		if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
@@ -227,18 +239,6 @@ public class DungeonKeepUI{
 					}
 		}
 		return character;
-	}
-
-	private void updateGraphics() {
-		currentBoardSize = game.getBoard().getBoardSize();
-		char character;
-
-		for(int i = 0; i < currentBoardSize ; i++ )
-			for(int j = 0; j < currentBoardSize; j++) {
-
-				character = auxGraphics(i, j);
-				((GameObject)gameBoard[i][j]).switchType(character);
-			}
 	}
 
 	private void validateGameRunning() {

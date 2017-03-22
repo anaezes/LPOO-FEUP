@@ -322,8 +322,6 @@ public class Game {
 
 		if(isExitDoor(x_hero, y_hero))
 		{
-			
-			System.out.println("EXIT DOOR");
 			if((lever != null && lever.getLeverState()) ||
 					(key != null && key.getKeyState() && isSecondTrie()))
 
@@ -358,21 +356,15 @@ public class Game {
 			return true;
 		}
 
-		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {
-			//System.out.println("KEY X" + key.getXCoordinate());
-			//System.out.println("KEY Y" + key.getYCoordinate());
-			
+		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {		
 			key.setKeyState(true);
 			unlockDoors();
 			return true;
 		}
-
 		return false;
 	}
 
 	private boolean isExitDoor(int x_hero, int y_hero) {
-		
-		System.out.println("n doors" + exitDoors.size());
 		for(int i = 0; i < exitDoors.size(); i++)
 			if(exitDoors.get(i).getXCoordinate() == x_hero && exitDoors.get(i).getYCoordinate() == y_hero)
 				return true;

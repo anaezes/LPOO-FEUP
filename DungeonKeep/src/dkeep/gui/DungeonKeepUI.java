@@ -208,6 +208,7 @@ public class DungeonKeepUI{
 			}
 	}
 
+
 	private void updateGraphics() {
 		currentBoardSize = game.getBoard().getBoardSize();
 		char character;
@@ -338,30 +339,6 @@ public class DungeonKeepUI{
 			}
 		});
 
-		mntmOptions.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource();                 
-				item.setFont(new Font("Dialog", Font.BOLD, 16));
-				item.setBackground(Color.GRAY);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource(); 
-				item.setFont(new Font("Dialog", Font.BOLD, 15));
-				item.setBackground(Color.LIGHT_GRAY);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-
 		JMenuItem mntmEditMap = new JMenuItem("          Edit Map");
 		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
 		menuBar.add(mntmEditMap);
@@ -385,31 +362,6 @@ public class DungeonKeepUI{
 			}
 		});
 
-
-		mntmEditMap.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource();                 
-				item.setFont(new Font("Dialog", Font.BOLD, 16));
-				item.setBackground(Color.GRAY);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource(); 
-				item.setFont(new Font("Dialog", Font.BOLD, 15));
-				item.setBackground(Color.LIGHT_GRAY);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-
 		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
 		menuBar.add(mntmLoadGame);
 		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
@@ -430,29 +382,6 @@ public class DungeonKeepUI{
 					return;
 
 				newGame(loadGame(s));
-			}
-		});
-		mntmLoadGame.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource();                 
-				item.setFont(new Font("Dialog", Font.BOLD, 16));
-				item.setBackground(Color.GRAY);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource(); 
-				item.setFont(new Font("Dialog", Font.BOLD, 15));
-				item.setBackground(Color.LIGHT_GRAY);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
 			}
 		});
 	}

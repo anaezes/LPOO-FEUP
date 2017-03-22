@@ -38,24 +38,5 @@ public class ParanoidGuard extends Guard {
 		this.SetXCoordinate(x_position[index]);
 		this.SetYCoordinate(y_position[index]);
 	}
-	
-	@Override
-	public char getCharacter() {
-		return character;
-	}
-
-	@Override
-	public Club getClub() {
-		return null;
-	}
-
-	@Override
-	public void checkClub(GameMap board) {}
-	
-	public int getIndexGuard() {
-		return indexGuard;
-	}
-	
-	
 
 }

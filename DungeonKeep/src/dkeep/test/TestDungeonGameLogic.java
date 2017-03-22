@@ -31,7 +31,6 @@ public class TestDungeonGameLogic {
 	int[] guard_x = new int[] {3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2};
 	int[] guard_y = new int[] {1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1};
 
-	
 	public char[][] getMapCopy() {
 		char[][] mapCopy = new char[map.length][map[0].length];
 		

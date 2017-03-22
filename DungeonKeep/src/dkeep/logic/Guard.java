@@ -60,4 +60,10 @@ public abstract class Guard extends Vilan {
 		return x_position.length;
 	}
 
+	public Club getClub() {
+		return null;
+	}
+
+	public void checkClub(GameMap board) {}
+	
 }

@@ -53,12 +53,12 @@ public class Game {
 		Lost,
 	}
 
-	public Game(GameMap board) {
+	public Game(GameMap board, boolean isTest) {
 		this.guardType = null;
 		this.selectedBoard = board;
 		this.numOgresInMap = true;
 		this.numOgres = -1;
-		this.canMoveGuard = false;
+		this.canMoveGuard = !isTest;
 		this.selectedBoard = board;
 		this.state = EnumGameState.Running;
 		this.level = 0;

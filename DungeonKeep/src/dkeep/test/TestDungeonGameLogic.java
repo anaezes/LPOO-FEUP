@@ -46,7 +46,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testMoveHeroIntoToFreeCell() {
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		String cellPosition1 = "(1,1)";
 		assertEquals(cellPosition1, game.getHero().getCordinates());
 		game.moveHero(EnumMoves.DOWN);
@@ -59,7 +59,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroMoveIntoAWall(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.moveHero(EnumMoves.LEFT);
 		String cellPosition = "(1,1)";
 		assertEquals(cellPosition, game.getHero().getCordinates());
@@ -68,7 +68,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroIsCapturedByGuard(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		assertFalse(game.isGameOver());
 		game.moveHero(EnumMoves.RIGHT);
 		assertTrue(game.isGameOver());
@@ -79,7 +79,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroMoveIntoExit(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		String cellPosition = "(2,1)";
@@ -89,7 +89,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroMoveIntoStairs(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
@@ -102,7 +102,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testExitDoors(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		assertFalse(game.getLever().getLeverState());
 		assertNotEquals('S', game.getExitDoors().get(0).getCharacter());
 		game.moveHero(EnumMoves.DOWN);
@@ -119,7 +119,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testDefeatOgre(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.checkLostGame();
@@ -129,7 +129,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testDefeatOgreWithArm(){
 		GameMap gameMap = new GameMap(mapWithOgreAndArm);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.checkLostGame();
@@ -140,7 +140,7 @@ public class TestDungeonGameLogic {
 	@Test 
 	public void leverChangesRepresentation(){
 		GameMap gameMap = new GameMap(map);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.moveHero(EnumMoves.DOWN);
 		assertEquals(game.getLever().getCharacter(),'k');
 		game.moveHero(EnumMoves.DOWN);
@@ -151,7 +151,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void TryToLeaveExitDoor(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		String cellPosition = "(2,1)";
@@ -161,7 +161,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testHeroMoveAndOpensDoor(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		game.setCanMoveGuard(false);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
@@ -179,7 +179,7 @@ public class TestDungeonGameLogic {
 	@Test(timeout=100)
 	public void testOgreMove(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		int currLevel = game.getGameLevel();
 		game.nextLevel();
 		assertNotEquals(game.getGameLevel(), currLevel);
@@ -223,7 +223,7 @@ public class TestDungeonGameLogic {
 	@Test(timeout=100)
 	public void testClubMove(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		int currLevel = game.getGameLevel();
 		game.nextLevel();
 		assertEquals(game.getGameLevel(), currLevel+1);
@@ -252,7 +252,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testClubCoordinates(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap,true);
 
 		assertEquals( "(2,3)", game.getVilans().get(0).getClub().getCordinates());
 		game.getVilans().get(0).getClub().setYCoordinate(2);
@@ -265,7 +265,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void TestmoveVillan(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		Ogre ogre = (Ogre) game.getVilans().get(0);
 		String coord = ogre.getCordinates();
 		game.moveVilans();
@@ -279,7 +279,7 @@ public class TestDungeonGameLogic {
 		{	
 			char[][] mapCopy = getMapCopy();
 			GameMap gameMap = new GameMap(mapCopy);
-			Game game = new Game(gameMap);
+			Game game = new Game(gameMap, true);
 			
 			game.setGuardPath(guard_x, guard_y);
 
@@ -296,7 +296,7 @@ public class TestDungeonGameLogic {
 	@Test
 	public void testOnLeverAndCharacter(){
 		GameMap gameMap = new GameMap(mapWithOgre);
-		Game game = new Game(gameMap);
+		Game game = new Game(gameMap, true);
 		assertEquals(true, game.getVilans().get(0).getType() == EnumVillainType.Ogre);
 		assertEquals(false, game.getVilans().get(0).GetOnLeverOgre());
 		assertEquals('O', game.getVilans().get(0).getCharacter());
@@ -306,8 +306,8 @@ public class TestDungeonGameLogic {
 	public void testBoard(){
 		GameMap gameMap1 = new GameMap(mapWithOgre);
 		GameMap gameMap2 = new GameMap(map);
-		Game game1 = new Game(gameMap1);
-		Game game2 = new Game(gameMap2);
+		Game game1 = new Game(gameMap1, true);
+		Game game2 = new Game(gameMap2, true);
 		assertNotEquals(game2.getBoard(), game1.getBoard());
 	}
 

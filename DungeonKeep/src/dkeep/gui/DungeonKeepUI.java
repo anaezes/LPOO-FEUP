@@ -163,7 +163,7 @@ public class DungeonKeepUI{
 
 	public void newGame(char[][] board){
 		GameMap gameMap = new GameMap(board);
-		this.game = new Game(gameMap);
+		this.game = new Game(gameMap, false);
 		initJpanel();	
 		initGraphics();
 	}

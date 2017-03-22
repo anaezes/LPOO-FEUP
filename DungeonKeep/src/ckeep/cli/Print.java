@@ -3,10 +3,17 @@ package ckeep.cli;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import dkeep.gui.DungeonKeepUI;
+import dkeep.logic.Club;
+import dkeep.logic.ExitDoor;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
+import dkeep.logic.Hero;
+import dkeep.logic.Key;
+import dkeep.logic.Lever;
+import dkeep.logic.Vilan;
 import dkeep.logic.Vilan.EnumVillainType;
 
 public class Print {
@@ -14,18 +21,22 @@ public class Print {
 	private static String map;
 
 	public static String boardToString(Game game) {
-		map = game.getBoard().getBoardSize() + "\n";
-		for(int i = 0; i < game.getBoard().getBoardSize(); i++) {
-			for(int j = 0; j <  game.getBoard().getBoardSize(); j++) {						
-				if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
-					map += game.getHero().getCharacter();
-				else if(game.getLever() != null && game.getLever().getYCoordinate() == j && game.getLever().getXCoordinate() == i)
-					map += game.getLever().getCharacter();
-				else if(game.getKey() != null && game.getKey().getYCoordinate() == j && game.getKey().getXCoordinate() == i)
-					map += game.getKey().getCharacter();
-				else if(game.getHero().getYCoordinate() == j && game.getHero().getXCoordinate() == i)
-					map += game.getHero().getCharacter();
-				else if((game.getHeroClub().getYCoordinate() == j && game.getHeroClub().getXCoordinate() == i) && !game.getHero().isHeroArmed())
+		int boardSize = game.getBoard().getBoardSize();
+		Hero hero = game.getHero();
+		Lever lever = game.getLever();
+		Key key = game.getKey();
+		Club heroClub = game.getHeroClub();
+		
+		map = boardSize + "\n";
+		for(int i = 0; i < boardSize; i++) {
+			for(int j = 0; j <  boardSize; j++) {						
+				if(hero.getYCoordinate() == j && hero.getXCoordinate() == i)
+					map += hero.getCharacter();
+				else if(lever != null && lever.getYCoordinate() == j && lever.getXCoordinate() == i)
+					map += lever.getCharacter();
+				else if(key != null && key.getYCoordinate() == j && key.getXCoordinate() == i)
+					map += key.getCharacter();
+				else if((heroClub.getYCoordinate() == j && heroClub.getXCoordinate() == i) && !hero.isHeroArmed())
 					map += "*";
 				else if(!villainsToString(game, i, j) && !clubsToString(game, i, j) && !exitDoorsToString(game, i, j))
 					map += game.getBoard().getBoardCaracter(i, j);
@@ -54,28 +65,31 @@ public class Print {
 	}
 
 	private static boolean villainsToString(Game game, int i, int j) {
-		if(game.getVilans() == null)
+		List<Vilan> vilans = game.getVilans();
+		
+		if(vilans == null)
 			return true;
 
-		for(int k = 0; k < game.getVilans().size(); k++)
-			if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j) {
-				if(game.getVilans().get(k).GetOnLeverOgre())
+		for(int k = 0; k < vilans.size(); k++)
+			if(vilans.get(k).getXCoordinate() == i && vilans.get(k).getYCoordinate() == j) {
+				if(vilans.get(k).GetOnLeverOgre())
 					map += "$";
 				else
-					map += game.getVilans().get(k).getCharacter();
-
+					map += vilans.get(k).getCharacter();
 				return true;
 			}
 		return false;
 	}
 
 	private static boolean exitDoorsToString(Game game, int i, int j) {
-		if(game.getExitDoors() == null)
+		List<ExitDoor> exitsDoors = game.getExitDoors();
+		
+		if(exitsDoors == null)
 			return true;
 
-		for(int k = 0; k < game.getExitDoors().size(); k++) {
-			if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j) {
-				map += game.getExitDoors().get(k).getCharacter();
+		for(int k = 0; k < exitsDoors.size(); k++) {
+			if(exitsDoors.get(k).getXCoordinate() == i && exitsDoors.get(k).getYCoordinate() == j) {
+				map += exitsDoors.get(k).getCharacter();
 				return true;
 			}
 		}

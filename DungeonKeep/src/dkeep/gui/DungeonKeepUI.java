@@ -20,7 +20,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -32,6 +36,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import ckeep.cli.Print;
 
 import java.awt.Window.Type;
 
@@ -72,12 +78,10 @@ public class DungeonKeepUI{
 		keyListener = new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-
 				if(game.getGameState() != EnumGameState.Running)
 					return;
 
@@ -107,71 +111,76 @@ public class DungeonKeepUI{
 					validateGameRunning();
 				}
 			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {
-
 			}
 		};
 
 		editorIsUsed = false;
 		initialize();
-
 	}
 
 	public void newGame() {
 
-		if(editorIsUsed)
-			board = getMapCopy(this.gameEditor.getGameBoard());
-		else
-			board = null;
-
 		Game newGame;
 
-		if(board != null){
-			GameMap gameMap = new GameMap(board);
-			newGame = new Game(gameMap);
-		}
-		else {
-			int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
-			int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
+		int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
+		int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
 
-			char[][] BoardOne = {{'X','X','X','X','X','X','X','X','X','X'},
-					{'X','h',' ',' ','I', ' ', 'X', ' ', 'G', 'X'},
-					{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-					{'X',' ','I',' ','I', ' ', 'X', ' ', ' ', 'X'},
-					{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-					{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-					{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-					{'X','X','X',' ','X', 'X', 'X', 'X', ' ', 'X'},
-					{'X',' ','I',' ','I', ' ', 'X', 'k', ' ', 'X'},
-					{'X','X','X','X','X','X','X','X','X','X'}};
+		char[][] BoardOne = {{'X','X','X','X','X','X','X','X','X','X'},
+				{'X','h',' ',' ','x', ' ', 'X', ' ', 'G', 'X'},
+				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
+				{'X',' ','x',' ','x', ' ', 'X', ' ', ' ', 'X'},
+				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
+				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
+				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
+				{'X','X','X',' ','X', 'X', 'X', 'X', ' ', 'X'},
+				{'X',' ','x',' ','x', ' ', 'X', 'k', ' ', 'X'},
+				{'X','X','X','X','X','X','X','X','X','X'}};
 
-			char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
-					{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
-					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
-					{'X','X','X','X','X','X','X','X','X'}};
+		char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
+				{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
+				{'X','X','X','X','X','X','X','X','X'}};
 
-			int numOfOgres = gameOptions.getNumberOfOgres();
-			EnumGuardType guardType = gameOptions.getGuardType();
+		int numOfOgres = gameOptions.getNumberOfOgres();
+		EnumGuardType guardType = gameOptions.getGuardType();
 
-			List<GameMap> gameMaps = new ArrayList<>();
-			GameMap gameMap1 = new GameMap(BoardOne);
-			GameMap gameMap2 = new GameMap(BoardTwo);
-			gameMaps.add(gameMap1);
-			gameMaps.add(gameMap2);
+		List<GameMap> gameMaps = new ArrayList<>();
+		GameMap gameMap1 = new GameMap(BoardOne);
+		GameMap gameMap2 = new GameMap(BoardTwo);
+		gameMaps.add(gameMap1);
+		gameMaps.add(gameMap2);
 
-			newGame = new Game(gameMaps, guardType, numOfOgres);
-			newGame.setGuardPath(guard_y, guard_x);
+		newGame = new Game(gameMaps, guardType, numOfOgres);
+		newGame.setGuardPath(guard_y, guard_x);
 
-		}
 		this.game = newGame;
-		frmDungeonKeepGame.repaint();
+		initJpanel();	
+		initGraphics();
+	}
+
+	public void initJpanel() {
+		gamePanel = new JPanel();
+		gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
+		gamePanel.setBounds(30, 30, 600, 600);
+		gamePanel.setBackground(Color.WHITE);
+		gamePanel.setFocusable(true);
+		gamePanel.addKeyListener(keyListener);
+		frmDungeonKeepGame.getContentPane().add(gamePanel);
+		gamePanel.requestFocus();
+	}
+
+	public void newGame(char[][] board){
+		GameMap gameMap = new GameMap(board);
+		this.game = new Game(gameMap);
+		initJpanel();	
+		initGraphics();
 	}
 
 	private void initGraphics() {
@@ -216,9 +225,9 @@ public class DungeonKeepUI{
 	}
 
 	private void updateGraphics() {
-
 		currentBoardSize = game.getBoard().getBoardSize();
 		char character;
+
 		for(int i = 0; i < currentBoardSize ; i++ )
 			for(int j = 0; j < currentBoardSize; j++) {
 				character = game.getBoard().getBoardCaracter(i, j);
@@ -310,16 +319,6 @@ public class DungeonKeepUI{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				newGame();
-				gamePanel = new JPanel();
-				gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
-				gamePanel.setBounds(30, 30, 600, 600);
-				gamePanel.setBackground(Color.WHITE);
-				gamePanel.setFocusable(true);
-				gamePanel.addKeyListener(keyListener);
-
-				frmDungeonKeepGame.getContentPane().add(gamePanel);
-				gamePanel.requestFocus();
-				initGraphics();
 			}
 		});
 
@@ -392,19 +391,19 @@ public class DungeonKeepUI{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editorIsUsed = true;
-				Object[] sizes = {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-				int size = (int)JOptionPane.showInputDialog(
-						frmDungeonKeepGame,
-						"Please choose the number of rows/columns:\n",				                   
-						"Game Editor",
-						JOptionPane.PLAIN_MESSAGE,
-						null,
-						sizes,
-						10);
-
-				gameEditor = new GameEditor(frmDungeonKeepGame, size);
-				gameEditor.setVisible(true);
+					Object[] sizes = {"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+					String size = (String)JOptionPane.showInputDialog(
+							frmDungeonKeepGame,
+							"Please choose the number of rows/columns:\n",				                   
+							"Game Editor",
+							JOptionPane.PLAIN_MESSAGE,
+							null,
+							sizes,
+							10);
+					if(size != null){
+						gameEditor = new GameEditor(frmDungeonKeepGame, Integer.parseInt(size));
+						gameEditor.setVisible(true);
+					}
 			}
 		});
 
@@ -449,6 +448,11 @@ public class DungeonKeepUI{
 						null,
 						possibilities,
 						"Game 1");
+
+				if(s == null)
+					return;
+
+				newGame(loadGame(s));
 			}
 		});
 		mntmLoadGame.addMouseListener(new MouseListener() {
@@ -475,26 +479,66 @@ public class DungeonKeepUI{
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
+}
+
+public char[][] getMapCopy(char[][] map) {
+	char[][] mapCopy = new char[map.length][map[0].length];
+
+	for(int i = 0; i < map.length; i++)
+		for(int j = 0; j < map[i].length; j++)
+			mapCopy[i][j] = map[i][j];
+
+	return mapCopy;
+}
+
+private Object[] listSavedMaps() {
+	File folder = new File(BOARDS_DIR);
+	File[] listOfFiles = folder.listFiles();
+
+	String[] listString = new String[listOfFiles.length];
+	for (int i = 0; i < listOfFiles.length; i++)
+		listString[i] = listOfFiles[i].getName();
+
+	return listString;
+}
+
+private char[][] loadGame(String fileName){
+	String path = BOARDS_DIR + fileName;
+
+	BufferedReader br;
+	char[][] board;
+
+	try {
+		br = new BufferedReader(new FileReader(path));
+		String line;
+		int boardSize =  Integer.valueOf(br.readLine());
+		board = new char[boardSize][boardSize];
+
+		for(int i = 0; i < boardSize; i++) {
+			line = br.readLine();
+			board[i] = line.toCharArray();
+		}
+
+		br.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+		return null;
 	}
 
-	public char[][] getMapCopy(char[][] map) {
-		char[][] mapCopy = new char[map.length][map[0].length];
 
-		for(int i = 0; i < map.length; i++)
-			for(int j = 0; j < map[i].length; j++)
-				mapCopy[i][j] = map[i][j];
+	printBoard(board);
 
-		return mapCopy;
+	return board;
+}
+
+public void printBoard(char[][] board){
+	for(int i = 0; i < board.length ; i++ )
+	{
+		for(int j = 0; j < board[i].length ; j++ )
+			System.out.print(board[i][j] + " ");
+		System.out.println();
 	}
 
-	private Object[] listSavedMaps() {
-		File folder = new File(BOARDS_DIR);
-		File[] listOfFiles = folder.listFiles();
-
-		String[] listString = new String[listOfFiles.length];
-		for (int i = 0; i < listOfFiles.length; i++)
-			listString[i] = listOfFiles[i].getName();
-
-		return listString;
-	}
+	System.out.println();
+}
 }

@@ -115,8 +115,6 @@ public class Game {
 	 * */
 	public void initGame(GameMap board) {
 		
-		
-
 		this.lever = null;
 		this.key = null;
 
@@ -137,7 +135,7 @@ public class Game {
 					board.setBoardCaracter(i, j , ' ');
 				}
 
-				else if(board.getBoardCaracter(i, j)== 'k') {			
+				else if(board.getBoardCaracter(i, j)== 'k' || board.getBoardCaracter(i, j) == 'c') {			
 					tmp_x=i;
 					tmp_y=j;
 				}
@@ -161,7 +159,7 @@ public class Game {
 					board.setBoardCaracter(i, j , ' ');
 				}
 
-				else if(board.getBoardCaracter(i,j) == 'S') {
+				else if(board.getBoardCaracter(i,j) == 'S' || board.getBoardCaracter(i,j) == 'I') {
 					exit.add(new ExitDoor(i, j));
 					board.setBoardCaracter(i, j , 'I');
 				}
@@ -175,10 +173,10 @@ public class Game {
 		this.exitDoors = exit;
 		if(ogres) {
 			initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
-			this.key = new Key(tmp_x,tmp_y);
+			this.key = new Key(tmp_x, tmp_y);
 		}
 		else
-			this.lever = new Lever(tmp_x,tmp_y);
+			this.lever = new Lever(tmp_x, tmp_y);
 	}
 
 
@@ -324,6 +322,8 @@ public class Game {
 
 		if(isExitDoor(x_hero, y_hero))
 		{
+			
+			System.out.println("EXIT DOOR");
 			if((lever != null && lever.getLeverState()) ||
 					(key != null && key.getKeyState() && isSecondTrie()))
 
@@ -359,17 +359,20 @@ public class Game {
 		}
 
 		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {
+			//System.out.println("KEY X" + key.getXCoordinate());
+			//System.out.println("KEY Y" + key.getYCoordinate());
+			
 			key.setKeyState(true);
-			for(int i = 0; i < exitDoors.size(); i++)
-				exitDoors.get(i).openExitDoor();
+			unlockDoors();
 			return true;
 		}
 
 		return false;
-
 	}
 
 	private boolean isExitDoor(int x_hero, int y_hero) {
+		
+		System.out.println("n doors" + exitDoors.size());
 		for(int i = 0; i < exitDoors.size(); i++)
 			if(exitDoors.get(i).getXCoordinate() == x_hero && exitDoors.get(i).getYCoordinate() == y_hero)
 				return true;
@@ -390,7 +393,6 @@ public class Game {
 	private void transformToStaires() {
 		for(int i = 0; i < exitDoors.size(); i++)
 			exitDoors.get(i).transformToStairs();
-
 	}
 
 	public void unlockDoors() {
@@ -399,7 +401,6 @@ public class Game {
 	}
 
 	public void moveVilans() {
-
 		for(int i = 0; i < vilans.size(); i++) {
 			vilans.get(i).move(selectedBoard);
 			if(vilans.get(i).getType() == EnumVillainType.Ogre)
@@ -416,7 +417,7 @@ public class Game {
 			}
 		return nOgres;
 	}
-
+	
 	public Hero getHero() {
 		return hero;
 	}

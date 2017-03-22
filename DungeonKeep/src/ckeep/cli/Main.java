@@ -3,8 +3,6 @@ package ckeep.cli;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import dkeep.logic.Game;
 import dkeep.logic.GameMap;
 
 public class Main {

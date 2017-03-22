@@ -205,7 +205,6 @@ public class DungeonKeepUI{
 					character = game.getExitDoors().get(k).getCharacter();
 		}
 
-		
 		char aux = vilansGraphics(i, j);
 		if(aux != '\0')
 			character = aux;
@@ -261,6 +260,34 @@ public class DungeonKeepUI{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		initFrame();
+		
+		gameOptions = new GameOptions(frmDungeonKeepGame);
+		gameOptions.setVisible(false);
+
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setFont(new Font("Dialog", Font.BOLD, 15));
+		frmDungeonKeepGame.setJMenuBar(menuBar);
+
+		JMenuItem mntmNewGame = new JMenuItem("       New Game");
+		menuBar.add(mntmNewGame);
+		buttonNewGame(mntmNewGame);
+
+
+		JMenuItem mntmOptions = new JMenuItem("          Options");
+		menuBar.add(mntmOptions);
+		buttonOptions(mntmOptions);
+
+		JMenuItem mntmEditMap = new JMenuItem("          Edit Map");
+		menuBar.add(mntmEditMap);
+		buttonEditGame(mntmEditMap);
+
+		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
+		menuBar.add(mntmLoadGame);
+		buttonLoadGame(mntmLoadGame);
+	}
+	
+	private void initFrame() {
 		frmDungeonKeepGame = new JFrame();
 		frmDungeonKeepGame.setType(Type.UTILITY);
 		frmDungeonKeepGame.setTitle("Dungeon Keep Game");
@@ -272,116 +299,6 @@ public class DungeonKeepUI{
 		frmDungeonKeepGame.setBounds(100, 100, 670, 720);
 		frmDungeonKeepGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDungeonKeepGame.getContentPane().setLayout(null);
-
-		gameOptions = new GameOptions(frmDungeonKeepGame);
-		gameOptions.setVisible(false);
-
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setFont(new Font("Dialog", Font.BOLD, 15));
-		frmDungeonKeepGame.setJMenuBar(menuBar);
-
-		JMenuItem mntmNewGame = new JMenuItem("       New Game");
-		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
-		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
-		mntmNewGame.setBackground(Color.LIGHT_GRAY);
-		menuBar.add(mntmNewGame);
-		mntmNewGame.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				newGame();
-			}
-		});
-
-		mntmNewGame.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource();                 
-				item.setFont(new Font("Dialog", Font.BOLD, 16));
-				item.setBackground(Color.GRAY);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				JMenuItem item = (JMenuItem) e.getSource(); 
-				item.setFont(new Font("Dialog", Font.BOLD, 15));
-				item.setBackground(Color.LIGHT_GRAY);
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-
-		JMenuItem mntmOptions = new JMenuItem("          Options");
-		mntmOptions.setFont(new Font("Dialog", Font.BOLD, 15));
-		menuBar.add(mntmOptions);
-		mntmOptions.setBackground(Color.LIGHT_GRAY);
-		mntmOptions.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				gameOptions.setVisible(true);
-			}
-		});
-
-		JMenuItem mntmEditMap = new JMenuItem("          Edit Map");
-		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
-		menuBar.add(mntmEditMap);
-		mntmEditMap.setBackground(Color.LIGHT_GRAY);
-		mntmEditMap.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Object[] sizes = {"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
-				String size = (String)JOptionPane.showInputDialog(
-						frmDungeonKeepGame,
-						"Please choose the number of rows/columns:\n",				                   
-						"Game Editor",
-						JOptionPane.PLAIN_MESSAGE,
-						null,
-						sizes,
-						10);
-				if(size != null){
-					gameEditor = new GameEditor(frmDungeonKeepGame, Integer.parseInt(size));
-					gameEditor.setVisible(true);
-				}
-			}
-		});
-
-		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
-		menuBar.add(mntmLoadGame);
-		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
-		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
-		mntmLoadGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {			
-				Object[] possibilities = listSavedMaps();
-				String s = (String)JOptionPane.showInputDialog(
-						frmDungeonKeepGame,
-						"Please choose the game:\n",				                   
-						"Load Game",
-						JOptionPane.PLAIN_MESSAGE,
-						null,
-						possibilities,
-						"Game 1");
-
-				if(s == null)
-					return;
-
-				newGame(loadGame(s));
-			}
-		});
-	}
-
-	public char[][] getMapCopy(char[][] map) {
-		char[][] mapCopy = new char[map.length][map[0].length];
-
-		for(int i = 0; i < map.length; i++)
-			for(int j = 0; j < map[i].length; j++)
-				mapCopy[i][j] = map[i][j];
-
-		return mapCopy;
 	}
 
 	private Object[] listSavedMaps() {
@@ -418,5 +335,99 @@ public class DungeonKeepUI{
 			return null;
 		}
 		return board;
+	}
+
+	private void buttonNewGame(JMenuItem mntmNewGame) {
+		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
+		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
+		mntmNewGame.setBackground(Color.LIGHT_GRAY);
+
+		mntmNewGame.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				newGame();
+			}
+		});
+		mntmNewGame.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource();                 
+				item.setFont(new Font("Dialog", Font.BOLD, 16));
+				item.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				JMenuItem item = (JMenuItem) e.getSource(); 
+				item.setFont(new Font("Dialog", Font.BOLD, 15));
+				item.setBackground(Color.LIGHT_GRAY);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+	}
+
+	private void buttonOptions(JMenuItem mntmOptions) {
+		mntmOptions.setFont(new Font("Dialog", Font.BOLD, 15));
+		mntmOptions.setBackground(Color.LIGHT_GRAY);
+		mntmOptions.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gameOptions.setVisible(true);
+			}
+		});
+	}
+
+
+	private void buttonLoadGame(JMenuItem mntmLoadGame) {
+		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
+		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
+		mntmLoadGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {			
+				Object[] possibilities = listSavedMaps();
+				String s = (String)JOptionPane.showInputDialog(
+						frmDungeonKeepGame,
+						"Please choose the game:\n",				                   
+						"Load Game",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						possibilities,
+						"Game 1");
+
+				if(s == null)
+					return;
+
+				newGame(loadGame(s));
+			}
+		});
+	}
+
+	private void buttonEditGame(JMenuItem mntmEditMap) {	
+		mntmEditMap.setFont(new Font("Dialog", Font.BOLD, 15));
+		mntmEditMap.setBackground(Color.LIGHT_GRAY);
+		mntmEditMap.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object[] sizes = {"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+				String size = (String)JOptionPane.showInputDialog(
+						frmDungeonKeepGame,
+						"Please choose the number of rows/columns:\n",				                   
+						"Game Editor",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						sizes,
+						10);
+				if(size != null){
+					gameEditor = new GameEditor(frmDungeonKeepGame, Integer.parseInt(size));
+					gameEditor.setVisible(true);
+				}
+			}
+		});
 	}
 }

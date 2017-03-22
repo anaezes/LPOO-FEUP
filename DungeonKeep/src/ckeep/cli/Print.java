@@ -13,9 +13,7 @@ public class Print {
 
 	private static String map;
 	
-
-	public static String boardToString(Game game)
-	{
+	public static String boardToString(Game game) {
 		map = game.getBoard().getBoardSize() + "\n";
 		for(int i = 0; i < game.getBoard().getBoardSize(); i++) {
 			for(int j = 0; j <  game.getBoard().getBoardSize(); j++) {						
@@ -38,7 +36,6 @@ public class Print {
 	}
 
 	private static boolean clubsToString(Game game, int i, int j) {
-
 		if(game.getVilans() == null)
 			return true;
 
@@ -57,7 +54,6 @@ public class Print {
 	}
 
 	private static boolean villainsToString(Game game, int i, int j) {
-
 		if(game.getVilans() == null)
 			return true;
 
@@ -74,7 +70,6 @@ public class Print {
 	}
 
 	private static boolean exitDoorsToString(Game game, int i, int j) {
-
 		if(game.getExitDoors() == null)
 			return true;
 
@@ -87,14 +82,6 @@ public class Print {
 		return false;
 	}
 
-//	public static void boardToFile(Game game, String nameFile) throws IOException {
-//		File file = new File(BOARDS_DIR + nameFile + ".txt");
-//		file.createNewFile();
-//		FileWriter writer = new FileWriter(file);
-//		writer.write(boardToString(game));
-//		writer.close();
-//	}
-	
 	public static void boardToFile(char[][] board, String nameFile) throws IOException {
 		File file = new File(DungeonKeepUI.BOARDS_DIR + nameFile + ".txt");
 		file.createNewFile();

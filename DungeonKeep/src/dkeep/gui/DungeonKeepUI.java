@@ -171,43 +171,64 @@ public class DungeonKeepUI{
 	private void initGraphics() {
 		currentBoardSize = game.getBoard().getBoardSize();
 		this.gameBoard = new JPanel[currentBoardSize][currentBoardSize];
-
 		char character;
+
 		for(int i = 0; i < currentBoardSize ; i++ )
-			for(int j = 0; j < currentBoardSize; j++) {
-				character = game.getBoard().getBoardCaracter(i, j);
-
-				if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
-					character = game.getHero().getCharacter();
-
-				else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
-					character = game.getLever().getCharacter();
-
-				else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
-					character = game.getKey().getCharacter();
-
-				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
-					character = game.getHeroClub().getCharacter();
-
-				if(game.getExitDoors().size() != 0) {
-					for(int k = 0; k < game.getExitDoors().size(); k++)
-						if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
-							character = game.getExitDoors().get(k).getCharacter();
-				}
-
-				if(game.getVilans().size() != 0) {
-					for(int k = 0; k < game.getVilans().size(); k++) {
-						if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
-							character = game.getVilans().get(k).getCharacter();
-					}
-				}
-
+			for(int j = 0; j < currentBoardSize; j++)
+			{
+				character = auxGraphics(i, j);
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character, i, j);
 				gamePanel.add(gameBoard[i][j]);
-				frmDungeonKeepGame.repaint();
 			}
+
+		frmDungeonKeepGame.repaint();
 	}
 
+	private char auxGraphics( int i, int j) {
+		char character = game.getBoard().getBoardCaracter(i, j);
+
+		if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
+			character = game.getHero().getCharacter();
+
+		else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
+			character = game.getLever().getCharacter();
+
+		else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
+			character = game.getKey().getCharacter();
+
+		else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
+			character = game.getHeroClub().getCharacter();
+
+		if(game.getExitDoors().size() != 0) {
+			for(int k = 0; k < game.getExitDoors().size(); k++)
+				if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
+					character = game.getExitDoors().get(k).getCharacter();
+		}
+
+		
+		char aux = vilansGraphics(i, j);
+		if(aux != '\0')
+			character = aux;
+
+		return character;
+	}
+
+	private char vilansGraphics(int i, int j) {
+		char character = '\0';
+		if(game.getVilans().size() != 0) {
+			for(int k = 0; k < game.getVilans().size(); k++) 
+				if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j) {
+					return game.getVilans().get(k).getCharacter();
+				}
+
+			if(game.getVilans().get(0).getType() == EnumVillainType.Ogre) 
+				for(int k = 0; k < game.getVilans().size(); k++)
+					if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j) {
+						return '*';
+					}
+		}
+		return character;
+	}
 
 	private void updateGraphics() {
 		currentBoardSize = game.getBoard().getBoardSize();
@@ -215,41 +236,8 @@ public class DungeonKeepUI{
 
 		for(int i = 0; i < currentBoardSize ; i++ )
 			for(int j = 0; j < currentBoardSize; j++) {
-				character = game.getBoard().getBoardCaracter(i, j);
 
-				if(character == 'X' && character == 'I')
-					continue;
-
-				else if(game.getHero().getXCoordinate() == i && game.getHero().getYCoordinate() == j) 
-					character = game.getHero().getCharacter();
-
-				else if(game.getLever() != null && game.getLever().getXCoordinate() == i && game.getLever().getYCoordinate() == j) 
-					character = game.getLever().getCharacter();
-
-				else if(game.getKey() != null && game.getKey().getXCoordinate() == i && game.getKey().getYCoordinate() == j) 
-					character = game.getKey().getCharacter();
-
-				else if(game.getHeroClub().getXCoordinate() == i && game.getHeroClub().getYCoordinate()  == j) 
-					character = game.getHeroClub().getCharacter();
-
-				else if(game.getExitDoors().size() != 0) {
-					for(int k = 0; k < game.getExitDoors().size(); k++)
-						if(game.getExitDoors().get(k).getXCoordinate() == i && game.getExitDoors().get(k).getYCoordinate() == j)
-							character = game.getExitDoors().get(k).getCharacter();
-				}
-
-				if(game.getVilans().size() != 0) {
-					for(int k = 0; k < game.getVilans().size(); k++)
-						if(game.getVilans().get(k).getXCoordinate() == i && game.getVilans().get(k).getYCoordinate() == j)
-							character = game.getVilans().get(k).getCharacter();
-				}
-
-				if(game.getVilans().size() != 0 && game.getVilans().get(0).getType() == EnumVillainType.Ogre) {
-					for(int k = 0; k < game.getVilans().size(); k++)
-						if(game.getVilans().get(k).getClub().getXCoordinate() == i && game.getVilans().get(k).getClub().getYCoordinate() == j)
-							character = '*';
-				}
-
+				character = auxGraphics(i, j);
 				((GameObject)gameBoard[i][j]).switchType(character);
 			}
 	}

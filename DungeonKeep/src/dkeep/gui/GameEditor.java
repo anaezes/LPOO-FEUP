@@ -5,7 +5,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import ckeep.cli.Print;
 import dkeep.logic.Hero;
 import dkeep.logic.Ogre;
@@ -41,7 +40,6 @@ public class GameEditor extends JDialog {
 		setResizable(false);
 		setBounds(100, 100, 850, 730);
 
-
 		JButton btnExit = new JButton("Exit");
 		btnExit.setBounds(520, 646, 98, 25);
 		getContentPane().add(btnExit);
@@ -50,7 +48,6 @@ public class GameEditor extends JDialog {
 				setVisible(false);
 			}
 		});
-
 
 		JButton btnOk = new JButton("Ok");
 		btnOk.setBounds(740, 646, 98, 25);
@@ -89,10 +86,6 @@ public class GameEditor extends JDialog {
 		board.setBounds(30, 30, 600, 600);
 		board.setBackground(Color.gray);
 		this.getContentPane().add(board);
-
-
-		//bottoms
-		//char character;
 
 		JButton btnHero = new JButton("Hero");
 		btnHero.setBounds(707, 75, 98, 25);
@@ -155,10 +148,7 @@ public class GameEditor extends JDialog {
 		getContentPane().add(btnSave);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(verifyIfMapIsComplete()){
-					
-					printBoard(matrix);
-					
+				if(verifyIfMapIsComplete()){				
 					String nameFile = (String)JOptionPane.showInputDialog(
 							parent,
 							"Name for this game:\n",
@@ -188,10 +178,7 @@ public class GameEditor extends JDialog {
 				}
 			}
 		});
-
-		
-
-		
+	
 		gameBoard = new JPanel[matrixSize][matrixSize];
 		board.setLayout(new GridLayout(matrixSize,matrixSize));
 
@@ -202,7 +189,6 @@ public class GameEditor extends JDialog {
 			}
 
 		board.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -211,21 +197,16 @@ public class GameEditor extends JDialog {
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
 			}
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
 				if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()))
 					return;
-				
 				if(character == 'O' && verifyMaxOgres())
 					return;
-				
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
 				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
@@ -234,16 +215,13 @@ public class GameEditor extends JDialog {
 
 				if(character == 'O')
 					initClubs(x, y);
-
 			}
 		});
 
 		board.addMouseMotionListener(new MouseMotionListener() {
-
 			@Override
 			public void mouseMoved(MouseEvent e) {
 			}
-
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if(character == 'X' ) {	
@@ -290,7 +268,6 @@ public class GameEditor extends JDialog {
 		return (nOgres == 5);
 	}
 	
-
 	private boolean keyAlreadyExists() {
 		for(int i = 0; i < matrixSize ; i++ )
 			for(int j = 0; j < matrixSize; j++) {
@@ -309,7 +286,6 @@ public class GameEditor extends JDialog {
 	}
 
 	private boolean verifyIfMapIsComplete() {
-
 		for(int i = 0; i < matrixSize ; i++ )
 		{	
 			if((matrix[i][0] != 'X' && matrix[i][0] != 'S') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'S'))
@@ -320,13 +296,11 @@ public class GameEditor extends JDialog {
 					return false;	
 		}
 
-
 		boolean existOgre = false;
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'O') 
 					existOgre = true;
-
 
 		boolean existHero = false;
 		for(int i = 0; i < matrixSize; i++)
@@ -337,8 +311,7 @@ public class GameEditor extends JDialog {
 		boolean existKey = false;
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
-				if(matrix[i][j] == 'c')
-				{
+				if(matrix[i][j] == 'c') {
 					matrix[i][j] = 'k';
 					existKey = true;
 				}
@@ -347,12 +320,8 @@ public class GameEditor extends JDialog {
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'S')
-				{
 					existDoor = true;
-					//matrix[i][j] = 'S';
-					System.out.println("pAAAAAAAmmmmmmmmmmmmm");
-				}
-
+		
 		return (existHero && existKey && existDoor && existOgre);	
 	}
 
@@ -362,9 +331,7 @@ public class GameEditor extends JDialog {
 		return null;
 	}
 
-
 	private void initClubs(int x_ogre, int y_ogre) {
-
 		int x_club = x_ogre;
 		int y_club = y_ogre;
 
@@ -380,16 +347,5 @@ public class GameEditor extends JDialog {
 		matrix[x_club][y_club] = '*';
 		((GameObject) gameBoard[x_club][y_club]).switchType('*');
 
-	}
-	
-	public void printBoard(char[][] board){
-		for(int i = 0; i < board.length ; i++ )
-		{
-			for(int j = 0; j < board[i].length ; j++ )
-				System.out.print(board[i][j] + " ");
-			System.out.println();
-		}
-
-		System.out.println();
 	}
 }

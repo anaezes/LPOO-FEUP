@@ -1,8 +1,6 @@
 package dkeep.gui;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -55,7 +53,6 @@ public class GameResources {
 	public static GameResources getInstance() {
 		if(instance == null)
 			instance = new GameResources();
-		
 		return instance;
 	}
 }

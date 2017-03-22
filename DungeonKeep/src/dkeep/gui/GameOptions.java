@@ -22,9 +22,7 @@ public class GameOptions extends JDialog {
 	
 	public GameOptions(JFrame parent) {
 		super(parent);
-		getContentPane().setForeground(Color.LIGHT_GRAY);
-		//getContentPane().setBackground(Color.LIGHT_GRAY);
-		
+		getContentPane().setForeground(Color.LIGHT_GRAY);	
 		nOgres = 1;
 		guardType = EnumGuardType.Drunk;
 		
@@ -34,8 +32,6 @@ public class GameOptions extends JDialog {
 		setResizable(false);
 		setFont(new Font("Dialog", Font.BOLD, 18));
 		setTitle("Options");
-		
-
 		getContentPane().setLayout(null);
 		
 		JLabel lblNumberOfOgres = new JLabel("Number of Ogres: ");
@@ -46,7 +42,6 @@ public class GameOptions extends JDialog {
 		JSlider slider = new JSlider();
 		slider.setForeground(Color.LIGHT_GRAY);
 		slider.setMinorTickSpacing(1);
-		//slider.setBackground(Color.LIGHT_GRAY);
 		slider.setFont(new Font("Dialog", Font.BOLD, 10));
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
@@ -63,22 +58,17 @@ public class GameOptions extends JDialog {
 		getContentPane().add(lblGuardType);
 		
 		JRadioButton rdbtnDrunkGuard = new JRadioButton("Drunk Guard");
-		//rdbtnDrunkGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnDrunkGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnDrunkGuard.setBounds(44, 168, 167, 23);
 		getContentPane().add(rdbtnDrunkGuard);
 		rdbtnDrunkGuard.setSelected(true);
 
-		
 		JRadioButton rdbtnRookieGuard = new JRadioButton("Rookie Guard");
-		//rdbtnRookieGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnRookieGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnRookieGuard.setBounds(44, 195, 167, 23);
 		getContentPane().add(rdbtnRookieGuard);
 		
-		
 		JRadioButton rdbtnParanoidGuard = new JRadioButton("Paranoid Guard");
-		//rdbtnParanoidGuard.setBackground(Color.LIGHT_GRAY);
 		rdbtnParanoidGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnParanoidGuard.setBounds(44, 222, 167, 23);
 		getContentPane().add(rdbtnParanoidGuard);
@@ -113,7 +103,6 @@ public class GameOptions extends JDialog {
 		getContentPane().add(btnExit);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//System.out.println(nOgres);
 				setVisible(false);
 				
 			}
@@ -125,7 +114,6 @@ public class GameOptions extends JDialog {
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				nOgres = slider.getValue();
-				System.out.println(nOgres);
 				setVisible(false);
 			}
 		});
@@ -138,7 +126,4 @@ public class GameOptions extends JDialog {
 	public EnumGuardType getGuardType() {
 		return guardType;
 	}
-	
-	
-	
 }

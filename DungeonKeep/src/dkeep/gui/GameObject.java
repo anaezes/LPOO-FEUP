@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class GameObject extends JPanel {
@@ -36,7 +33,6 @@ public class GameObject extends JPanel {
 	}
 
 	public void switchType(char type) {
-
 		GameResources instance = GameResources.getInstance();
 		switch(type) {
 		case 'X':

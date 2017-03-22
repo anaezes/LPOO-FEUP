@@ -2,10 +2,7 @@ package dkeep.gui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
 import dkeep.logic.Game;
@@ -22,23 +19,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import ckeep.cli.Print;
-
 import java.awt.Window.Type;
 
 
@@ -53,8 +43,6 @@ public class DungeonKeepUI{
 	private GameOptions gameOptions;
 	private GameEditor gameEditor;
 	private int currentBoardSize;
-	private char[][] board;
-	private boolean editorIsUsed;
 
 	/**
 	 * Launch the application.
@@ -115,13 +103,10 @@ public class DungeonKeepUI{
 			public void keyReleased(KeyEvent e) {
 			}
 		};
-
-		editorIsUsed = false;
 		initialize();
 	}
 
 	public void newGame() {
-
 		Game newGame;
 
 		int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
@@ -184,7 +169,6 @@ public class DungeonKeepUI{
 	}
 
 	private void initGraphics() {
-
 		currentBoardSize = game.getBoard().getBoardSize();
 		this.gameBoard = new JPanel[currentBoardSize][currentBoardSize];
 
@@ -270,7 +254,6 @@ public class DungeonKeepUI{
 	}
 
 	private void validateGameRunning() {
-
 		if(game.getGameState() == EnumGameState.Win){
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Congratulations! You escaped!!!",
@@ -282,10 +265,8 @@ public class DungeonKeepUI{
 					"Ah ah you lose! Best luck next time..",
 					"Game Over!",
 					JOptionPane.INFORMATION_MESSAGE);
-			board = null;
 		}
 	}
-
 
 	/**
 	 * Initialize the contents of the frame.
@@ -323,7 +304,6 @@ public class DungeonKeepUI{
 		});
 
 		mntmNewGame.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -359,7 +339,6 @@ public class DungeonKeepUI{
 		});
 
 		mntmOptions.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -388,28 +367,26 @@ public class DungeonKeepUI{
 		menuBar.add(mntmEditMap);
 		mntmEditMap.setBackground(Color.LIGHT_GRAY);
 		mntmEditMap.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-					Object[] sizes = {"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
-					String size = (String)JOptionPane.showInputDialog(
-							frmDungeonKeepGame,
-							"Please choose the number of rows/columns:\n",				                   
-							"Game Editor",
-							JOptionPane.PLAIN_MESSAGE,
-							null,
-							sizes,
-							10);
-					if(size != null){
-						gameEditor = new GameEditor(frmDungeonKeepGame, Integer.parseInt(size));
-						gameEditor.setVisible(true);
-					}
+				Object[] sizes = {"6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16"};
+				String size = (String)JOptionPane.showInputDialog(
+						frmDungeonKeepGame,
+						"Please choose the number of rows/columns:\n",				                   
+						"Game Editor",
+						JOptionPane.PLAIN_MESSAGE,
+						null,
+						sizes,
+						10);
+				if(size != null){
+					gameEditor = new GameEditor(frmDungeonKeepGame, Integer.parseInt(size));
+					gameEditor.setVisible(true);
+				}
 			}
 		});
 
 
 		mntmEditMap.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -456,7 +433,6 @@ public class DungeonKeepUI{
 			}
 		});
 		mntmLoadGame.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
@@ -479,66 +455,51 @@ public class DungeonKeepUI{
 			public void mouseClicked(MouseEvent e) {
 			}
 		});
-}
+	}
 
-public char[][] getMapCopy(char[][] map) {
-	char[][] mapCopy = new char[map.length][map[0].length];
+	public char[][] getMapCopy(char[][] map) {
+		char[][] mapCopy = new char[map.length][map[0].length];
 
-	for(int i = 0; i < map.length; i++)
-		for(int j = 0; j < map[i].length; j++)
-			mapCopy[i][j] = map[i][j];
+		for(int i = 0; i < map.length; i++)
+			for(int j = 0; j < map[i].length; j++)
+				mapCopy[i][j] = map[i][j];
 
-	return mapCopy;
-}
+		return mapCopy;
+	}
 
-private Object[] listSavedMaps() {
-	File folder = new File(BOARDS_DIR);
-	File[] listOfFiles = folder.listFiles();
+	private Object[] listSavedMaps() {
+		File folder = new File(BOARDS_DIR);
+		File[] listOfFiles = folder.listFiles();
 
-	String[] listString = new String[listOfFiles.length];
-	for (int i = 0; i < listOfFiles.length; i++)
-		listString[i] = listOfFiles[i].getName();
+		String[] listString = new String[listOfFiles.length];
+		for (int i = 0; i < listOfFiles.length; i++)
+			listString[i] = listOfFiles[i].getName();
 
-	return listString;
-}
+		return listString;
+	}
 
-private char[][] loadGame(String fileName){
-	String path = BOARDS_DIR + fileName;
+	private char[][] loadGame(String fileName){
+		String path = BOARDS_DIR + fileName;
 
-	BufferedReader br;
-	char[][] board;
+		BufferedReader br;
+		char[][] board;
 
-	try {
-		br = new BufferedReader(new FileReader(path));
-		String line;
-		int boardSize =  Integer.valueOf(br.readLine());
-		board = new char[boardSize][boardSize];
+		try {
+			br = new BufferedReader(new FileReader(path));
+			String line;
+			int boardSize =  Integer.valueOf(br.readLine());
+			board = new char[boardSize][boardSize];
 
-		for(int i = 0; i < boardSize; i++) {
-			line = br.readLine();
-			board[i] = line.toCharArray();
+			for(int i = 0; i < boardSize; i++) {
+				line = br.readLine();
+				board[i] = line.toCharArray();
+			}
+
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		br.close();
-	} catch (IOException e) {
-		e.printStackTrace();
-		return null;
+		return board;
 	}
-
-
-	printBoard(board);
-
-	return board;
-}
-
-public void printBoard(char[][] board){
-	for(int i = 0; i < board.length ; i++ )
-	{
-		for(int j = 0; j < board[i].length ; j++ )
-			System.out.print(board[i][j] + " ");
-		System.out.println();
-	}
-
-	System.out.println();
-}
 }

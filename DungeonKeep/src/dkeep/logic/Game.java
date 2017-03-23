@@ -381,24 +381,37 @@ public class Game {
 		if(!exitDoor(x_hero, y_hero))
 			return false;
 	
-		else if((!hero.isHeroArmed() && x_hero == heroClub.getXCoordinate() && y_hero == heroClub.getYCoordinate())) {
-			getBoard().setBoardCaracter(heroClub.getXCoordinate(), heroClub.getYCoordinate() , ' ');
-			hero.setHeroArmed();
-			heroClub.findClub();
+		else if(verifyHeroClub(x_hero, y_hero) || verifyLever(x_hero, y_hero) || verifyKey(x_hero, y_hero))
+			return true;
+
+		return false;
+	}
+
+	private boolean verifyKey(int x_hero, int y_hero) {
+		if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {		
+			key.setKeyState(true);
+			unlockDoors();
 			return true;
 		}
+		return false;
+	}
 
-		else if(lever != null && lever.getXCoordinate() == x_hero && lever.getYCoordinate() == y_hero) {
+	private boolean verifyLever(int x_hero, int y_hero) {
+		if(lever != null && lever.getXCoordinate() == x_hero && lever.getYCoordinate() == y_hero) {
 			lever.setLeverState(true);
 			hero.setHeroOnLever(true);
 			unlockDoors();
 			transformToStaires();
 			return true;
 		}
+		return false;
+	}
 
-		else if(key != null && key.getXCoordinate() == x_hero && key.getYCoordinate() == y_hero) {		
-			key.setKeyState(true);
-			unlockDoors();
+	private boolean verifyHeroClub(int x_hero, int y_hero) {
+		if((!hero.isHeroArmed() && x_hero == heroClub.getXCoordinate() && y_hero == heroClub.getYCoordinate())) {
+			getBoard().setBoardCaracter(heroClub.getXCoordinate(), heroClub.getYCoordinate() , ' ');
+			hero.setHeroArmed();
+			heroClub.findClub();
 			return true;
 		}
 		return false;

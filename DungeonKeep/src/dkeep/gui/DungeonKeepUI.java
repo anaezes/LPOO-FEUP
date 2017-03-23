@@ -183,6 +183,7 @@ public class DungeonKeepUI{
 		Lever lever = game.getLever();
 		Key key = game.getKey();
 		Club heroClub = game.getHeroClub();
+		List<ExitDoor> exitsDoors = game.getExitDoors();
 		
 		char character = game.getBoard().getBoardCaracter(i, j);
 
@@ -198,7 +199,6 @@ public class DungeonKeepUI{
 		else if(heroClub.getXCoordinate() == i && heroClub.getYCoordinate()  == j) 
 			character = heroClub.getCharacter();
 
-		List<ExitDoor> exitsDoors = game.getExitDoors();
 		if(exitsDoors.size() != 0) {
 			for(int k = 0; k < exitsDoors.size(); k++)
 				if(exitsDoors.get(k).getXCoordinate() == i && exitsDoors.get(k).getYCoordinate() == j)
@@ -231,13 +231,14 @@ public class DungeonKeepUI{
 	}
 
 	private void validateGameRunning() {
-		if(game.getGameState() == EnumGameState.Win){
+		EnumGameState state = game.getGameState();
+		if(state == EnumGameState.Win){
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Congratulations! You escaped!!!",
 					"Win",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
-		else if(game.getGameState() == EnumGameState.Lost){
+		else if(state == EnumGameState.Lost){
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Ah ah you lose! Best luck next time..",
 					"Game Over!",

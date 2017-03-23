@@ -79,6 +79,7 @@ public class DungeonKeepUI{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+						
 				if(game.getGameState() != EnumGameState.Running)
 					return;
 
@@ -161,10 +162,9 @@ public class DungeonKeepUI{
 				character = getObjectTypeAt(i, j);
 				gameBoard[i][j] = new GameObject(gamePanel.getWidth()/currentBoardSize, gamePanel.getHeight()/currentBoardSize, character, i, j);
 				gamePanel.add(gameBoard[i][j]);
-			}
-
-		frmDungeonKeepGame.repaint();
-		frmDungeonKeepGame.revalidate();		
+				((GameObject)gameBoard[i][j]).repaint();
+				((GameObject)gameBoard[i][j]).revalidate();
+			}	
 	}
 
 	private void updateGraphics() {
@@ -175,7 +175,9 @@ public class DungeonKeepUI{
 			for(int j = 0; j < currentBoardSize; j++) {
 				character = getObjectTypeAt(i, j);
 				((GameObject)gameBoard[i][j]).switchType(character);
-			}
+				((GameObject)gameBoard[i][j]).repaint();
+				((GameObject)gameBoard[i][j]).revalidate();
+			}	
 	}
 
 	private char getObjectTypeAt(int i, int j) {

@@ -173,7 +173,6 @@ public class DungeonKeepUI{
 
 		for(int i = 0; i < currentBoardSize ; i++ )
 			for(int j = 0; j < currentBoardSize; j++) {
-
 				character = getObjectTypeAt(i, j);
 				((GameObject)gameBoard[i][j]).switchType(character);
 			}

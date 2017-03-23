@@ -117,28 +117,30 @@ public class Game {
 
 	private void initNoOgresInMap() {
 		boolean ogres = false;
+		char character;
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
 		List<ExitDoor> exit = new ArrayList<>();
 
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
+				character = selectedBoard.getBoardCaracter(i,j);
 				if(verifyifIsHero(i,j) || verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
 					continue;
 				else if(verifyIfIsExitDoor(exit, i, j))
 					continue;
-				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
+				else if(character == 'O') {
 					x_ogre = i; y_ogre = j;
 					ogres = true;
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
+				else if(character == '*') {
 					x_ogre_club = i; y_ogre_club = j;
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == 'I')
+				else if(character == 'I')
 					selectedBoard.setBoardCaracter(i, j , 'x');
-				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
+				else if(character == 'k' || character == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
 			}
@@ -155,28 +157,30 @@ public class Game {
 	private void initNumOgresInMap() {
 		boolean ogres = false;
 		int tmp_x = 0, tmp_y=0;
+		char character;
 		List<ExitDoor> exit = new ArrayList<>();
 		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
 		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
 
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
+				character = selectedBoard.getBoardCaracter(i,j);
 				if(verifyifIsHero(i,j) ||  verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
 					continue;
 				else if(verifyIfIsExitDoor(exit, i, j))
 					continue;
-				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
+				else if(character == 'O') {
 					ogres = true;
 					x_ogres.add(i); y_ogres.add(j);
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
+				else if(character == '*') {
 					x_clubs.add(i); y_clubs.add(j);
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == 'I') 
+				else if(character == 'I') 
 					selectedBoard.setBoardCaracter(i, j , 'x');
-				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
+				else if(character== 'k' || character == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
 			}
@@ -190,7 +194,8 @@ public class Game {
 	}
 
 	private boolean verifyIfIsExitDoor(List<ExitDoor> exit, int i, int j) {
-		if(selectedBoard.getBoardCaracter(i,j) == 'S' || selectedBoard.getBoardCaracter(i,j) == 'I') {
+		char character = selectedBoard.getBoardCaracter(i,j);
+		if(character == 'S' || character == 'I') {
 			exit.add(new ExitDoor(i, j));
 			selectedBoard.setBoardCaracter(i, j , 'I');
 			return true;
@@ -216,7 +221,8 @@ public class Game {
 	}
 
 	public boolean verifyifIsHero(int i, int j){
-		if(selectedBoard.getBoardCaracter(i, j) == 'h' || selectedBoard.getBoardCaracter(i, j) == 'H') {
+		char character = selectedBoard.getBoardCaracter(i,j);
+		if(character == 'h' || character == 'H') {
 			this.hero = new Hero(i,j);
 			selectedBoard.setBoardCaracter(i, j , ' ');
 			return true;

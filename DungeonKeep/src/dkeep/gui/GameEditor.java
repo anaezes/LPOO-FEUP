@@ -74,14 +74,7 @@ public class GameEditor extends JDialog {
 			@Override public void mouseEntered(MouseEvent e) {}
 			@Override public void mouseExited(MouseEvent e) {}
 			@Override public void mouseClicked(MouseEvent e) {
-				if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()) 
-						|| (character == 'O' && verifyMaxOgres())) return;
-				JPanel item = (JPanel) e.getSource(); 
-				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
-				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
-				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
-				matrix[x][y] = character;
-				if(character == 'O') initClubs(x, y);
+				insertInMap(e);
 			}
 		});
 
@@ -90,19 +83,29 @@ public class GameEditor extends JDialog {
 			public void mouseMoved(MouseEvent e) {}
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				if(character == 'X' ) {	
-					JPanel item = (JPanel) e.getSource(); 
-					int x = e.getX();
-					int y = e.getY();
-					if(x > 5 && y > 5 && x < board.getWidth()-5 && y < board.getHeight()-5) {
-						((GameObject)item.getComponentAt(x,y)).switchType(character);
-						int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
-						int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
-						matrix[row][col] = character;
-					}
-				}
+				if(character == 'X')
+					insertInMap(e);
 			}
 		});
+	}
+
+	private void insertInMap(MouseEvent e) {
+		if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()) 
+				|| (character == 'O' && verifyMaxOgres())) return;
+		JPanel item = (JPanel) e.getSource();
+		if(character == 'X'){
+			int x = e.getX();
+			int y = e.getY();
+			if(!(x > 5 && y > 5 && x < board.getWidth()-5 && y < board.getHeight()-5))
+				return;
+		}
+		
+		((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
+		int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
+		int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
+		matrix[row][col] = character;
+		if(character == 'O')
+			initClubs(row, col);
 	}
 
 	private void initBoard() {

@@ -120,27 +120,32 @@ public class Game {
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
 		List<ExitDoor> exit = new ArrayList<>();
+		char boardCaracter;
 
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
-				if(verifyifIsHero(i,j) || verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
+				boardCaracter = selectedBoard.getBoardCaracter(i, j);
+				
+				if(verifyifIsHero(boardCaracter, i , j) || verifyIfIsHeroClub(boardCaracter, i, j) 
+						|| verifyIfIsGuard(boardCaracter, i, j))
 					continue;
-				else if(verifyIfIsExitDoor(exit, i, j))
+				else if(verifyIfIsExitDoor(exit, boardCaracter, i, j))
 					continue;
-				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
+				else if(boardCaracter == 'O') {
 					x_ogre = i; y_ogre = j;
 					ogres = true;
-					selectedBoard.setBoardCaracter(i, j , ' ');
+					boardCaracter = ' ';
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
+				else if(boardCaracter == '*') {
 					x_ogre_club = i; y_ogre_club = j;
-					selectedBoard.setBoardCaracter(i, j , ' ');
+					boardCaracter = ' ';
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == 'I')
-					selectedBoard.setBoardCaracter(i, j , 'x');
-				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
+				else if(boardCaracter == 'I')
+					boardCaracter = 'x';
+				else if(boardCaracter== 'k' || boardCaracter == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
+				selectedBoard.setBoardCaracter(i, j, boardCaracter);
 			}
 		}
 		this.exitDoors = exit;
@@ -158,27 +163,30 @@ public class Game {
 		List<ExitDoor> exit = new ArrayList<>();
 		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
 		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
+		char boardCaracter;
 
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
-				if(verifyifIsHero(i,j) ||  verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
+				boardCaracter = selectedBoard.getBoardCaracter(i, j);
+				if(verifyifIsHero(boardCaracter, i , j) || verifyIfIsHeroClub(boardCaracter, i, j) 
+						|| verifyIfIsGuard(boardCaracter, i, j))
 					continue;
-				else if(verifyIfIsExitDoor(exit, i, j))
+				else if(verifyIfIsExitDoor(exit, boardCaracter, i, j))
 					continue;
-				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
+				else if(boardCaracter == 'O') {
 					ogres = true;
-					x_ogres.add(i); y_ogres.add(j);
-					selectedBoard.setBoardCaracter(i, j , ' ');
+					boardCaracter = ' ';
 				}
-				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
+				else if(boardCaracter == '*') {
 					x_clubs.add(i); y_clubs.add(j);
-					selectedBoard.setBoardCaracter(i, j , ' ');
+					boardCaracter = ' ';
 				}
 				else if(selectedBoard.getBoardCaracter(i,j) == 'I') 
-					selectedBoard.setBoardCaracter(i, j , 'x');
+					boardCaracter =  'x';
 				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
+				selectedBoard.setBoardCaracter(i, j, boardCaracter);
 			}
 		}
 		this.exitDoors = exit;
@@ -189,8 +197,8 @@ public class Game {
 		else this.lever = new Lever(tmp_x, tmp_y);
 	}
 
-	private boolean verifyIfIsExitDoor(List<ExitDoor> exit, int i, int j) {
-		if(selectedBoard.getBoardCaracter(i,j) == 'S' || selectedBoard.getBoardCaracter(i,j) == 'I') {
+	private boolean verifyIfIsExitDoor(List<ExitDoor> exit, char boardCaracter, int i, int j) {
+		if(boardCaracter == 'S' || boardCaracter == 'I') {
 			exit.add(new ExitDoor(i, j));
 			selectedBoard.setBoardCaracter(i, j , 'I');
 			return true;
@@ -198,8 +206,8 @@ public class Game {
 		return false;
 	}
 
-	private boolean verifyIfIsGuard(int i, int j) {
-		if(selectedBoard.getBoardCaracter(i,j) == 'G') {
+	private boolean verifyIfIsGuard(char boardCaracter, int i, int j) {
+		if(boardCaracter == 'G') {
 			this.vilans = initGuard(i, j);
 			selectedBoard.setBoardCaracter(i, j , ' ');
 			return true;
@@ -207,16 +215,16 @@ public class Game {
 		return false;
 	}
 
-	private boolean verifyIfIsHeroClub(int i, int j) {
-		if(selectedBoard.getBoardCaracter(i, j)== 'a') {			
+	private boolean verifyIfIsHeroClub(char boardCaracter, int i, int j) {
+		if(boardCaracter == 'a') {			
 			this.heroClub = new Club(i,j);
 			return true;
 		}	
 		return false;
 	}
 
-	public boolean verifyifIsHero(int i, int j){
-		if(selectedBoard.getBoardCaracter(i, j) == 'h' || selectedBoard.getBoardCaracter(i, j) == 'H') {
+	public boolean verifyifIsHero(char boardCaracter, int i, int j){
+		if(boardCaracter == 'h' || boardCaracter == 'H') {
 			this.hero = new Hero(i,j);
 			selectedBoard.setBoardCaracter(i, j , ' ');
 			return true;

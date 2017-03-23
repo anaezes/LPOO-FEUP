@@ -38,7 +38,6 @@ public class GameEditor extends JDialog {
 
 		initFrame();
 		initButtonExit();
-		initButtonOk();
 		initButtonReset();
 		initBoardPanel();
 	}
@@ -246,31 +245,9 @@ public class GameEditor extends JDialog {
 		});	
 	}
 
-	private void initButtonOk() {
-		JButton btnOk = new JButton("Ok");
-		btnOk.setBounds(740, 646, 98, 25);
-		getContentPane().add(btnOk);
-		btnOk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(verifyIfMapIsComplete())
-				{
-					validBoard = true;
-					setVisible(false);
-				}
-				else {
-					JOptionPane.showMessageDialog(parent,
-							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
-							"Editor error",
-							JOptionPane.ERROR_MESSAGE);
-					validBoard = false;
-				}
-			}
-		});		
-	}
-
 	private void initButtonExit() {
 		JButton btnExit = new JButton("Exit");
-		btnExit.setBounds(520, 646, 98, 25);
+		btnExit.setBounds(740, 646, 98, 25);
 		getContentPane().add(btnExit);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -345,33 +322,41 @@ public class GameEditor extends JDialog {
 					return false;	
 		}
 
-		boolean existOgre = false;
+		return (verifyExistOgre() && verifyExistHero() && verifyExistKey() && verifyExistDoor());	
+	}
+
+	private boolean verifyExistDoor() {
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
-				if(matrix[i][j] == 'O') 
-					existOgre = true;
+				if(matrix[i][j] == 'S')
+					return true;
+		return false;
+	}
 
-		boolean existHero = false;
-		for(int i = 0; i < matrixSize; i++)
-			for(int j = 0; j < matrixSize; j++)
-				if(matrix[i][j] == 'h')
-					existHero = true;
-
-		boolean existKey = false;
+	private boolean verifyExistKey() {
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
 				if(matrix[i][j] == 'c') {
 					matrix[i][j] = 'k';
-					existKey = true;
+					return true;
 				}
+		return false;
+	}
 
-		boolean existDoor = false;
+	private boolean verifyExistHero() {
 		for(int i = 0; i < matrixSize; i++)
 			for(int j = 0; j < matrixSize; j++)
-				if(matrix[i][j] == 'S')
-					existDoor = true;
+				if(matrix[i][j] == 'h')
+					return true;
+		return false;
+	}
 
-		return (existHero && existKey && existDoor && existOgre);	
+	private boolean verifyExistOgre() {
+		for(int i = 0; i < matrixSize; i++)
+			for(int j = 0; j < matrixSize; j++)
+				if(matrix[i][j] == 'O') 
+					return true;
+		return false;
 	}
 
 	public char[][] getGameBoard() {

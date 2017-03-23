@@ -228,7 +228,7 @@ public class Game {
 			return true;
 		}
 		return false;
-}
+	}
 
 	public List<Vilan> initGuard(int i, int j) {
 
@@ -378,28 +378,10 @@ public class Game {
 		if(selectedBoard.getSelectedBoard()[x_hero][y_hero] == ' ')
 			return true;
 
-		if(isExitDoor(x_hero, y_hero))
-		{
-			if((lever != null && lever.getLeverState()) ||
-					(key != null && key.getKeyState() && isSecondTrie()))
-
-				if(byLevel && boards.size() > (indexBoard+1)) {
-					this.indexBoard++;
-					this.selectedBoard = boards.get(indexBoard);
-					this.level = indexBoard+1;
-					initGame();
-					y_hero = this.hero.getYCoordinate();
-					x_hero = this.hero.getXCoordinate();
-				} else {
-					setGameState(EnumGameState.Win);
-					hero.setCaracter(' ');
-				}
-
+		if(!exitDoor(x_hero, y_hero))
 			return false;
-		}
-
-		else if((!hero.isHeroArmed() && x_hero == heroClub.getXCoordinate() && y_hero == heroClub.getYCoordinate()))
-		{
+	
+		else if((!hero.isHeroArmed() && x_hero == heroClub.getXCoordinate() && y_hero == heroClub.getYCoordinate())) {
 			getBoard().setBoardCaracter(heroClub.getXCoordinate(), heroClub.getYCoordinate() , ' ');
 			hero.setHeroArmed();
 			heroClub.findClub();
@@ -420,6 +402,30 @@ public class Game {
 			return true;
 		}
 		return false;
+	}
+
+	private boolean exitDoor(int x_hero, int y_hero) {
+
+		if(isExitDoor(x_hero, y_hero))
+		{
+			if((lever != null && lever.getLeverState()) ||
+					(key != null && key.getKeyState() && isSecondTrie()))
+
+				if(byLevel && boards.size() > (indexBoard+1)) {
+					this.indexBoard++;
+					this.selectedBoard = boards.get(indexBoard);
+					this.level = indexBoard+1;
+					initGame();
+					y_hero = this.hero.getYCoordinate();
+					x_hero = this.hero.getXCoordinate();
+				} else {
+					setGameState(EnumGameState.Win);
+					hero.setCaracter(' ');
+				}
+
+			return false;
+		}
+		return true;
 	}
 
 	private boolean isExitDoor(int x_hero, int y_hero) {

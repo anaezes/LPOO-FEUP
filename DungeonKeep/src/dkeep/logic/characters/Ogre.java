@@ -85,32 +85,48 @@ public class Ogre extends Vilan {
 			int num = oj.nextInt(4);
 			currentCoord = this.getCordinates();
 
-			switch(num) { 
-			//left
-			case 0:
-				if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()-1)) 
-					this.SetYCoordinate(this.getYCoordinate()-1);
-				break;
-				//right
-			case 1:
-				if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()+1))
-					this.SetYCoordinate(this.getYCoordinate()+1);
-				break;
-				//up
-			case 2:
-				if(board.checkBoardColisions(this.getXCoordinate()-1, this.getYCoordinate()))
-					this.SetXCoordinate(this.getXCoordinate()-1);
-				break;
-				//down
-			case 3:
-				if(board.checkBoardColisions(this.getXCoordinate()+1, this.getYCoordinate()))
-					this.SetXCoordinate(this.getXCoordinate()+1);
-				break;
-			}
-
+			getNewPosition(board, num);
+			
 			if(currentCoord != this.getCordinates())
 				moved = true;
 		}
+	}
+
+	private void getNewPosition(GameMap board, int num) {
+		switch(num) { 
+		case 0:
+			tryMovementToLeft(board);
+			break;
+		case 1:
+			tryMovementToRight(board);
+			break;
+		case 2:
+			tryMovementToUp(board);
+			break;
+		case 3:
+			tryMovementToDown(board);
+			break;
+		}
+	}
+
+	private void tryMovementToDown(GameMap board) {
+		if(board.checkBoardColisions(this.getXCoordinate()+1, this.getYCoordinate()))
+			this.SetXCoordinate(this.getXCoordinate()+1);		
+	}
+
+	private void tryMovementToUp(GameMap board) {
+		if(board.checkBoardColisions(this.getXCoordinate()-1, this.getYCoordinate()))
+			this.SetXCoordinate(this.getXCoordinate()-1);
+	}
+
+	private void tryMovementToRight(GameMap board) {
+		if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()+1))
+			this.SetYCoordinate(this.getYCoordinate()+1);		
+	}
+
+	private void tryMovementToLeft(GameMap board) {
+		if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()-1)) 
+			this.SetYCoordinate(this.getYCoordinate()-1);	
 	}
 
 	public void checkClub(GameMap board) {

@@ -73,12 +73,9 @@ public class DungeonKeepUI{
 	 */
 	public DungeonKeepUI() {	
 		keyListener = new KeyAdapter() {
+			@Override public void keyTyped(KeyEvent e) {}
 			@Override
-			public void keyTyped(KeyEvent e) {
-			}
-			@Override
-			public void keyPressed(KeyEvent e) {
-						
+			public void keyPressed(KeyEvent e) {		
 				if(game.getGameState() != EnumGameState.Running)
 					return;
 				boolean moved = false;
@@ -106,9 +103,7 @@ public class DungeonKeepUI{
 					validateGameRunning();
 				}
 			}
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
+			@Override public void keyReleased(KeyEvent e) {}
 		};
 		initialize();
 	}

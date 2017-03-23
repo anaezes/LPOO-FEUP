@@ -1,6 +1,9 @@
-package dkeep.logic;
+package dkeep.logic.characters.guards;
 
 import java.util.Random;
+
+import dkeep.logic.GameMap;
+import dkeep.logic.characters.Guard;
 
 public class DrunkGuard extends Guard {
 

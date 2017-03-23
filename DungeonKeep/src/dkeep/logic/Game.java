@@ -4,7 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import dkeep.logic.Vilan.EnumVillainType;
+import dkeep.logic.characters.Guard;
+import dkeep.logic.characters.Hero;
+import dkeep.logic.characters.Ogre;
+import dkeep.logic.characters.Vilan;
+import dkeep.logic.characters.Vilan.EnumVillainType;
+import dkeep.logic.characters.guards.DrunkGuard;
+import dkeep.logic.characters.guards.ParanoidGuard;
+import dkeep.logic.characters.guards.RookieGuard;
+import dkeep.logic.gameobjects.Club;
+import dkeep.logic.gameobjects.ExitDoor;
+import dkeep.logic.gameobjects.Key;
+import dkeep.logic.gameobjects.Lever;
 
 public class Game {
 

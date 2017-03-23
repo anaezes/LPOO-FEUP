@@ -5,8 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import dkeep.logic.*;
 import dkeep.logic.Game.EnumGameState;
-//import dkeep.logic.Game.EnumLevel;
-import dkeep.logic.Vilan.EnumVillainType;
+import dkeep.logic.characters.Ogre;
+import dkeep.logic.characters.Vilan.EnumVillainType;
+import dkeep.logic.gameobjects.Lever;
 
 public class TestDungeonGameLogic {
 

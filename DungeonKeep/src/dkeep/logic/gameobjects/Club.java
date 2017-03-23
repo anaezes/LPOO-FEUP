@@ -1,4 +1,4 @@
-package dkeep.logic;
+package dkeep.logic.gameobjects;
 
 public class Club {
 

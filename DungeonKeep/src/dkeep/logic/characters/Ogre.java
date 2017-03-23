@@ -1,7 +1,10 @@
-package dkeep.logic;
+package dkeep.logic.characters;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import dkeep.logic.GameMap;
+import dkeep.logic.gameobjects.Club;
 
 public class Ogre extends Vilan {
 

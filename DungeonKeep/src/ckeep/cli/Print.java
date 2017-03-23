@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.util.List;
 
 import dkeep.gui.DungeonKeepUI;
-import dkeep.logic.Club;
-import dkeep.logic.ExitDoor;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
-import dkeep.logic.Hero;
-import dkeep.logic.Key;
-import dkeep.logic.Lever;
-import dkeep.logic.Vilan;
-import dkeep.logic.Vilan.EnumVillainType;
+import dkeep.logic.characters.Hero;
+import dkeep.logic.characters.Vilan;
+import dkeep.logic.characters.Vilan.EnumVillainType;
+import dkeep.logic.gameobjects.Club;
+import dkeep.logic.gameobjects.ExitDoor;
+import dkeep.logic.gameobjects.Key;
+import dkeep.logic.gameobjects.Lever;
 
 public class Print {
 

@@ -6,8 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import ckeep.cli.Print;
-import dkeep.logic.Hero;
-import dkeep.logic.Ogre;
+import dkeep.logic.characters.Hero;
+import dkeep.logic.characters.Ogre;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;

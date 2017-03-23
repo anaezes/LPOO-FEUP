@@ -1,4 +1,6 @@
-package dkeep.logic;
+package dkeep.logic.characters;
+
+import dkeep.logic.Character;
 
 public class Hero extends Character {
 	

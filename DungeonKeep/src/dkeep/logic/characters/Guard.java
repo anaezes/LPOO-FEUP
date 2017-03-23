@@ -1,4 +1,7 @@
-package dkeep.logic;
+package dkeep.logic.characters;
+
+import dkeep.logic.GameMap;
+import dkeep.logic.gameobjects.Club;
 
 public abstract class Guard extends Vilan {
 

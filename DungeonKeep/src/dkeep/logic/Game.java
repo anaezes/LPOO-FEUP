@@ -244,8 +244,6 @@ public class Game {
 	public void initOgres(List<Integer> x_ogres, List<Integer> y_ogres, List<Integer> x_clubs, List<Integer> y_clubs) {
 
 		List<Vilan> v = new ArrayList<>();
-		System.out.println("x ogres" + x_ogres.size());
-		System.out.println("x clubs" + x_clubs.size());
 		for(int i = 0; i < x_ogres.size(); i++)
 			v.add(new Ogre(x_ogres.get(i), y_ogres.get(i), x_clubs.get(i), y_clubs.get(i)));
 		this.vilans = v;

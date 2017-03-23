@@ -15,6 +15,7 @@ import dkeep.logic.Key;
 import dkeep.logic.Lever;
 import dkeep.logic.Vilan;
 import dkeep.logic.Vilan.EnumVillainType;
+import utils.BoardUtils;
 import dkeep.logic.Game.EnumGameState;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -115,41 +116,19 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame() {
-		int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
-		int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
-
-		char[][] BoardOne = {{'X','X','X','X','X','X','X','X','X','X'},
-				{'X','h',' ',' ','x', ' ', 'X', ' ', 'G', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-				{'X',' ','x',' ','x', ' ', 'X', ' ', ' ', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', ' ', ' ', 'X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-				{'S',' ',' ',' ',' ', ' ', ' ', ' ', ' ', 'X'},
-				{'X','X','X',' ','X', 'X', 'X', 'X', ' ', 'X'},
-				{'X',' ','x',' ','x', ' ', 'X', 'k', ' ', 'X'},
-				{'X','X','X','X','X','X','X','X','X','X'}};
-
-		char[][] BoardTwo = {{'X','X','X','X','X','X','X','X','X'},
-				{'S',' ',' ',' ',' ', 'O', '*', 'k', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X',' ',' ',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','h','a',' ',' ', ' ', ' ', ' ', 'X'},
-				{'X','X','X','X','X','X','X','X','X'}};
+		
 
 		int numOfOgres = gameOptions.getNumberOfOgres();
 		EnumGuardType guardType = gameOptions.getGuardType();
 
 		List<GameMap> gameMaps = new ArrayList<>();
-		GameMap gameMap1 = new GameMap(BoardOne);
-		GameMap gameMap2 = new GameMap(BoardTwo);
+		GameMap gameMap1 = new GameMap(BoardUtils.getSimpleBoardOne());
+		GameMap gameMap2 = new GameMap(BoardUtils.getSimpleBoardTwo());
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
 
 		game = new Game(gameMaps, guardType, numOfOgres);
-		game.setGuardPath(guard_y, guard_x);
+		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		initJpanel();	
 		initGraphics();
 	}

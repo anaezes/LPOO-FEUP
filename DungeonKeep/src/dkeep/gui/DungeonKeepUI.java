@@ -123,7 +123,7 @@ public class DungeonKeepUI{
 		GameMap gameMap2 = new GameMap(BoardUtils.getSimpleBoardTwo());
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
-
+		setMovementButtonsState(true);
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		currentBoardSize = game.getBoard().getBoardSize();
@@ -143,6 +143,7 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame(char[][] board){
+		setMovementButtonsState(true);
 		GameMap gameMap = new GameMap(board);
 		this.game = new Game(gameMap, false);
 		currentBoardSize = game.getBoard().getBoardSize();
@@ -320,7 +321,7 @@ public class DungeonKeepUI{
 
 	private void initButtonLeft() {
 		leftBtn = new JButton("LEFT");
-		leftBtn.setEnabled(true);
+		leftBtn.setEnabled(false);
 		leftBtn.setBounds(640, 256, 80, 20);	
 		frmDungeonKeepGame.getContentPane().add(leftBtn);
 		leftBtn.setFocusable(false);
@@ -328,7 +329,7 @@ public class DungeonKeepUI{
 
 	private void initButtonRight() {
 		rightBtn = new JButton("RIGHT");
-		rightBtn.setEnabled(true);
+		rightBtn.setEnabled(false);
 		rightBtn.setBounds(730, 256, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(rightBtn);
 		rightBtn.setFocusable(false);
@@ -336,7 +337,7 @@ public class DungeonKeepUI{
 
 	private void initButtonDown() {
 		downBtn = new JButton("DOWN");
-		downBtn.setEnabled(true);
+		downBtn.setEnabled(false);
 		downBtn.setBounds(687, 290, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(downBtn);
 		downBtn.setFocusable(false);
@@ -344,7 +345,7 @@ public class DungeonKeepUI{
 
 	private void initButtonUp() {
 		upBtn = new JButton("UP");
-		upBtn.setEnabled(true);
+		upBtn.setEnabled(false);
 		upBtn.setBounds(687, 221, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(upBtn);	
 		upBtn.setFocusable(false);
@@ -502,10 +503,10 @@ public class DungeonKeepUI{
 		mntmEditMap.addMouseListener(menuBarMouseListener);
 	}
 
-	//	private void setMovementButtons(boolean stateBtn) {
-	//		upBtn.setEnabled(stateBtn);
-	//		rightBtn.setEnabled(stateBtn);
-	//		downBtn.setEnabled(stateBtn);
-	//		leftBtn.setEnabled(stateBtn);
-	//	}
+		private void setMovementButtonsState(boolean state) {
+			upBtn.setEnabled(state);
+			rightBtn.setEnabled(state);
+			downBtn.setEnabled(state);
+			leftBtn.setEnabled(state);
+		}
 }

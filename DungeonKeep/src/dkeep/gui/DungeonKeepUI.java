@@ -106,7 +106,6 @@ public class DungeonKeepUI{
 				}
 				if(moved) {
 					updateGraphics();
-					gamePanel.repaint();
 					validateGameRunning();
 				}
 			}
@@ -128,7 +127,6 @@ public class DungeonKeepUI{
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		currentBoardSize = game.getBoard().getBoardSize();
-		//setMovementButtons(true);
 		initJpanel();	
 		initGraphics();
 	}
@@ -285,58 +283,71 @@ public class DungeonKeepUI{
 		initButtonDown();
 		initButtonRight();
 		initButtonLeft();
+		initButtonsListener();
+	}
+
+	private void initButtonsListener(){
+		ActionListener listener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(game == null)
+					return;
+				
+				EnumMoves move;
+				Object source = e.getSource();
+
+				if(source == leftBtn)
+					move = EnumMoves.LEFT;
+				else if(source == rightBtn)
+					move = EnumMoves.RIGHT;
+				else if(source == downBtn)
+					move = EnumMoves.DOWN;				
+				else if(source == upBtn)
+					move = EnumMoves.UP;
+				else 
+					return;
+
+				game.moveHero(move);
+				validateGameRunning();
+				updateGraphics();
+			}
+		};
+		leftBtn.addActionListener(listener);
+		rightBtn.addActionListener(listener);
+		downBtn.addActionListener(listener);
+		upBtn.addActionListener(listener);
 	}
 
 	private void initButtonLeft() {
 		leftBtn = new JButton("LEFT");
-		leftBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.LEFT);
-				validateGameRunning();
-			}
-		});
-		leftBtn.setEnabled(false);
+		leftBtn.setEnabled(true);
 		leftBtn.setBounds(640, 256, 80, 20);	
 		frmDungeonKeepGame.getContentPane().add(leftBtn);
+		leftBtn.setFocusable(false);
 	}
 
 	private void initButtonRight() {
 		rightBtn = new JButton("RIGHT");
-		rightBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.RIGHT);
-				validateGameRunning();
-			}
-		});
-		rightBtn.setEnabled(false);
+		rightBtn.setEnabled(true);
 		rightBtn.setBounds(730, 256, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(rightBtn);
+		rightBtn.setFocusable(false);
 	}
 
 	private void initButtonDown() {
 		downBtn = new JButton("DOWN");
-		downBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.DOWN);
-				validateGameRunning();
-			}
-		});
-		downBtn.setEnabled(false);
+		downBtn.setEnabled(true);
 		downBtn.setBounds(687, 290, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(downBtn);
+		downBtn.setFocusable(false);
 	}
 
 	private void initButtonUp() {
 		upBtn = new JButton("UP");
-		upBtn.setEnabled(false);
-		upBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				game.moveHero(EnumMoves.UP);
-				validateGameRunning();
-			}
-		});
+		upBtn.setEnabled(true);
 		upBtn.setBounds(687, 221, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(upBtn);	
+		upBtn.setFocusable(false);
 	}
 
 	private void initListeners() {
@@ -491,10 +502,10 @@ public class DungeonKeepUI{
 		mntmEditMap.addMouseListener(menuBarMouseListener);
 	}
 
-//	private void setMovementButtons(boolean stateBtn) {
-//		upBtn.setEnabled(stateBtn);
-//		rightBtn.setEnabled(stateBtn);
-//		downBtn.setEnabled(stateBtn);
-//		leftBtn.setEnabled(stateBtn);
-//	}
+	//	private void setMovementButtons(boolean stateBtn) {
+	//		upBtn.setEnabled(stateBtn);
+	//		rightBtn.setEnabled(stateBtn);
+	//		downBtn.setEnabled(stateBtn);
+	//		leftBtn.setEnabled(stateBtn);
+	//	}
 }

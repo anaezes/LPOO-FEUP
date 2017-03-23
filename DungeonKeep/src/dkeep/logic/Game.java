@@ -118,12 +118,10 @@ public class Game {
 		numberOfTries = 0;
 		this.heroClub = new Club(-1, -1);
 
-		if(numOgresInMap) {
+		if(numOgresInMap)
 			initNumOgresInMap();
-		}
-		else {
+		else
 			initNoOgresInMap();
-		}
 	}
 
 	private void initNoOgresInMap() {
@@ -136,11 +134,7 @@ public class Game {
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
 				character = selectedBoard.getBoardCaracter(i,j);
-				if(verifyifIsHero(i,j) || verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
-					continue;
-				else if(verifyIfIsExitDoor(exit, i, j))
-					continue;
-				else if(character == 'O') {
+				if(character == 'O') {
 					x_ogre = i; y_ogre = j;
 					ogres = true;
 					selectedBoard.setBoardCaracter(i, j , ' ');
@@ -149,11 +143,11 @@ public class Game {
 					x_ogre_club = i; y_ogre_club = j;
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(character == 'I')
-					selectedBoard.setBoardCaracter(i, j , 'x');
-				else if(character == 'k' || character == 'c') {			
+				else if(character == 'k' || character == 'c') 	{	
 					tmp_x=i; tmp_y=j;
 				}
+				else
+					readNonOgreObjects(character, exit, i, j);
 			}
 		}
 		this.exitDoors = exit;
@@ -176,11 +170,7 @@ public class Game {
 		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
 			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
 				character = selectedBoard.getBoardCaracter(i,j);
-				if(verifyifIsHero(i,j) ||  verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
-					continue;
-				else if(verifyIfIsExitDoor(exit, i, j))
-					continue;
-				else if(character == 'O') {
+				if(character == 'O') {
 					ogres = true;
 					x_ogres.add(i); y_ogres.add(j);
 					selectedBoard.setBoardCaracter(i, j , ' ');
@@ -189,11 +179,11 @@ public class Game {
 					x_clubs.add(i); y_clubs.add(j);
 					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(character == 'I') 
-					selectedBoard.setBoardCaracter(i, j , 'x');
-				else if(character== 'k' || character == 'c') {			
+				else if(character== 'k' || character == 'c'){	
 					tmp_x=i; tmp_y=j;
 				}
+				else
+					readNonOgreObjects(character, exit, i, j);
 			}
 		}
 		this.exitDoors = exit;
@@ -202,6 +192,15 @@ public class Game {
 			this.key = new Key(tmp_x, tmp_y);
 		}
 		else this.lever = new Lever(tmp_x, tmp_y);
+	}
+
+	private void readNonOgreObjects(char character, List<ExitDoor> exit, int i, int j){
+		verifyifIsHero(i,j);
+		verifyIfIsHeroClub(i, j);
+		verifyIfIsGuard(i, j);
+		verifyIfIsExitDoor(exit, i, j);
+		if(character == 'I') 
+			selectedBoard.setBoardCaracter(i, j , 'x');
 	}
 
 	private boolean verifyIfIsExitDoor(List<ExitDoor> exit, int i, int j) {
@@ -339,7 +338,7 @@ public class Game {
 				verifyHeroIsNextToClub(i);		
 		}
 	}
-	
+
 	private void verifyHeroIsNextToClub(int i) {
 		int x_ogre = vilans.get(i).getClub().getXCoordinate();
 		int y_ogre = vilans.get(i).getClub().getYCoordinate();
@@ -391,7 +390,7 @@ public class Game {
 
 		if(!exitDoor(x_hero, y_hero))
 			return false;
-	
+
 		else if(verifyHeroClub(x_hero, y_hero) || verifyLever(x_hero, y_hero) || verifyKey(x_hero, y_hero))
 			return true;
 

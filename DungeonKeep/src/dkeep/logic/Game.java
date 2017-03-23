@@ -63,21 +63,10 @@ public class Game {
 		this.state = EnumGameState.Running;
 		this.level = 0;
 		this.byLevel = false;
+		this.numberOfTries = 0;
 
 		initGame(board);
 	}
-
-	//	public Game(List<GameMap> boards) {
-	//		this.boards = boards;
-	//		this.selectedBoard = boards.get(indexBoard);
-	//		this.guardType = null;
-	//		this.numOgresPredefined = false;
-	//		this.canMoveGuard = false;
-	//		initGame(selectedBoard);
-	//		this.state = EnumGameState.Running;
-	//		this.level = 1;
-	//		this.byLevel = true;
-	//	}
 
 	public Game(List<GameMap> boards, EnumGuardType guardType, int numOgres) {
 		this.boards = boards;
@@ -88,6 +77,7 @@ public class Game {
 		this.numOgresInMap = false;
 		this.canMoveGuard = false;
 		this.numOgresInMap = false;
+		this.numberOfTries = 0;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
@@ -103,6 +93,7 @@ public class Game {
 		this.lever = null;
 		this.key = null;
 		this.canMoveGuard = false;
+		this.numberOfTries = 0;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
@@ -114,66 +105,44 @@ public class Game {
 	 * Identify all features from the game board
 	 * */
 	public void initGame(GameMap board) {
-
 		this.lever = null;
 		this.key = null;
-
-		List<ExitDoor> exit = new ArrayList<>();
-
-		numberOfTries = 0;
 		this.heroClub = new Club(-1, -1);
 		boolean ogres = false;
 
-
+		List<ExitDoor> exit = new ArrayList<>();
 		List<Integer> x_ogres = new ArrayList<>();
 		List<Integer> y_ogres = new ArrayList<>();
 		List<Integer> x_clubs = new ArrayList<>();
 		List<Integer> y_clubs = new ArrayList<>();
 
-
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
 
-
-
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
-				//hero
 				if(board.getBoardCaracter(i, j) == 'h' || board.getBoardCaracter(i, j) == 'H') {
 					this.hero = new Hero(i,j);
 					board.setBoardCaracter(i, j , ' ');
-				}
-				//lever or key
-				else if(board.getBoardCaracter(i, j)== 'k' || board.getBoardCaracter(i, j) == 'c') {			
+				} else if(board.getBoardCaracter(i, j)== 'k' || board.getBoardCaracter(i, j) == 'c') {			
 					tmp_x=i;
 					tmp_y=j;
-				}
-				//shield 
-				else if(board.getBoardCaracter(i, j)== 'a') {			
+				} else if(board.getBoardCaracter(i, j)== 'a') {			
 					this.heroClub = new Club(i,j);
-				}
-				//guard
-				else if(board.getBoardCaracter(i,j) == 'G') {
+				} else if(board.getBoardCaracter(i,j) == 'G') {
 					this.vilans = initGuard(i, j);
 					board.setBoardCaracter(i, j , ' ');
-				}
-				//Ogre
-				else if(board.getBoardCaracter(i,j) == 'O') {
-					if(numOgresInMap)
-					{
+				} else if(board.getBoardCaracter(i,j) == 'O') {
+					if(numOgresInMap) {
 						x_ogres.add(i);
 						y_ogres.add(j);
-					}
-					else
-					{
+					} else {
 						x_ogre = i;
 						y_ogre = j;
 					}
 					ogres = true;
 					board.setBoardCaracter(i, j , ' ');
-				}
-
-				else if(board.getBoardCaracter(i,j) == '*') {
+				} else if(board.getBoardCaracter(i,j) == '*') {
 					if(numOgresInMap) {
 						x_clubs.add(i);
 						y_clubs.add(j);
@@ -183,14 +152,10 @@ public class Game {
 						y_ogre_club = j;
 					}
 					board.setBoardCaracter(i, j , ' ');
-				}
-
-				else if(board.getBoardCaracter(i,j) == 'S' || board.getBoardCaracter(i,j) == 'I') {
+				} else if(board.getBoardCaracter(i,j) == 'S' || board.getBoardCaracter(i,j) == 'I') {
 					exit.add(new ExitDoor(i, j));
 					board.setBoardCaracter(i, j , 'I');
-				}
-
-				else if(board.getBoardCaracter(i,j) == 'I') {
+				} else if(board.getBoardCaracter(i,j) == 'I') {
 					board.setBoardCaracter(i, j , 'x');
 				}
 			}

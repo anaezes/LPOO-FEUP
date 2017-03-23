@@ -63,7 +63,6 @@ public class Game {
 		this.state = EnumGameState.Running;
 		this.level = 0;
 		this.byLevel = false;
-		this.numberOfTries = 0;
 
 		initGame(board);
 	}
@@ -73,11 +72,9 @@ public class Game {
 		this.selectedBoard = boards.get(indexBoard);
 		this.guardType = guardType;
 		this.numOgres = numOgres;
-		System.out.println("n_ogres pimmmm" + numOgres);
 		this.numOgresInMap = false;
 		this.canMoveGuard = false;
 		this.numOgresInMap = false;
-		this.numberOfTries = 0;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
@@ -93,7 +90,6 @@ public class Game {
 		this.lever = null;
 		this.key = null;
 		this.canMoveGuard = false;
-		this.numberOfTries = 0;
 		initGame(selectedBoard);
 		this.state = EnumGameState.Running;
 		this.level = 1;
@@ -104,48 +100,129 @@ public class Game {
 	/**
 	 * Identify all features from the game board
 	 * */
+
 	public void initGame(GameMap board) {
-		this.lever = null; this.key = null; this.heroClub = new Club(-1, -1);
+		this.lever = null;
+		this.key = null;
+		numberOfTries = 0;
+		this.heroClub = new Club(-1, -1);
+
+
+		if(numOgresInMap) {
+			initNumOgresInMap(board);
+		}
+		else {
+			initNoOgresInMap(board);
+		}
+	}
+
+	private void initNoOgresInMap(GameMap board) {
 		boolean ogres = false;
+		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
+		int tmp_x = 0, tmp_y=0;
 		List<ExitDoor> exit = new ArrayList<>();
-		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
-		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
-		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1, tmp_x = 0, tmp_y=0;
 
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
-				if(board.getBoardCaracter(i, j) == 'h' || board.getBoardCaracter(i, j) == 'H') {
-					this.hero = new Hero(i,j);
+				if(verifyifIsHero(i,j) || verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
+					continue;
+				else if(verifyIfIsExitDoor(exit, i, j))
+					continue;
+				else if(board.getBoardCaracter(i,j) == 'O') {
+					x_ogre = i; y_ogre = j;
+					ogres = true;
 					board.setBoardCaracter(i, j , ' ');
-				} else if(board.getBoardCaracter(i, j)== 'k' || board.getBoardCaracter(i, j) == 'c') {			
-					tmp_x=i; tmp_y=j;
-				} else if(board.getBoardCaracter(i, j)== 'a') {			
-					this.heroClub = new Club(i,j);
-				} else if(board.getBoardCaracter(i,j) == 'G') {
-					this.vilans = initGuard(i, j);
+				}
+				else if(board.getBoardCaracter(i,j) == '*') {
+					x_ogre_club = i; y_ogre_club = j;
 					board.setBoardCaracter(i, j , ' ');
-				} else if(board.getBoardCaracter(i,j) == 'O') {
-					if(numOgresInMap) {
-						x_ogres.add(i); y_ogres.add(j);
-					} else { x_ogre = i; y_ogre = j; }
-					ogres = true; board.setBoardCaracter(i, j , ' ');
-				} else if(board.getBoardCaracter(i,j) == '*') {
-					if(numOgresInMap) {
-						x_clubs.add(i); y_clubs.add(j);
-					} else { x_ogre_club = i; y_ogre_club = j; }
-					board.setBoardCaracter(i, j , ' ');
-				} else if(board.getBoardCaracter(i,j) == 'S' || board.getBoardCaracter(i,j) == 'I') {
-					exit.add(new ExitDoor(i, j));
-					board.setBoardCaracter(i, j , 'I');
-				} else if(board.getBoardCaracter(i,j) == 'I') {
+				}
+				else if(board.getBoardCaracter(i,j) == 'I')
 					board.setBoardCaracter(i, j , 'x');
-				}}}
+				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
+					tmp_x=i; tmp_y=j;
+				}
+			}
+		}
+		this.exitDoors = exit;
 		this.exitDoors = exit;
 		if(ogres) {
-			if(numOgresInMap) initOgres(x_ogres, y_ogres, x_clubs, y_clubs);
-			else initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
+			initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
 			this.key = new Key(tmp_x, tmp_y);
-		} else this.lever = new Lever(tmp_x, tmp_y);
+		}
+		else this.lever = new Lever(tmp_x, tmp_y);
+	}
+
+	private void initNumOgresInMap(GameMap board) {
+		boolean ogres = false;
+		int tmp_x = 0, tmp_y=0;
+		List<ExitDoor> exit = new ArrayList<>();
+		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
+		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
+
+		for(int i = 0; i < board.getBoardSize(); i++) {
+			for(int j = 0; j < board.getBoardSize(); j++) {
+				if(verifyifIsHero(i,j) ||  verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
+					continue;
+				else if(verifyIfIsExitDoor(exit, i, j))
+					continue;
+				else if(board.getBoardCaracter(i,j) == 'O') {
+					ogres = true;
+					x_ogres.add(i); y_ogres.add(j);
+					board.setBoardCaracter(i, j , ' ');
+				}
+				else if(board.getBoardCaracter(i,j) == '*') {
+					x_clubs.add(i); y_clubs.add(j);
+					board.setBoardCaracter(i, j , ' ');
+				}
+				else if(board.getBoardCaracter(i,j) == 'I') 
+					board.setBoardCaracter(i, j , 'x');
+				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
+					tmp_x=i; tmp_y=j;
+				}
+			}
+		}
+		this.exitDoors = exit;
+		if(ogres) {
+			initOgresList(x_ogres, y_ogres, x_clubs, y_clubs);
+			this.key = new Key(tmp_x, tmp_y);
+		}
+		else this.lever = new Lever(tmp_x, tmp_y);
+	}
+
+	private boolean verifyIfIsExitDoor(List<ExitDoor> exit, int i, int j) {
+		if(selectedBoard.getBoardCaracter(i,j) == 'S' || selectedBoard.getBoardCaracter(i,j) == 'I') {
+			exit.add(new ExitDoor(i, j));
+			selectedBoard.setBoardCaracter(i, j , 'I');
+			return true;
+		}
+		return false;
+	}
+
+	private boolean verifyIfIsGuard(int i, int j) {
+		if(selectedBoard.getBoardCaracter(i,j) == 'G') {
+			this.vilans = initGuard(i, j);
+			selectedBoard.setBoardCaracter(i, j , ' ');
+			return true;
+		}
+		return false;
+	}
+
+	private boolean verifyIfIsHeroClub(int i, int j) {
+		if(selectedBoard.getBoardCaracter(i, j)== 'a') {			
+			this.heroClub = new Club(i,j);
+			return true;
+		}	
+		return false;
+	}
+
+	public boolean verifyifIsHero(int i, int j){
+		if(selectedBoard.getBoardCaracter(i, j) == 'h' || selectedBoard.getBoardCaracter(i, j) == 'H') {
+			this.hero = new Hero(i,j);
+			selectedBoard.setBoardCaracter(i, j , ' ');
+			return true;
+		}
+		return false;
 	}
 
 	public List<Vilan> initGuard(int i, int j) {
@@ -180,7 +257,7 @@ public class Game {
 		return v;
 	}
 
-	public void initOgres(List<Integer> x_ogres, List<Integer> y_ogres, List<Integer> x_clubs, List<Integer> y_clubs) {
+	public void initOgresList(List<Integer> x_ogres, List<Integer> y_ogres, List<Integer> x_clubs, List<Integer> y_clubs) {
 
 		List<Vilan> v = new ArrayList<>();
 		for(int i = 0; i < x_ogres.size(); i++)
@@ -194,10 +271,7 @@ public class Game {
 
 		if(numOgres != -1) {
 			for(int i = 0; i < numOgres; i++)
-			{
 				v.add(new Ogre(x_ogre, y_ogre, x_club, y_club));
-				System.out.println("n_ogres" + numOgres);
-			}
 		}
 		else {
 			Random oj = new Random();
@@ -377,16 +451,6 @@ public class Game {
 			if(vilans.get(i).getType() == EnumVillainType.Ogre)
 				vilans.get(i).checkClub(selectedBoard);
 		}
-	}
-
-	private int getNumOgres() {
-		int nOgres = 0;
-		for(int i = 0; i < selectedBoard.getBoardSize() ; i++ )
-			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
-				if(selectedBoard.getBoardCaracter(i, j) == 'O')
-					nOgres++;
-			}
-		return nOgres;
 	}
 
 	public Hero getHero() {

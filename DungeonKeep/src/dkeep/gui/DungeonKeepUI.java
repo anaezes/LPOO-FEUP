@@ -116,8 +116,6 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame() {
-		
-
 		int numOfOgres = gameOptions.getNumberOfOgres();
 		EnumGuardType guardType = gameOptions.getGuardType();
 
@@ -129,13 +127,14 @@ public class DungeonKeepUI{
 
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
+		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
 	}
 
 	public void initJpanel() {
 		gamePanel = new JPanel();
-		gamePanel.setLayout(new GridLayout(game.getBoard().getBoardSize(), game.getBoard().getBoardSize()));
+		gamePanel.setLayout(new GridLayout(currentBoardSize, currentBoardSize));
 		gamePanel.setBounds(30, 30, 600, 600);
 		gamePanel.setBackground(Color.WHITE);
 		gamePanel.setFocusable(true);
@@ -147,12 +146,12 @@ public class DungeonKeepUI{
 	public void newGame(char[][] board){
 		GameMap gameMap = new GameMap(board);
 		this.game = new Game(gameMap, false);
+		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
 	}
 
 	private void initGraphics() {
-		currentBoardSize = game.getBoard().getBoardSize();
 		this.gameBoard = new JPanel[currentBoardSize][currentBoardSize];
 		char character;
 

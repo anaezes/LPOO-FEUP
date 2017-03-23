@@ -27,15 +27,13 @@ public class Print {
 		Key key = game.getKey();
 		Club heroClub = game.getHeroClub();
 		
-		map = boardSize + "\n";
+		map = "\n";
 		for(int i = 0; i < boardSize; i++) {
 			for(int j = 0; j <  boardSize; j++) {						
 				if(hero.getYCoordinate() == j && hero.getXCoordinate() == i)
 					map += hero.getCharacter();
-				else if(lever != null && lever.getYCoordinate() == j && lever.getXCoordinate() == i)
-					map += lever.getCharacter();
-				else if(key != null && key.getYCoordinate() == j && key.getXCoordinate() == i)
-					map += key.getCharacter();
+				else if(printKeyOrLever(lever, key, i, j))
+					continue;
 				else if((heroClub.getYCoordinate() == j && heroClub.getXCoordinate() == i) && !hero.isHeroArmed())
 					map += "*";
 				else if(!villainsToString(game, i, j) && !clubsToString(game, i, j) && !exitDoorsToString(game, i, j))
@@ -44,6 +42,19 @@ public class Print {
 			map += "\n";
 		}
 		return map;
+	}
+	
+	private static boolean printKeyOrLever(Lever lever, Key key, int i, int j) {
+		boolean print = false;
+		if(lever != null && lever.getYCoordinate() == j && lever.getXCoordinate() == i){
+			map += lever.getCharacter();
+			print = true;
+		}
+		else if(key != null && key.getYCoordinate() == j && key.getXCoordinate() == i){
+			map += key.getCharacter();
+			print = true;
+		}
+		return print;
 	}
 
 	private static boolean clubsToString(Game game, int i, int j) {

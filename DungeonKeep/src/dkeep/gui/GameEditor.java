@@ -69,22 +69,17 @@ public class GameEditor extends JDialog {
 	private void initBoardMouseListener() {
 		board.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
+			public void mouseReleased(MouseEvent e) {}
 			@Override
-			public void mousePressed(MouseEvent e) {
-			}
+			public void mousePressed(MouseEvent e) {}
 			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
+			public void mouseEntered(MouseEvent e) {}
 			@Override
-			public void mouseExited(MouseEvent e) {
-			}
+			public void mouseExited(MouseEvent e) {}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()))
-					return;
-				if(character == 'O' && verifyMaxOgres())
+				if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()) 
+						|| (character == 'O' && verifyMaxOgres()))
 					return;
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
@@ -99,8 +94,7 @@ public class GameEditor extends JDialog {
 
 		board.addMouseMotionListener(new MouseMotionListener() {
 			@Override
-			public void mouseMoved(MouseEvent e) {
-			}
+			public void mouseMoved(MouseEvent e) {}
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				if(character == 'X' ) {	
@@ -116,7 +110,6 @@ public class GameEditor extends JDialog {
 				}
 			}
 		});
-
 	}
 
 	private void initBoard() {
@@ -153,8 +146,7 @@ public class GameEditor extends JDialog {
 									"Error",
 									JOptionPane.INFORMATION_MESSAGE);
 						}
-				}
-				else {
+				} else {
 					JOptionPane.showMessageDialog(parent,
 							"Map isn't valid! Please choose place for a hero, a key and close the map with walls or doors...",
 							"Editor error",
@@ -316,12 +308,10 @@ public class GameEditor extends JDialog {
 		{	
 			if((matrix[i][0] != 'X' && matrix[i][0] != 'S') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'S'))
 				return false;
-
 			for(int j = 0; j < matrixSize ; j++ )
 				if(matrix[0][j] != 'X' && matrix[0][j] != 'S' && matrix[matrix[0].length-1][j] != 'X' && matrix[matrix[0].length-1][j] != 'S')
 					return false;	
 		}
-
 		return (verifyExistOgre() && verifyExistHero() && verifyExistKey() && verifyExistDoor());	
 	}
 
@@ -380,6 +370,5 @@ public class GameEditor extends JDialog {
 
 		matrix[x_club][y_club] = '*';
 		((GameObject) gameBoard[x_club][y_club]).switchType('*');
-
 	}
 }

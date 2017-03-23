@@ -20,6 +20,9 @@ public class GameOptions extends JDialog {
 	private EnumGuardType guardType;
 	private int nOgres;
 	private JSlider slider;
+	private JRadioButton rdbtnParanoidGuard;
+	private JRadioButton rdbtnRookieGuard;
+	private JRadioButton rdbtnDrunkGuard;
 	
 	public GameOptions(JFrame parent) {
 		super(parent);
@@ -67,22 +70,16 @@ public class GameOptions extends JDialog {
 		lblGuardType.setBounds(12, 145, 167, 15);
 		getContentPane().add(lblGuardType);
 		
-		JRadioButton rdbtnDrunkGuard = new JRadioButton("Drunk Guard");
-		rdbtnDrunkGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
-		rdbtnDrunkGuard.setBounds(44, 168, 167, 23);
-		getContentPane().add(rdbtnDrunkGuard);
-		rdbtnDrunkGuard.setSelected(true);
-
-		JRadioButton rdbtnRookieGuard = new JRadioButton("Rookie Guard");
-		rdbtnRookieGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
-		rdbtnRookieGuard.setBounds(44, 195, 167, 23);
-		getContentPane().add(rdbtnRookieGuard);
-		
-		JRadioButton rdbtnParanoidGuard = new JRadioButton("Paranoid Guard");
+		initRadioButtonDrunkGuard();
+		initRadioButtonRookieGuard();
+		initRadioButtonParanoidGuard();
+	}
+	
+	private void initRadioButtonParanoidGuard() {
+		rdbtnParanoidGuard = new JRadioButton("Paranoid Guard");
 		rdbtnParanoidGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
 		rdbtnParanoidGuard.setBounds(44, 222, 167, 23);
 		getContentPane().add(rdbtnParanoidGuard);
-		
 		rdbtnParanoidGuard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				guardType = EnumGuardType.Paranoid;
@@ -90,15 +87,13 @@ public class GameOptions extends JDialog {
 				rdbtnDrunkGuard.setSelected(false);
 			}
 		});
-		
-		rdbtnDrunkGuard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				guardType = EnumGuardType.Drunk;
-				rdbtnRookieGuard.setSelected(false);
-				rdbtnParanoidGuard.setSelected(false);
-			}
-		});
-		
+	}
+
+	private void initRadioButtonRookieGuard() {
+		rdbtnRookieGuard = new JRadioButton("Rookie Guard");
+		rdbtnRookieGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
+		rdbtnRookieGuard.setBounds(44, 195, 167, 23);
+		getContentPane().add(rdbtnRookieGuard);
 		rdbtnRookieGuard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				guardType = EnumGuardType.Rockie;
@@ -107,7 +102,22 @@ public class GameOptions extends JDialog {
 			}
 		});
 	}
-	
+
+	private void initRadioButtonDrunkGuard() {
+		rdbtnDrunkGuard = new JRadioButton("Drunk Guard");
+		rdbtnDrunkGuard.setFont(new Font("Dialog", Font.PLAIN, 14));
+		rdbtnDrunkGuard.setBounds(44, 168, 167, 23);
+		getContentPane().add(rdbtnDrunkGuard);
+		rdbtnDrunkGuard.setSelected(true);
+		rdbtnDrunkGuard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				guardType = EnumGuardType.Drunk;
+				rdbtnRookieGuard.setSelected(false);
+				rdbtnParanoidGuard.setSelected(false);
+			}
+		});	
+	}
+
 	private void initButtonExit() {
 		JButton btnExit = new JButton("Exit");
 		btnExit.setBounds(134, 293, 98, 25);

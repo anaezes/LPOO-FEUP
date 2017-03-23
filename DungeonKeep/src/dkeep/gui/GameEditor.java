@@ -68,27 +68,19 @@ public class GameEditor extends JDialog {
 
 	private void initBoardMouseListener() {
 		board.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent e) {}
-			@Override
-			public void mousePressed(MouseEvent e) {}
-			@Override
-			public void mouseEntered(MouseEvent e) {}
-			@Override
-			public void mouseExited(MouseEvent e) {}
-			@Override
-			public void mouseClicked(MouseEvent e) {
+			@Override public void mouseReleased(MouseEvent e) {}
+			@Override public void mousePressed(MouseEvent e) {}
+			@Override public void mouseEntered(MouseEvent e) {}
+			@Override public void mouseExited(MouseEvent e) {}
+			@Override public void mouseClicked(MouseEvent e) {
 				if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()) 
-						|| (character == 'O' && verifyMaxOgres()))
-					return;
+						|| (character == 'O' && verifyMaxOgres())) return;
 				JPanel item = (JPanel) e.getSource(); 
 				((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
 				int x = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 				int y = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
 				matrix[x][y] = character;
-
-				if(character == 'O')
-					initClubs(x, y);
+				if(character == 'O') initClubs(x, y);
 			}
 		});
 

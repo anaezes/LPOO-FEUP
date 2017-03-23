@@ -115,8 +115,6 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame() {
-		Game newGame;
-
 		int[] guard_y = new int[] {8, 7, 7, 7, 7, 7, 6, 5, 4, 3, 2, 1, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 8, 8};
 		int[] guard_x = new int[] {1, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 5, 4, 3, 2};
 
@@ -150,10 +148,8 @@ public class DungeonKeepUI{
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
 
-		newGame = new Game(gameMaps, guardType, numOfOgres);
-		newGame.setGuardPath(guard_y, guard_x);
-
-		this.game = newGame;
+		game = new Game(gameMaps, guardType, numOfOgres);
+		game.setGuardPath(guard_y, guard_x);
 		initJpanel();	
 		initGraphics();
 	}

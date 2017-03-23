@@ -13,7 +13,7 @@ public class InputUser {
 	private Game game;
 
 	public InputUser(List<GameMap> gameMaps, int numOgres, int[] guard_x, int[] guard_y) {
-		
+
 		game = new Game(gameMaps, numOgres);
 		game.setGuardPath(guard_y, guard_x);
 	}
@@ -49,28 +49,31 @@ public class InputUser {
 		//transform string to lower case and
 		//pick the first character of the string 
 		char option = (keyCode.toLowerCase()).charAt(0);
+		EnumMoves moveDir = null;
 
 		switch(option) { 
 		//left
 		case 'a':
-			game.moveHero(EnumMoves.LEFT);
+			moveDir = EnumMoves.LEFT;
 			break;
 		case 'd':
-			game.moveHero(EnumMoves.RIGHT);
+			moveDir = EnumMoves.RIGHT;
 			break;
 			//up
 		case 'w':
-			game.moveHero(EnumMoves.UP);
+			moveDir = EnumMoves.UP;
 			break;
 			//down
 		case 's':
-			game.moveHero(EnumMoves.DOWN);
+			moveDir = EnumMoves.DOWN;
 			break;
 		default: 
 			System.out.println("Press a valid key!");
 		}
-
-		game.checkLostGame();
+		if(moveDir != null){
+			game.moveHero(moveDir);
+			game.checkLostGame();
+		}
 	}
 
 

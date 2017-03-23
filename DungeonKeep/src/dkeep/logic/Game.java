@@ -105,19 +105,12 @@ public class Game {
 	 * Identify all features from the game board
 	 * */
 	public void initGame(GameMap board) {
-		this.lever = null;
-		this.key = null;
-		this.heroClub = new Club(-1, -1);
+		this.lever = null; this.key = null; this.heroClub = new Club(-1, -1);
 		boolean ogres = false;
-
 		List<ExitDoor> exit = new ArrayList<>();
-		List<Integer> x_ogres = new ArrayList<>();
-		List<Integer> y_ogres = new ArrayList<>();
-		List<Integer> x_clubs = new ArrayList<>();
-		List<Integer> y_clubs = new ArrayList<>();
-
-		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
-		int tmp_x = 0, tmp_y=0;
+		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
+		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
+		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1, tmp_x = 0, tmp_y=0;
 
 		for(int i = 0; i < board.getBoardSize(); i++) {
 			for(int j = 0; j < board.getBoardSize(); j++) {
@@ -125,8 +118,7 @@ public class Game {
 					this.hero = new Hero(i,j);
 					board.setBoardCaracter(i, j , ' ');
 				} else if(board.getBoardCaracter(i, j)== 'k' || board.getBoardCaracter(i, j) == 'c') {			
-					tmp_x=i;
-					tmp_y=j;
+					tmp_x=i; tmp_y=j;
 				} else if(board.getBoardCaracter(i, j)== 'a') {			
 					this.heroClub = new Club(i,j);
 				} else if(board.getBoardCaracter(i,j) == 'G') {
@@ -134,44 +126,26 @@ public class Game {
 					board.setBoardCaracter(i, j , ' ');
 				} else if(board.getBoardCaracter(i,j) == 'O') {
 					if(numOgresInMap) {
-						x_ogres.add(i);
-						y_ogres.add(j);
-					} else {
-						x_ogre = i;
-						y_ogre = j;
-					}
-					ogres = true;
-					board.setBoardCaracter(i, j , ' ');
+						x_ogres.add(i); y_ogres.add(j);
+					} else { x_ogre = i; y_ogre = j; }
+					ogres = true; board.setBoardCaracter(i, j , ' ');
 				} else if(board.getBoardCaracter(i,j) == '*') {
 					if(numOgresInMap) {
-						x_clubs.add(i);
-						y_clubs.add(j);
-					}
-					else {
-						x_ogre_club = i;
-						y_ogre_club = j;
-					}
+						x_clubs.add(i); y_clubs.add(j);
+					} else { x_ogre_club = i; y_ogre_club = j; }
 					board.setBoardCaracter(i, j , ' ');
 				} else if(board.getBoardCaracter(i,j) == 'S' || board.getBoardCaracter(i,j) == 'I') {
 					exit.add(new ExitDoor(i, j));
 					board.setBoardCaracter(i, j , 'I');
 				} else if(board.getBoardCaracter(i,j) == 'I') {
 					board.setBoardCaracter(i, j , 'x');
-				}
-			}
-		}
-
+				}}}
 		this.exitDoors = exit;
 		if(ogres) {
-			if(numOgresInMap)
-				initOgres(x_ogres, y_ogres, x_clubs, y_clubs);
-			else
-				initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
-
+			if(numOgresInMap) initOgres(x_ogres, y_ogres, x_clubs, y_clubs);
+			else initOgres(x_ogre, y_ogre, x_ogre_club, y_ogre_club);
 			this.key = new Key(tmp_x, tmp_y);
-		}
-		else
-			this.lever = new Lever(tmp_x, tmp_y);
+		} else this.lever = new Lever(tmp_x, tmp_y);
 	}
 
 	public List<Vilan> initGuard(int i, int j) {
@@ -213,7 +187,7 @@ public class Game {
 			v.add(new Ogre(x_ogres.get(i), y_ogres.get(i), x_clubs.get(i), y_clubs.get(i)));
 		this.vilans = v;
 	}
-	
+
 	public void initOgres(int x_ogre, int y_ogre, int x_club, int y_club) {
 
 		List<Vilan> v = new ArrayList<>();	

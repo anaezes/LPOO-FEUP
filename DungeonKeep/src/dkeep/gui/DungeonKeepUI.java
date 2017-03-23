@@ -188,29 +188,46 @@ public class DungeonKeepUI{
 
 		char character = game.getBoard().getBoardCaracter(i, j);
 
-		if(hero.getXCoordinate() == i && hero.getYCoordinate() == j) 
+		if(isHero(hero, i, j)) 
 			character = hero.getCharacter();
-
-		else if(lever != null && lever.getXCoordinate() == i && lever.getYCoordinate() == j) 
+		else if(isLever(lever, i, j)) 
 			character = lever.getCharacter();
-
-		else if(key != null && key.getXCoordinate() == i && key.getYCoordinate() == j) 
+		else if(isKey(key, i, j)) 
 			character = key.getCharacter();
-
-		else if(heroClub.getXCoordinate() == i && heroClub.getYCoordinate()  == j) 
+		else if(isHeroClub(heroClub, i, j)) 
 			character = heroClub.getCharacter();
-
-		if(exitsDoors.size() != 0) {
-			for(int k = 0; k < exitsDoors.size(); k++)
-				if(exitsDoors.get(k).getXCoordinate() == i && exitsDoors.get(k).getYCoordinate() == j)
-					character = exitsDoors.get(k).getCharacter();
-		}
-
+		else if(isExitDoor(exitsDoors, i, j))
+			character = exitsDoors.get(0).getCharacter();
 		char aux = vilansGraphics(i, j);
 		if(aux != '\0')
 			character = aux;
 
 		return character;
+	}
+
+	private boolean isLever(Lever lever, int i, int j){
+		return (lever != null && lever.getXCoordinate() == i && lever.getYCoordinate() == j);
+	}
+
+	private boolean isKey(Key key, int i, int j){
+		return (key != null && key.getXCoordinate() == i && key.getYCoordinate() == j);
+	}
+
+	private boolean isHeroClub(Club heroClub, int i, int j){
+		return (heroClub.getXCoordinate() == i && heroClub.getYCoordinate() == j);
+	}
+
+	private boolean isHero(Hero hero, int i, int j){
+		return (hero.getXCoordinate() == i && hero.getYCoordinate() == j);
+	}
+
+	private boolean isExitDoor(List<ExitDoor> exitsDoors, int i, int j) {
+		if(exitsDoors.size() != 0) {
+			for(int k = 0; k < exitsDoors.size(); k++)
+				if(exitsDoors.get(k).getXCoordinate() == i && exitsDoors.get(k).getYCoordinate() == j)
+					return true;
+		}
+		return false;
 	}
 
 	private char vilansGraphics(int i, int j) {
@@ -293,7 +310,7 @@ public class DungeonKeepUI{
 			public void actionPerformed(ActionEvent e) {
 				if(game == null)
 					return;
-				
+
 				EnumMoves move;
 				Object source = e.getSource();
 
@@ -503,10 +520,10 @@ public class DungeonKeepUI{
 		mntmEditMap.addMouseListener(menuBarMouseListener);
 	}
 
-		private void setMovementButtonsState(boolean state) {
-			upBtn.setEnabled(state);
-			rightBtn.setEnabled(state);
-			downBtn.setEnabled(state);
-			leftBtn.setEnabled(state);
-		}
+	private void setMovementButtonsState(boolean state) {
+		upBtn.setEnabled(state);
+		rightBtn.setEnabled(state);
+		downBtn.setEnabled(state);
+		leftBtn.setEnabled(state);
+	}
 }

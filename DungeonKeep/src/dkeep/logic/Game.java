@@ -316,33 +316,33 @@ public class Game {
 		this.level++;
 	}
 
-	public void checkLostGame()
-	{
-		int x_ogre;
-		int y_ogre;
-		boolean check;
-		for(int i = 0; i < vilans.size(); i++) {
-
-			check = false;
-			if(((vilans.get(i).getYCoordinate() == (hero.getYCoordinate()+1) || vilans.get(i).getYCoordinate() == (hero.getYCoordinate()-1)) && vilans.get(i).getXCoordinate() == (hero.getXCoordinate())) || 
-					(vilans.get(i).getXCoordinate() == (hero.getXCoordinate()+1) || vilans.get(i).getXCoordinate() == (hero.getXCoordinate()-1)) && vilans.get(i).getYCoordinate() == (hero.getYCoordinate()))
-				check = true;
-
-			if(check && hero.isHeroArmed())
-				((Ogre)vilans.get(i)).putStunned();
-			else if(check)
-				state = EnumGameState.Lost;
-
-			if(vilans.get(i).getType() == EnumVillainType.Ogre) {		
-				x_ogre = vilans.get(i).getClub().getXCoordinate();
-				y_ogre = vilans.get(i).getClub().getYCoordinate();
-				if(((y_ogre == (hero.getYCoordinate()+1) || y_ogre == (hero.getYCoordinate()-1)) && x_ogre == (hero.getXCoordinate())) || 
-						(x_ogre== (hero.getXCoordinate()+1) || x_ogre == (hero.getXCoordinate()-1)) && y_ogre == (hero.getYCoordinate())
-						|| (x_ogre == hero.getXCoordinate()) && y_ogre == hero.getYCoordinate())
+	public void checkLostGame() {
+		for(int i = 0; i < vilans.size(); i++) {			
+			if(verifyHeroIsNextToVilan(i)){
+				if(hero.isHeroArmed())
+					((Ogre)vilans.get(i)).putStunned();
+				else
 					state = EnumGameState.Lost;
-			}
+			}				
+			if(vilans.get(i).getType() == EnumVillainType.Ogre) 
+				verifyHeroIsNextToClub(i);		
 		}
+	}
+	
+	private void verifyHeroIsNextToClub(int i) {
+		int x_ogre = vilans.get(i).getClub().getXCoordinate();
+		int y_ogre = vilans.get(i).getClub().getYCoordinate();
+		if(((y_ogre == (hero.getYCoordinate()+1) || y_ogre == (hero.getYCoordinate()-1)) && x_ogre == (hero.getXCoordinate())) || 
+				(x_ogre== (hero.getXCoordinate()+1) || x_ogre == (hero.getXCoordinate()-1)) && y_ogre == (hero.getYCoordinate())
+				|| (x_ogre == hero.getXCoordinate()) && y_ogre == hero.getYCoordinate())
+			state = EnumGameState.Lost;
+	}
 
+	private boolean verifyHeroIsNextToVilan(int i) {
+		if(((vilans.get(i).getYCoordinate() == (hero.getYCoordinate()+1) || vilans.get(i).getYCoordinate() == (hero.getYCoordinate()-1)) && vilans.get(i).getXCoordinate() == (hero.getXCoordinate())) || 
+				(vilans.get(i).getXCoordinate() == (hero.getXCoordinate()+1) || vilans.get(i).getXCoordinate() == (hero.getXCoordinate()-1)) && vilans.get(i).getYCoordinate() == (hero.getYCoordinate()))
+			return true;
+		return false;
 	}
 
 	public void moveHero(EnumMoves movement) {

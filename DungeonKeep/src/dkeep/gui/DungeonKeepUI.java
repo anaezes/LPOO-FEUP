@@ -2,6 +2,8 @@ package dkeep.gui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import dkeep.logic.Club;
@@ -52,6 +54,10 @@ public class DungeonKeepUI{
 	private GameEditor gameEditor;
 	private int currentBoardSize;
 	private MouseListener menuBarMouseListener;
+	private JButton leftBtn;
+	private JButton rightBtn;
+	private JButton upBtn;
+	private JButton downBtn;
 
 	/**
 	 * Launch the application.
@@ -121,6 +127,7 @@ public class DungeonKeepUI{
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		currentBoardSize = game.getBoard().getBoardSize();
+		//setMovementButtons(true);
 		initJpanel();	
 		initGraphics();
 	}
@@ -178,7 +185,7 @@ public class DungeonKeepUI{
 		Key key = game.getKey();
 		Club heroClub = game.getHeroClub();
 		List<ExitDoor> exitsDoors = game.getExitDoors();
-		
+
 		char character = game.getBoard().getBoardCaracter(i, j);
 
 		if(hero.getXCoordinate() == i && hero.getYCoordinate() == j) 
@@ -246,6 +253,8 @@ public class DungeonKeepUI{
 	private void initialize() {
 		initFrame();
 		initListeners();
+		initDirectonButtons();
+
 		gameOptions = new GameOptions(frmDungeonKeepGame);
 		gameOptions.setVisible(false);
 
@@ -268,6 +277,65 @@ public class DungeonKeepUI{
 		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
 		menuBar.add(mntmLoadGame);
 		buttonLoadGame(mntmLoadGame);
+	}
+
+	private void initDirectonButtons() {
+		initButtonUp();
+		initButtonDown();
+		initButtonRight();
+		initButtonLeft();
+	}
+
+	private void initButtonLeft() {
+		leftBtn = new JButton("LEFT");
+		leftBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				game.moveHero(EnumMoves.LEFT);
+				validateGameRunning();
+			}
+		});
+		leftBtn.setEnabled(false);
+		leftBtn.setBounds(640, 256, 80, 20);	
+		frmDungeonKeepGame.getContentPane().add(leftBtn);
+	}
+
+	private void initButtonRight() {
+		rightBtn = new JButton("RIGHT");
+		rightBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				game.moveHero(EnumMoves.RIGHT);
+				validateGameRunning();
+			}
+		});
+		rightBtn.setEnabled(false);
+		rightBtn.setBounds(730, 256, 80, 20);
+		frmDungeonKeepGame.getContentPane().add(rightBtn);
+	}
+
+	private void initButtonDown() {
+		downBtn = new JButton("DOWN");
+		downBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				game.moveHero(EnumMoves.DOWN);
+				validateGameRunning();
+			}
+		});
+		downBtn.setEnabled(false);
+		downBtn.setBounds(687, 290, 80, 20);
+		frmDungeonKeepGame.getContentPane().add(downBtn);
+	}
+
+	private void initButtonUp() {
+		upBtn = new JButton("UP");
+		upBtn.setEnabled(false);
+		upBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				game.moveHero(EnumMoves.UP);
+				validateGameRunning();
+			}
+		});
+		upBtn.setBounds(687, 221, 80, 20);
+		frmDungeonKeepGame.getContentPane().add(upBtn);	
 	}
 
 	private void initListeners() {
@@ -305,7 +373,7 @@ public class DungeonKeepUI{
 		frmDungeonKeepGame.setBackground(Color.GRAY);
 		frmDungeonKeepGame.getContentPane().setBackground(Color.LIGHT_GRAY);
 		frmDungeonKeepGame.setAlwaysOnTop(true);
-		frmDungeonKeepGame.setBounds(100, 100, 670, 720);
+		frmDungeonKeepGame.setBounds(100, 100, 820, 720);
 		frmDungeonKeepGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDungeonKeepGame.getContentPane().setLayout(null);
 	}
@@ -421,4 +489,11 @@ public class DungeonKeepUI{
 		});
 		mntmEditMap.addMouseListener(menuBarMouseListener);
 	}
+
+//	private void setMovementButtons(boolean stateBtn) {
+//		upBtn.setEnabled(stateBtn);
+//		rightBtn.setEnabled(stateBtn);
+//		downBtn.setEnabled(stateBtn);
+//		leftBtn.setEnabled(stateBtn);
+//	}
 }

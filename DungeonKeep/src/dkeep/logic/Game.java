@@ -64,7 +64,7 @@ public class Game {
 		this.level = 0;
 		this.byLevel = false;
 
-		initGame(board);
+		initGame();
 	}
 
 	public Game(List<GameMap> boards, EnumGuardType guardType, int numOgres) {
@@ -75,7 +75,7 @@ public class Game {
 		this.numOgresInMap = false;
 		this.canMoveGuard = false;
 		this.numOgresInMap = false;
-		initGame(selectedBoard);
+		initGame();
 		this.state = EnumGameState.Running;
 		this.level = 1;
 		this.byLevel = true;
@@ -90,7 +90,7 @@ public class Game {
 		this.lever = null;
 		this.key = null;
 		this.canMoveGuard = false;
-		initGame(selectedBoard);
+		initGame();
 		this.state = EnumGameState.Running;
 		this.level = 1;
 
@@ -101,44 +101,43 @@ public class Game {
 	 * Identify all features from the game board
 	 * */
 
-	public void initGame(GameMap board) {
+	public void initGame() {
 		this.lever = null;
 		this.key = null;
 		numberOfTries = 0;
 		this.heroClub = new Club(-1, -1);
 
-
 		if(numOgresInMap) {
-			initNumOgresInMap(board);
+			initNumOgresInMap();
 		}
 		else {
-			initNoOgresInMap(board);
+			initNoOgresInMap();
 		}
 	}
 
-	private void initNoOgresInMap(GameMap board) {
+	private void initNoOgresInMap() {
 		boolean ogres = false;
 		int x_ogre= 0, y_ogre = 0, x_ogre_club = -1, y_ogre_club = -1;
 		int tmp_x = 0, tmp_y=0;
 		List<ExitDoor> exit = new ArrayList<>();
 
-		for(int i = 0; i < board.getBoardSize(); i++) {
-			for(int j = 0; j < board.getBoardSize(); j++) {
+		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
+			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
 				if(verifyifIsHero(i,j) || verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
 					continue;
 				else if(verifyIfIsExitDoor(exit, i, j))
 					continue;
-				else if(board.getBoardCaracter(i,j) == 'O') {
+				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
 					x_ogre = i; y_ogre = j;
 					ogres = true;
-					board.setBoardCaracter(i, j , ' ');
+					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(board.getBoardCaracter(i,j) == '*') {
+				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
 					x_ogre_club = i; y_ogre_club = j;
-					board.setBoardCaracter(i, j , ' ');
+					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(board.getBoardCaracter(i,j) == 'I')
-					board.setBoardCaracter(i, j , 'x');
+				else if(selectedBoard.getBoardCaracter(i,j) == 'I')
+					selectedBoard.setBoardCaracter(i, j , 'x');
 				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
@@ -153,30 +152,30 @@ public class Game {
 		else this.lever = new Lever(tmp_x, tmp_y);
 	}
 
-	private void initNumOgresInMap(GameMap board) {
+	private void initNumOgresInMap() {
 		boolean ogres = false;
 		int tmp_x = 0, tmp_y=0;
 		List<ExitDoor> exit = new ArrayList<>();
 		List<Integer> x_ogres = new ArrayList<>(), y_ogres = new ArrayList<>();
 		List<Integer> x_clubs = new ArrayList<>(), y_clubs = new ArrayList<>();
 
-		for(int i = 0; i < board.getBoardSize(); i++) {
-			for(int j = 0; j < board.getBoardSize(); j++) {
+		for(int i = 0; i < selectedBoard.getBoardSize(); i++) {
+			for(int j = 0; j < selectedBoard.getBoardSize(); j++) {
 				if(verifyifIsHero(i,j) ||  verifyIfIsHeroClub(i, j) || verifyIfIsGuard(i, j))
 					continue;
 				else if(verifyIfIsExitDoor(exit, i, j))
 					continue;
-				else if(board.getBoardCaracter(i,j) == 'O') {
+				else if(selectedBoard.getBoardCaracter(i,j) == 'O') {
 					ogres = true;
 					x_ogres.add(i); y_ogres.add(j);
-					board.setBoardCaracter(i, j , ' ');
+					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(board.getBoardCaracter(i,j) == '*') {
+				else if(selectedBoard.getBoardCaracter(i,j) == '*') {
 					x_clubs.add(i); y_clubs.add(j);
-					board.setBoardCaracter(i, j , ' ');
+					selectedBoard.setBoardCaracter(i, j , ' ');
 				}
-				else if(board.getBoardCaracter(i,j) == 'I') 
-					board.setBoardCaracter(i, j , 'x');
+				else if(selectedBoard.getBoardCaracter(i,j) == 'I') 
+					selectedBoard.setBoardCaracter(i, j , 'x');
 				else if(selectedBoard.getBoardCaracter(i, j)== 'k' || selectedBoard.getBoardCaracter(i, j) == 'c') {			
 					tmp_x=i; tmp_y=j;
 				}
@@ -382,7 +381,7 @@ public class Game {
 					this.indexBoard++;
 					this.selectedBoard = boards.get(indexBoard);
 					this.level = indexBoard+1;
-					initGame(selectedBoard);
+					initGame();
 					y_hero = this.hero.getYCoordinate();
 					x_hero = this.hero.getXCoordinate();
 				} else {

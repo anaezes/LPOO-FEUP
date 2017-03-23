@@ -59,55 +59,55 @@ public class Ogre extends Vilan {
 	}
 
 	public void move(GameMap board) {
-
-
-		if(!this.isStunned()) {		
-
+		if(this.isStunned())
+			updateTurnsLeftStunned();	
+		else{
 			this.character = 'O';
-			Random oj = new Random();
 			onLever = false;
-			String currentCoord;
-			boolean moved = false;
-
-			while(!moved) {
-				int num = oj.nextInt(4);
-
-				currentCoord = this.getCordinates();
-
-				switch(num) { 
-				//left
-				case 0:
-					if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()-1)) 
-						this.SetYCoordinate(this.getYCoordinate()-1);
-					break;
-					//right
-				case 1:
-					if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()+1))
-						this.SetYCoordinate(this.getYCoordinate()+1);
-					break;
-					//up
-				case 2:
-					if(board.checkBoardColisions(this.getXCoordinate()-1, this.getYCoordinate()))
-						this.SetXCoordinate(this.getXCoordinate()-1);
-					break;
-					//down
-				case 3:
-					if(board.checkBoardColisions(this.getXCoordinate()+1, this.getYCoordinate()))
-						this.SetXCoordinate(this.getXCoordinate()+1);
-					break;
-				}
-
-				if(currentCoord != this.getCordinates())
-					moved = true;
-			}
+	
+			computeMoveOgre(board);
 
 			if(board.checkBoardLeverAbove(this.getXCoordinate(), this.getYCoordinate())) {
 				onLever = true;
 				this.character = '$';
 			}
 		}
-		else
-			updateTurnsLeftStunned();	
+	}
+
+	private void computeMoveOgre(GameMap board) {
+		Random oj = new Random();
+		String currentCoord;
+		boolean moved = false;
+		while(!moved) {
+			int num = oj.nextInt(4);
+			currentCoord = this.getCordinates();
+
+			switch(num) { 
+			//left
+			case 0:
+				if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()-1)) 
+					this.SetYCoordinate(this.getYCoordinate()-1);
+				break;
+				//right
+			case 1:
+				if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()+1))
+					this.SetYCoordinate(this.getYCoordinate()+1);
+				break;
+				//up
+			case 2:
+				if(board.checkBoardColisions(this.getXCoordinate()-1, this.getYCoordinate()))
+					this.SetXCoordinate(this.getXCoordinate()-1);
+				break;
+				//down
+			case 3:
+				if(board.checkBoardColisions(this.getXCoordinate()+1, this.getYCoordinate()))
+					this.SetXCoordinate(this.getXCoordinate()+1);
+				break;
+			}
+
+			if(currentCoord != this.getCordinates())
+				moved = true;
+		}
 	}
 
 	public void checkClub(GameMap board) {

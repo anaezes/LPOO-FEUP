@@ -71,18 +71,16 @@ public class DungeonKeepUI{
 	/**
 	 * Create the application.
 	 */
-	public DungeonKeepUI() {
+	public DungeonKeepUI() {	
 		keyListener = new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 			}
-
 			@Override
 			public void keyPressed(KeyEvent e) {
 						
 				if(game.getGameState() != EnumGameState.Running)
 					return;
-
 				boolean moved = false;
 				int key = e.getKeyCode();
 				switch(key) {
@@ -102,7 +100,6 @@ public class DungeonKeepUI{
 					game.moveHero(EnumMoves.DOWN);
 					moved = true;
 				}
-
 				if(moved) {
 					updateGraphics();
 					gamePanel.repaint();

@@ -35,60 +35,24 @@ public class GameObject extends JPanel {
 	public void switchType(char type) {
 		GameResources instance = GameResources.getInstance();
 		switch(type) {
-		case 'X':
-			image = instance.wall;
-			break;
-		case 'H':
-		case 'h':
-			image = instance.captainAmerica;
-			break;
-		case 'A':
-			image = instance.captainAmericaShield;
-			break;
-		case 'a':
-			image = instance.shield;
-			break;
-		case 'I':
-		case 'x':
-			image = instance.doorClosed;
-			break;
-		case 'S':
-			image = instance.doorOpen;
-			break;
-		case 'O':
-			image = instance.hulk;
-			break;
-		case '$':
-			image = instance.hulkDolar;
-			break;
-		case '8':
-			image = instance.hulkStunned;
-			break;
-		case '*':
-			image = instance.club;
-			break;
-		case 'G':
-			image = instance.ultron;
-			break;
-		case 'g':
-			image = instance.ultronSleep;
-			break;
-		case 'k':
-			image = instance.leverOff;
-			break;
-		case 'K':
-			image = instance.leverOn;
-			break;
-		case 'c':
-			image = instance.key;
-			break;
-		case ' ':
-			image = instance.floor;
-			break;
-		default:
-			this.setBackground(Color.WHITE);
+		case 'X': image = instance.wall; break;
+		case 'H': case 'h': image = instance.captainAmerica; break;
+		case 'A': image = instance.captainAmericaShield; break;
+		case 'a': image = instance.shield; break;
+		case 'I': case 'x': image = instance.doorClosed; break;
+		case 'S': image = instance.doorOpen; break;
+		case 'O': image = instance.hulk; break;
+		case '$': image = instance.hulkDolar; break;
+		case '8': image = instance.hulkStunned; break;
+		case '*': image = instance.club; break;
+		case 'G': image = instance.ultron; break;
+		case 'g': image = instance.ultronSleep; break;
+		case 'k': image = instance.leverOff; break;
+		case 'K': image = instance.leverOn; break;
+		case 'c': image = instance.key; break;
+		case ' ': image = instance.floor; break;
+		default: this.setBackground(Color.WHITE);
 		}
-
 		repaint();
 	} 
 

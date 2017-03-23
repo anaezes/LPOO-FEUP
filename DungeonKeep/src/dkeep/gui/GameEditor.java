@@ -90,8 +90,7 @@ public class GameEditor extends JDialog {
 	}
 
 	private void insertInMap(MouseEvent e) {
-		if((character == 'h' && heroAlreadyExists()) || (character == 'c' && keyAlreadyExists()) 
-				|| (character == 'O' && verifyMaxOgres())) return;
+		if(!canInsertIntoMap()) return;
 		JPanel item = (JPanel) e.getSource();
 		if(character == 'X'){
 			int x = e.getX();
@@ -106,6 +105,22 @@ public class GameEditor extends JDialog {
 		matrix[row][col] = character;
 		if(character == 'O')
 			initClubs(row, col);
+	}
+	
+	private boolean canInsertIntoMap() {
+		if(character == 'X') 
+			return true;
+		return (character == 'h' && !heroAlreadyExists()) || (character == 'c' && !keyAlreadyExists()) 
+				|| (character == 'O' && !verifyMaxOgres()) || (character == 'a' && !shieldAlreadyExists());
+	}
+
+	private boolean shieldAlreadyExists() {
+		for(int i = 0; i < matrixSize ; i++ )
+			for(int j = 0; j < matrixSize; j++) {
+				if(matrix[i][j] == 'a')
+					return true;
+			}
+		return false;
 	}
 
 	private void initBoard() {

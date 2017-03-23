@@ -1,6 +1,5 @@
 package dkeep.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -33,28 +32,85 @@ public class GameObject extends JPanel {
 
 	public void switchType(char type) {
 		GameResources instance = GameResources.getInstance();
+		
+		chooseLeverOrKey(type, instance);
+		chooseUltron(type, instance);
+		chooseHero(type, instance);
+		chooseOgre(type, instance);
+		chooseDoor(type, instance);
+		
 		switch(type) {
 		case 'X': image = instance.wall; break;
-		case 'H': case 'h': image = instance.captainAmerica; break;
-		case 'A': image = instance.captainAmericaShield; break;
 		case 'a': image = instance.shield; break;
-		case 'I': case 'x': image = instance.doorClosed; break;
-		case 'S': image = instance.doorOpen; break;
-		case 'O': image = instance.hulk; break;
-		case '$': image = instance.hulkDolar; break;
-		case '8': image = instance.hulkStunned; break;
 		case '*': image = instance.club; break;
-		case 'G': image = instance.ultron; break;
-		case 'g': image = instance.ultronSleep; break;
-		case 'k': image = instance.leverOff; break;
-		case 'K': image = instance.leverOn; break;
-		case 'c': image = instance.key; break;
 		case ' ': image = instance.floor; break;
-		default: this.setBackground(Color.WHITE);
 		}
 		repaint();
 	} 
 
+	public void chooseLeverOrKey(char type, GameResources instance) {
+		switch(type) {
+		case 'k': 
+			image = instance.leverOff; 
+			break;
+		case 'K': 
+			image = instance.leverOn; 
+			break;
+		case 'c': 
+			image = instance.key; 
+			break;
+		}
+	}
+	
+	public void chooseUltron(char type, GameResources instance) {
+		switch(type) {
+		case 'G': 
+			image = instance.ultron; 
+			break;
+		case 'g': 
+			image = instance.ultronSleep; 
+			break;
+		}
+	}
+	
+	public void chooseHero(char type, GameResources instance) {
+		switch(type) {
+		case 'H': 
+		case 'h': 
+			image = instance.captainAmerica; 
+			break;
+		case 'A': 
+			image = instance.captainAmericaShield; 
+			break;
+		}
+	}
+
+	public void chooseOgre(char type, GameResources instance) {
+		switch(type) {
+		case 'O': 
+			image = instance.hulk;
+			break;
+		case '$': 
+			image = instance.hulkDolar;
+			break;
+		case '8': 
+			image = instance.hulkStunned; 
+			break;
+		}
+	}
+
+	public void chooseDoor(char type, GameResources instance) {
+		switch(type) {
+		case 'I': 
+		case 'x': 
+			image = instance.doorClosed; 
+			break;
+		case 'S': 
+			image = instance.doorOpen; 
+			break;
+		}
+	}
+	
 	public int getRow() {
 		return x;
 	}

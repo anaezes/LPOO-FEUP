@@ -98,7 +98,7 @@ public class GameEditor extends JDialog {
 			if(!(x > 5 && y > 5 && x < board.getWidth()-5 && y < board.getHeight()-5))
 				return;
 		}
-		
+
 		((GameObject)item.getComponentAt(e.getX(),e.getY())).switchType(character);
 		int row = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getRow();
 		int col = ((GameObject)item.getComponentAt(e.getX(),e.getY())).getColumn();
@@ -106,9 +106,9 @@ public class GameEditor extends JDialog {
 		if(character == 'O')
 			initClubs(row, col);
 	}
-	
+
 	private boolean canInsertIntoMap() {
-		if(character == 'X') 
+		if(character == 'X' || character == 'S') 
 			return true;
 		return (character == 'h' && !heroAlreadyExists()) || (character == 'c' && !keyAlreadyExists()) 
 				|| (character == 'O' && !verifyMaxOgres()) || (character == 'a' && !shieldAlreadyExists());
@@ -293,7 +293,6 @@ public class GameEditor extends JDialog {
 				if(matrix[i][j] == 'O')
 					nOgres++;
 			}
-
 		return (nOgres == 5);
 	}
 
@@ -317,13 +316,31 @@ public class GameEditor extends JDialog {
 	private boolean verifyIfMapIsComplete() {
 		for(int i = 0; i < matrixSize ; i++ )
 		{	
-			if((matrix[i][0] != 'X' && matrix[i][0] != 'S') && (matrix[i][matrix[i].length-1] != 'X' && matrix[i][matrix[i].length-1] != 'S'))
+			if(!verifyVerticalLimits(i))
 				return false;
-			for(int j = 0; j < matrixSize ; j++ )
-				if(matrix[0][j] != 'X' && matrix[0][j] != 'S' && matrix[matrix[0].length-1][j] != 'X' && matrix[matrix[0].length-1][j] != 'S')
-					return false;	
+			if(!verifyHorizontalLimits(i))
+				return false;
 		}
 		return (verifyExistOgre() && verifyExistHero() && verifyExistKey() && verifyExistDoor());	
+	}
+
+	private boolean verifyVerticalLimits(int i) {
+		if(!isValidMapBorder(i,0) || !isValidMapBorder(i, matrix[i].length-1))
+			return false;
+		return true;
+	}
+
+	private boolean verifyHorizontalLimits(int i) {
+		for(int j = 0; j < matrixSize ; j++ )
+			if(!isValidMapBorder(0, j) || !isValidMapBorder(matrix[0].length-1, j))
+				return false;
+		return true;
+	}
+	
+	private boolean isValidMapBorder(int i, int j) {
+		if(matrix[i][j] != 'X' && matrix[i][j] != 'S')
+			return false;
+		return true;
 	}
 
 	private boolean verifyExistDoor() {

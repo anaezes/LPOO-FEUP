@@ -1,7 +1,4 @@
-package dkeep.logic.characters.guards;
-
-import dkeep.logic.GameMap;
-import dkeep.logic.characters.Guard;
+package dkeep.logic;
 
 public class RookieGuard extends Guard {
 

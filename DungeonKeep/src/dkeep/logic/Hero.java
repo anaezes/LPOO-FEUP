@@ -1,6 +1,4 @@
-package dkeep.logic.characters;
-
-import dkeep.logic.Character;
+package dkeep.logic;
 
 public class Hero extends Character {
 	
@@ -60,5 +58,9 @@ public class Hero extends Character {
 
 	public void setCaracter(char c) {
 		this.character = c;
+	}
+
+	public void setOnLeverState(boolean a){
+		this.withKey=a;
 	}
 }

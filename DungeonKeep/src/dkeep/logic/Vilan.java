@@ -1,8 +1,4 @@
-package dkeep.logic.characters;
-
-import dkeep.logic.Character;
-import dkeep.logic.GameMap;
-import dkeep.logic.gameobjects.Club;
+package dkeep.logic;
 
 public abstract class Vilan extends Character {
 

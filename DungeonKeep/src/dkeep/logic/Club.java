@@ -1,4 +1,4 @@
-package dkeep.logic.gameobjects;
+package dkeep.logic;
 
 public class Club {
 
@@ -44,5 +44,9 @@ public class Club {
 
 	public char getCharacter() {
 		return character;
+	}
+
+	public void setOnLeverState(boolean b) {
+		this.onLever = b;
 	}
 }

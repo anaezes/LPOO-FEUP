@@ -1,9 +1,6 @@
-package dkeep.logic.characters.guards;
+package dkeep.logic;
 
 import java.util.Random;
-
-import dkeep.logic.GameMap;
-import dkeep.logic.characters.Guard;
 
 public class ParanoidGuard extends Guard {
 

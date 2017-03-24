@@ -6,19 +6,19 @@ import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import dkeep.logic.Club;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
+import dkeep.logic.ExitDoor;
 import dkeep.logic.Game;
 import dkeep.logic.GameMap;
-import dkeep.logic.gameobjects.Club;
-import dkeep.logic.gameobjects.ExitDoor;
-import dkeep.logic.gameobjects.Key;
-import dkeep.logic.gameobjects.Lever;
+import dkeep.logic.Hero;
+import dkeep.logic.Key;
+import dkeep.logic.Lever;
+import dkeep.logic.Vilan;
 import utils.BoardUtils;
 import dkeep.logic.Game.EnumGameState;
-import dkeep.logic.characters.Hero;
-import dkeep.logic.characters.Vilan;
-import dkeep.logic.characters.Vilan.EnumVillainType;
+import dkeep.logic.Vilan.EnumVillainType;
 
 import java.awt.Font;
 import java.awt.GridLayout;

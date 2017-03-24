@@ -1,9 +1,6 @@
-package dkeep.logic.characters.guards;
+package dkeep.logic;
 
 import java.util.Random;
-
-import dkeep.logic.GameMap;
-import dkeep.logic.characters.Guard;
 
 public class DrunkGuard extends Guard {
 
@@ -77,5 +74,9 @@ public class DrunkGuard extends Guard {
 			index = 0;
 		direction = 'f';
 		return index;
+	}
+
+	public void setDirection(char c) {
+		direction = c;		
 	}
 }

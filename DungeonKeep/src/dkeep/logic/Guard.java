@@ -1,7 +1,4 @@
-package dkeep.logic.characters;
-
-import dkeep.logic.GameMap;
-import dkeep.logic.gameobjects.Club;
+package dkeep.logic;
 
 public abstract class Guard extends Vilan {
 
@@ -68,5 +65,9 @@ public abstract class Guard extends Vilan {
 	}
 
 	public void checkClub(GameMap board) {}
+
+	public boolean getPredifinedPath() {
+		return hasPredifinedPath;
+	}
 	
 }

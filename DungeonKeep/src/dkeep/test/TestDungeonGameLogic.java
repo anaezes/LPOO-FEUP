@@ -2,12 +2,13 @@ package dkeep.test;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import dkeep.logic.*;
 import dkeep.logic.Game.EnumGameState;
-import dkeep.logic.characters.Ogre;
-import dkeep.logic.characters.Vilan.EnumVillainType;
-import dkeep.logic.gameobjects.Lever;
+import dkeep.logic.Vilan.EnumVillainType;
 
 public class TestDungeonGameLogic {
 
@@ -84,8 +85,11 @@ public class TestDungeonGameLogic {
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		String cellPosition = "(2,1)";
+		String doorPosition = "(2,0)";
 		assertEquals(cellPosition, game.getHero().getCordinates());
+		assertEquals(doorPosition, game.getExitDoors().get(0).getCoordinates());
 	}
+	
 
 	@Test
 	public void testHeroMoveIntoStairs(){
@@ -114,6 +118,8 @@ public class TestDungeonGameLogic {
 		assertEquals('S', game.getExitDoors().get(0).getCharacter());
 		assertFalse(game.isGameOver());
 		assertEquals(EnumGameState.Win, game.getGameState());
+		game.getHero().setOnLeverState(true);
+		assertTrue(game.getHero().getHeroOnLeverState());
 	}
 
 	//Task2
@@ -164,10 +170,17 @@ public class TestDungeonGameLogic {
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap, true);
 		game.setCanMoveGuard(false);
+		char keyCharacter = 'c';
+		assertEquals(keyCharacter, game.getKey().getCharacter());
+		assertFalse(game.getExitDoors().get(0).getDoorExitState());
+		assertEquals('h', game.getHero().getCharacter());
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.DOWN);
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
+		assertTrue(game.getExitDoors().get(0).getDoorExitState());
+
+		
 		assertTrue(game.getKey().getKeyState());
 		assertNotEquals(EnumGameState.Lost, game.getGameState());
 		assertEquals(EnumGameState.Win, game.getGameState());
@@ -214,12 +227,23 @@ public class TestDungeonGameLogic {
 	//Task4
 	@Test
 	public void testLeverObject() {
+		GameMap gameMap = new GameMap(mapWithOgre);
 		Lever lever = new Lever(0,0);
+		Club club = new Club(0,0);
+		club.setOnLeverState(true);
+		assertTrue(club.getOnLeverState());
+		
+		Club club1 = new Club(1,0);
+		club.setOnLeverState(false);
 		assertEquals(false, lever.getLeverState());
 		lever.setLeverState(true);
 		assertEquals(true, lever.getLeverState());
-	}
-
+		assertFalse(club1.getOnLeverState());
+		
+		assertEquals('a', club.getCharacter());
+		
+		assertTrue(gameMap.checkBoardLeverAbove(3, 1));
+	}		
 
 	@Test(timeout=100)
 	public void testClubMove(){
@@ -271,6 +295,7 @@ public class TestDungeonGameLogic {
 		String coord = ogre.getCordinates();
 		game.moveVilans();
 		assertNotEquals(coord, ogre.getCordinates());
+		ogre.checkClub(gameMap);
 	}
 	
 	@Test
@@ -312,5 +337,164 @@ public class TestDungeonGameLogic {
 		assertNotEquals(game2.getBoard(), game1.getBoard());
 	}
 
+	@Test
+	public void testHeroConstructor(){
+		Hero hero = new Hero();
+		String heroCord = "(2,2)";
+		assertNotEquals(heroCord,  hero.getCordinates());
+	}
+	
+	@Test
+	public void testVillanFunctions(){
+		Guard guard = new DrunkGuard(2,3);
+		assertEquals(null, guard.getClub());
+		guard.setPredifinedPath(true);
+		assertTrue(guard.getPredifinedPath());
+	
+	
+		int index=guard.getIndexGuard();
+		assertEquals(0, index);
+
+		Vilan vilan = new Ogre();
+		assertFalse(vilan.GetOnLeverOgre());
+		assertEquals(0,vilan.getIndexGuard());
+		
+	}
+	
+	@Test
+	public void moveRookieGuard() {
+		RookieGuard rokGuard = new RookieGuard(3, 2);
+		rokGuard.setPath(guard_y, guard_x);
+		GameMap gameMap = new GameMap(map);
+		rokGuard.move(gameMap);
+		assertEquals(rokGuard.getIndexGuard(), 1);
+		assertEquals(rokGuard.getXCoordinate(), 3);
+		assertEquals(rokGuard.getYCoordinate(), 2);
+		rokGuard.move(gameMap);
+		assertNotEquals(rokGuard.getIndexGuard(), 1);
+		assertNotEquals(rokGuard.getXCoordinate(), 3);
+		assertEquals(rokGuard.getYCoordinate(), 2);
+			
+	}
+	
+	@Test
+	public void CreateGameWithListAndNumOgres(){
+		GameMap mapOne = new GameMap(map);
+		GameMap mapTwo = new GameMap(mapWithOgre);
+		GameMap mapThree = new GameMap(mapWithOgreAndArm);
+		List<GameMap> gameMaps = new ArrayList<>();
+		gameMaps.add(mapOne);
+		gameMaps.add(mapTwo);
+		gameMaps.add(mapThree);
+		
+		Game game = new Game(gameMaps, 3);
+		
+		assertEquals(game.getNumOgres(), 3);
+		assertEquals(game.isGameOver(), false);
+		assertEquals(game.getBoard(), mapOne);
+		
+	}
+	
+	@Test
+	public void CreateGameWithListGuardTypeAndOgres() {
+		GameMap mapOne = new GameMap(map);
+		GameMap mapTwo = new GameMap(mapWithOgre);
+		GameMap mapThree = new GameMap(mapWithOgreAndArm);
+		List<GameMap> gameMaps = new ArrayList<>();
+		gameMaps.add(mapOne);
+		gameMaps.add(mapTwo);
+		gameMaps.add(mapThree);
+		
+		Game game = new Game(gameMaps, EnumGuardType.Drunk, 2);
+		
+		assertEquals(game.getNumOgres(), 2);
+		assertEquals(game.isGameOver(), false);
+		assertEquals(game.getBoard(), mapOne);
+		assertEquals(game.getGuardType(), EnumGuardType.Drunk);
+	}
+	
+	@Test
+	public void moveDrunkGuardOnOtherDirection() {
+		DrunkGuard guard = new DrunkGuard(2, 3);
+		guard.setPath(guard_y, guard_x);
+		GameMap board = new GameMap(map);
+		guard.setDirection('b');
+		guard.move(board);
+		boolean up=false, down=false, left=false, right= false;
+		while( !up && !down  && !left  && !right) {
+			if(guard.getXCoordinate() == 2) {
+				up = true;
+			}
+			else if(guard.getXCoordinate() == 3) {
+				down = true;
+			}
+			else if(guard.getYCoordinate() == 2) {
+				left = true;
+			}
+			else if(guard.getYCoordinate() == 1) {
+				right = true;
+			} else {
+				fail("fail test");
+			}
+		}		
+	}
+	
+	@Test
+	public void moveParanoidGuardOnOtherDirection() {
+		ParanoidGuard guard = new ParanoidGuard(2, 3);
+		guard.setPath(guard_y, guard_x);
+		GameMap board = new GameMap(map);
+		guard.move(board);
+		boolean up=false, down=false, left=false, right= false;
+		while( !up && !down  && !left  && !right) {
+			if(guard.getXCoordinate() == 2) {
+				up = true;
+			}
+			else if(guard.getXCoordinate() == 3) {
+				down = true;
+			}
+			else if(guard.getYCoordinate() == 2) {
+				left = true;
+			}
+			else if(guard.getYCoordinate() == 1) {
+				right = true;
+			} else {
+				fail("fail test");
+			}
+		}		
+	}
+	
+	@Test
+	public void initOgres() {
+		GameMap mapThree = new GameMap(mapWithOgreAndArm);
+		List<GameMap> gameMaps = new ArrayList<>();
+		gameMaps.add(mapThree);
+		List<Vilan> v = new ArrayList<>();	
+		v.add(new Ogre(3, 2, 4, 2));
+
+		
+		Game game = new Game(gameMaps, 1);
+
+		game.initOgres(3, 2, 4, 2);
+		assertEquals(game.getVilans().size(), 1);
+		assertEquals(game.getVilans().get(0).getCharacter(), v.get(0).getCharacter());
+
+	}
+	
+	@Test
+	public void initOgresRandom() {
+		GameMap mapThree = new GameMap(mapWithOgreAndArm);
+		Game game = new Game(mapThree, true);
+		game.initOgres(3, 2, 4, 2);
+		assertTrue(game.getVilans().size() <= 5 && game.getVilans().size() >= 1);
+	}
+	
+	@Test
+	public void changeGameMap() {
+		GameMap map = new GameMap(mapWithOgreAndArm);
+		map.setSelectedBoard(mapWithOgre);
+		assertArrayEquals(map.getSelectedBoard(), mapWithOgre);
+		
+	}
 
 }

@@ -1,4 +1,4 @@
-package dkeep.logic.gameobjects;
+package dkeep.logic;
 
 public class Key {
 	private boolean state;

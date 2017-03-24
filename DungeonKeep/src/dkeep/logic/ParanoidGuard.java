@@ -28,7 +28,7 @@ public class ParanoidGuard extends Guard {
 			break;
 			// go back
 		case 1:
-			if(index > 0 && index < getPathSize()-1)
+			if(index > 0)
 				index--;
 			else if(index == 0)
 				index = getPathSize()-1;

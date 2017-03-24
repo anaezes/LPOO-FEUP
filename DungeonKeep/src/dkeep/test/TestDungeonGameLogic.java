@@ -445,6 +445,7 @@ public class TestDungeonGameLogic {
 		guard.setPath(guard_y, guard_x);
 		guard.setIndex(23);
 		GameMap board = new GameMap(map);
+		while(guard.getCharacter() == 'g') {
 		guard.move(board);
 		if(guard.getCharacter() == 'g')
 			assertEquals(23, guard.getIndexGuard());
@@ -452,20 +453,21 @@ public class TestDungeonGameLogic {
 			assertEquals(0, guard.getIndexGuard());
 		else 
 			assertEquals(22, guard.getIndexGuard());
+		}
 	}
 	
-//	@Test
-//	public void moveParanoidGuardOnLimits() {
-//		ParanoidGuard guard = new ParanoidGuard(2, 3);
-//		guard.setPath(guard_y, guard_x);
-//		guard.setIndex(22);
-//		GameMap board = new GameMap(map);
-//		guard.move(board);
-//		if(((ParanoidGuard)guard).getDirection() == 'f')
-//			assertEquals(23, guard.getIndexGuard());
-//		else 
-//			assertEquals(0, guard.getIndexGuard());
-//	}
+	@Test
+	public void moveParanoidGuardOnLimits() {
+		ParanoidGuard guard = new ParanoidGuard(2, 3);
+		guard.setPath(guard_y, guard_x);
+		guard.setIndex(23);
+		GameMap board = new GameMap(map);
+		guard.move(board);
+		if(((ParanoidGuard)guard).getDirection() == 'f')
+			assertEquals(0, guard.getIndexGuard());
+		else 
+			assertEquals(22, guard.getIndexGuard());
+	}
 
 	@Test
 	public void moveParanoidGuardWhileNotSleep() {
@@ -537,7 +539,15 @@ public class TestDungeonGameLogic {
 		GameMap map = new GameMap(mapWithOgreAndArm);
 		map.setSelectedBoard(mapWithOgre);
 		assertArrayEquals(map.getSelectedBoard(), mapWithOgre);
-
+	}
+	
+	@Test
+	public void testSerializeAndDeserialize() {
+		GameMap mapThree = new GameMap(mapWithOgreAndArm);
+		Game game1 = new Game(mapThree, true);
+		game1.serialize();
+		Game game2 = Game.deserialize();
+		assertEquals(game2.gameId, game1.gameId);
 	}
 
 }

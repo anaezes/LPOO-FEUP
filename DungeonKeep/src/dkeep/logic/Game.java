@@ -15,10 +15,11 @@ import dkeep.logic.Vilan.EnumVillainType;
 public class Game implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
 	public static final String SAVES_DIR = System.getProperty("user.dir") + "/saves/";
 	
+	public int gameId;
 	private EnumGameState state;
-	//private EnumLevel level;
 	private int level;
 
 	private EnumGuardType guardType;
@@ -63,6 +64,7 @@ public class Game implements Serializable {
 	}
 
 	public Game(GameMap board, boolean isTest) {
+		setRandomId();
 		this.guardType = null;
 		this.selectedBoard = board;
 		this.numOgresInMap = true;
@@ -77,6 +79,7 @@ public class Game implements Serializable {
 	}
 
 	public Game(List<GameMap> boards, EnumGuardType guardType, int numOgres) {
+		setRandomId();
 		this.boards = boards;
 		this.selectedBoard = boards.get(indexBoard);
 		this.guardType = guardType;
@@ -91,6 +94,7 @@ public class Game implements Serializable {
 	}
 
 	public Game(List<GameMap> boards, int numOgres) {
+		setRandomId();
 		this.boards = boards;
 		this.selectedBoard = boards.get(indexBoard);
 		this.guardType = null;
@@ -104,6 +108,11 @@ public class Game implements Serializable {
 		this.level = 1;
 
 		this.byLevel = true;
+	}
+	
+	public void setRandomId(){
+		Random oj = new Random();
+		gameId = oj.nextInt(100000);
 	}
 
 	/**

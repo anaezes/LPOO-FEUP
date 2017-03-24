@@ -3,6 +3,9 @@ package dkeep.gui;
 import java.awt.Color;
 import java.awt.EventQueue;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -30,6 +33,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +49,9 @@ import java.awt.Window.Type;
 
 public class DungeonKeepUI{
 	public static final String BOARDS_DIR = System.getProperty("user.dir") + "/boards/";
+	private static final String SOUNDS_DIR = System.getProperty("user.dir") + "/sounds/";
+	private AudioInputStream audioInputStream;
+	private Clip clip;
 
 	private JFrame frmDungeonKeepGame;
 	private Game game;
@@ -131,6 +138,7 @@ public class DungeonKeepUI{
 		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
+		playMusic();
 	}
 
 	public void initJpanel() {
@@ -145,6 +153,7 @@ public class DungeonKeepUI{
 	}
 
 	public void newGame(char[][] board){
+		playMusic();
 		setMovementButtonsState(true);
 		setSaveButtonsState(true);
 		GameMap gameMap = new GameMap(board);
@@ -153,20 +162,22 @@ public class DungeonKeepUI{
 		initJpanel();	
 		initGraphics();
 	}
-	
+
 	public void loadSavedGame() {
+
 		this.game = Game.deserialize();
 		if(game == null)
 		{
 			//mostra erro
 			return;
-		} 
+		}
+		playMusic();
 		setMovementButtonsState(true);
 		setSaveButtonsState(true);
 		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
-		
+
 	}
 
 	private void initGraphics() {
@@ -271,6 +282,7 @@ public class DungeonKeepUI{
 		if(state == EnumGameState.Win){
 			setSaveButtonsState(false);
 			setMovementButtonsState(false);
+			stopMusic();
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Congratulations! You escaped!!!",
 					"Win",
@@ -279,6 +291,7 @@ public class DungeonKeepUI{
 		else if(state == EnumGameState.Lost){
 			setSaveButtonsState(false);
 			setMovementButtonsState(false);
+			stopMusic();
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Ah ah you lose! Best luck next time..",
 					"Game Over!",
@@ -309,7 +322,7 @@ public class DungeonKeepUI{
 		JMenuItem mntmOptions = new JMenuItem("          Options");
 		menuBar.add(mntmOptions);
 		buttonOptions(mntmOptions);
-		
+
 		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
 		menuBar.add(mntmLoadGame);
 		buttonLoadGame(mntmLoadGame);
@@ -322,7 +335,7 @@ public class DungeonKeepUI{
 		menuBar.add(mntmLoadMap);
 		buttonLoadMap(mntmLoadMap);
 	}
-	
+
 	private void initDirectonButtons() {
 		initButtonUp();
 		initButtonDown();
@@ -395,7 +408,7 @@ public class DungeonKeepUI{
 		frmDungeonKeepGame.getContentPane().add(upBtn);	
 		upBtn.setFocusable(false);
 	}
-	
+
 	private void initButtonSave() {
 		btnSave = new JButton("Save");
 		btnSave.setEnabled(false);
@@ -511,7 +524,7 @@ public class DungeonKeepUI{
 		});
 		mntmOptions.addMouseListener(menuBarMouseListener);
 	}
-	
+
 	private void buttonLoadGame(JMenuItem mntmLoadGame) {
 		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
 		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
@@ -579,8 +592,29 @@ public class DungeonKeepUI{
 		downBtn.setEnabled(state);
 		leftBtn.setEnabled(state);
 	}
-	
+
 	private void setSaveButtonsState(boolean state) {
 		btnSave.setEnabled(state);
+	}
+
+	public void playMusic() {
+		//source: https://soundcloud.com/eric-skiff/underclocked-underunderclocked
+		try{
+			if(clip == null){
+				audioInputStream = AudioSystem.getAudioInputStream(new File(SOUNDS_DIR + "Underclocked.wav"));
+				clip = AudioSystem.getClip();
+				clip.open(audioInputStream);
+			}
+			clip.start();
+		}
+		catch(Exception ex)
+		{  
+			ex.printStackTrace();
+		}
+	}
+
+	public void stopMusic() {
+		if(clip != null)
+		clip.stop();
 	}
 }

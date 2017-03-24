@@ -2,13 +2,11 @@ package dkeep.gui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-
 import dkeep.logic.Club;
 import dkeep.logic.EnumGuardType;
 import dkeep.logic.EnumMoves;
@@ -22,7 +20,6 @@ import dkeep.logic.Vilan;
 import utils.BoardUtils;
 import dkeep.logic.Game.EnumGameState;
 import dkeep.logic.Vilan.EnumVillainType;
-
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -33,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,9 +46,9 @@ import java.awt.Window.Type;
 public class DungeonKeepUI{
 	public static final String BOARDS_DIR = System.getProperty("user.dir") + "/boards/";
 	private static final String SOUNDS_DIR = System.getProperty("user.dir") + "/sounds/";
+	
 	private AudioInputStream audioInputStream;
 	private Clip clip;
-
 	private JFrame frmDungeonKeepGame;
 	private Game game;
 	private JPanel gamePanel;
@@ -164,11 +160,13 @@ public class DungeonKeepUI{
 	}
 
 	public void loadSavedGame() {
-
 		this.game = Game.deserialize();
 		if(game == null)
 		{
-			//mostra erro
+			JOptionPane.showMessageDialog(frmDungeonKeepGame,
+					"There's been an error while loading a saved game!",
+					"Error",
+					JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		playMusic();
@@ -177,7 +175,6 @@ public class DungeonKeepUI{
 		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
-
 	}
 
 	private void initGraphics() {
@@ -214,7 +211,6 @@ public class DungeonKeepUI{
 		Key key = game.getKey();
 		Club heroClub = game.getHeroClub();
 		List<ExitDoor> exitsDoors = game.getExitDoors();
-
 		char character = game.getBoard().getBoardCaracter(i, j);
 
 		if(isHero(hero, i, j)) 
@@ -264,15 +260,13 @@ public class DungeonKeepUI{
 		char character = '\0';
 		if(vilans.size() != 0) {
 			for(int k = 0; k < vilans.size(); k++) 
-				if(vilans.get(k).getXCoordinate() == i && vilans.get(k).getYCoordinate() == j) {
+				if(vilans.get(k).getXCoordinate() == i && vilans.get(k).getYCoordinate() == j)
 					return vilans.get(k).getCharacter();
-				}
-
+				
 			if(vilans.get(0).getType() == EnumVillainType.Ogre) 
 				for(int k = 0; k < vilans.size(); k++)
-					if(vilans.get(k).getClub().getXCoordinate() == i && vilans.get(k).getClub().getYCoordinate() == j) {
-						return '*';
-					}
+					if(vilans.get(k).getClub().getXCoordinate() == i && vilans.get(k).getClub().getYCoordinate() == j)
+						return '*';		
 		}
 		return character;
 	}
@@ -475,7 +469,6 @@ public class DungeonKeepUI{
 
 	private char[][] loadGame(String fileName){
 		String path = BOARDS_DIR + fileName;
-
 		BufferedReader br;
 		char[][] board;
 
@@ -489,7 +482,6 @@ public class DungeonKeepUI{
 				line = br.readLine();
 				board[i] = line.toCharArray();
 			}
-
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -502,14 +494,12 @@ public class DungeonKeepUI{
 		mntmNewGame.setHorizontalAlignment(SwingConstants.CENTER);
 		mntmNewGame.setFont(new Font("Dialog", Font.BOLD, 14));
 		mntmNewGame.setBackground(Color.LIGHT_GRAY);
-
 		mntmNewGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				newGame();
 			}
 		});
-
 		mntmNewGame.addMouseListener(menuBarMouseListener);
 	}
 
@@ -555,7 +545,6 @@ public class DungeonKeepUI{
 
 				if(s == null)
 					return;
-
 				newGame(loadGame(s));
 			}
 		});

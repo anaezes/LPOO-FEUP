@@ -1,6 +1,6 @@
 # LPOO1617_T3G02
-[![BCH compliance](https://bettercodehub.com/edge/badge/anaezes/LPOO1617_T3G02)](https://bettercodehub.com/)
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/anaezes/LPOO1617_T3G02?token=6943960e72bd266ebd8de65c3820afcb4670f953)](https://bettercodehub.com/)
 
 * **Team members**:
    * [Ana Claudia Fonseca Santos](https://github.com/anaezes) 

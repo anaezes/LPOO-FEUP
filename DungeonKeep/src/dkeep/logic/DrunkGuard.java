@@ -79,4 +79,8 @@ public class DrunkGuard extends Guard {
 	public void setDirection(char c) {
 		direction = c;		
 	}
+
+	public char getDirection() {
+		return direction;
+	}
 }

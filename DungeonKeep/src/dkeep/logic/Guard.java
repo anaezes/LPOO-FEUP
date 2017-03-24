@@ -70,4 +70,8 @@ public abstract class Guard extends Vilan {
 		return hasPredifinedPath;
 	}
 	
+	public void setIndex(int i) {
+		this.indexGuard = i;
+	}
+	
 }

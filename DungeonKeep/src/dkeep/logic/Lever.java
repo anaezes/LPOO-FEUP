@@ -1,6 +1,9 @@
 package dkeep.logic;
 
-public class Lever {
+import java.io.Serializable;
+
+public class Lever implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
 	private boolean state;
 	private char character;

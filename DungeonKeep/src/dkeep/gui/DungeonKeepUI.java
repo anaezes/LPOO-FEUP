@@ -59,6 +59,7 @@ public class DungeonKeepUI{
 	private JButton rightBtn;
 	private JButton upBtn;
 	private JButton downBtn;
+	private JButton btnSave;
 
 	/**
 	 * Launch the application.
@@ -124,6 +125,7 @@ public class DungeonKeepUI{
 		gameMaps.add(gameMap1);
 		gameMaps.add(gameMap2);
 		setMovementButtonsState(true);
+		setSaveButtonsState(true);
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		currentBoardSize = game.getBoard().getBoardSize();
@@ -144,11 +146,27 @@ public class DungeonKeepUI{
 
 	public void newGame(char[][] board){
 		setMovementButtonsState(true);
+		setSaveButtonsState(true);
 		GameMap gameMap = new GameMap(board);
 		this.game = new Game(gameMap, false);
 		currentBoardSize = game.getBoard().getBoardSize();
 		initJpanel();	
 		initGraphics();
+	}
+	
+	public void loadSavedGame() {
+		this.game = Game.deserialize();
+		if(game == null)
+		{
+			//mostra erro
+			return;
+		} 
+		setMovementButtonsState(true);
+		setSaveButtonsState(true);
+		currentBoardSize = game.getBoard().getBoardSize();
+		initJpanel();	
+		initGraphics();
+		
 	}
 
 	private void initGraphics() {
@@ -251,12 +269,16 @@ public class DungeonKeepUI{
 	private void validateGameRunning() {
 		EnumGameState state = game.getGameState();
 		if(state == EnumGameState.Win){
+			setSaveButtonsState(false);
+			setMovementButtonsState(false);
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Congratulations! You escaped!!!",
 					"Win",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if(state == EnumGameState.Lost){
+			setSaveButtonsState(false);
+			setMovementButtonsState(false);
 			JOptionPane.showMessageDialog(frmDungeonKeepGame,
 					"Ah ah you lose! Best luck next time..",
 					"Game Over!",
@@ -270,6 +292,7 @@ public class DungeonKeepUI{
 	private void initialize() {
 		initFrame();
 		initListeners();
+		initButtonSave();
 		initDirectonButtons();
 
 		gameOptions = new GameOptions(frmDungeonKeepGame);
@@ -286,16 +309,20 @@ public class DungeonKeepUI{
 		JMenuItem mntmOptions = new JMenuItem("          Options");
 		menuBar.add(mntmOptions);
 		buttonOptions(mntmOptions);
+		
+		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
+		menuBar.add(mntmLoadGame);
+		buttonLoadGame(mntmLoadGame);
 
 		JMenuItem mntmEditMap = new JMenuItem("          Edit Map");
 		menuBar.add(mntmEditMap);
 		buttonEditGame(mntmEditMap);
 
-		JMenuItem mntmLoadGame = new JMenuItem("       Load Game");
-		menuBar.add(mntmLoadGame);
-		buttonLoadGame(mntmLoadGame);
+		JMenuItem mntmLoadMap = new JMenuItem("       Load Map");
+		menuBar.add(mntmLoadMap);
+		buttonLoadMap(mntmLoadMap);
 	}
-
+	
 	private void initDirectonButtons() {
 		initButtonUp();
 		initButtonDown();
@@ -334,6 +361,7 @@ public class DungeonKeepUI{
 		rightBtn.addActionListener(listener);
 		downBtn.addActionListener(listener);
 		upBtn.addActionListener(listener);
+		btnSave.addActionListener(listener);
 	}
 
 	private void initButtonLeft() {
@@ -366,6 +394,19 @@ public class DungeonKeepUI{
 		upBtn.setBounds(687, 221, 80, 20);
 		frmDungeonKeepGame.getContentPane().add(upBtn);	
 		upBtn.setFocusable(false);
+	}
+	
+	private void initButtonSave() {
+		btnSave = new JButton("Save");
+		btnSave.setEnabled(false);
+		btnSave.setBounds(678, 500, 98, 25);
+		frmDungeonKeepGame.getContentPane().add(btnSave);
+		btnSave.setFocusable(false);
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				game.serialize();
+			}
+		});
 	}
 
 	private void initListeners() {
@@ -470,9 +511,21 @@ public class DungeonKeepUI{
 		});
 		mntmOptions.addMouseListener(menuBarMouseListener);
 	}
-
-
+	
 	private void buttonLoadGame(JMenuItem mntmLoadGame) {
+		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
+		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
+		mntmLoadGame.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				loadSavedGame();
+			}
+		});
+		mntmLoadGame.addMouseListener(menuBarMouseListener);
+	}
+
+
+	private void buttonLoadMap(JMenuItem mntmLoadGame) {
 		mntmLoadGame.setFont(new Font("Dialog", Font.BOLD, 15));
 		mntmLoadGame.setBackground(Color.LIGHT_GRAY);
 		mntmLoadGame.addActionListener(new ActionListener() {
@@ -525,5 +578,9 @@ public class DungeonKeepUI{
 		rightBtn.setEnabled(state);
 		downBtn.setEnabled(state);
 		leftBtn.setEnabled(state);
+	}
+	
+	private void setSaveButtonsState(boolean state) {
+		btnSave.setEnabled(state);
 	}
 }

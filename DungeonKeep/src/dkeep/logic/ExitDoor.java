@@ -1,6 +1,9 @@
 package dkeep.logic;
 
-public class ExitDoor{
+import java.io.Serializable;
+
+public class ExitDoor implements Serializable {
+	private static final long serialVersionUID = 1L;
 	int x;
 	int y;
 	char character;

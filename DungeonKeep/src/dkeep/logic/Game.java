@@ -1,13 +1,22 @@
 package dkeep.logic;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import dkeep.logic.Vilan.EnumVillainType;
 
-public class Game {
-
+public class Game implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	public static final String SAVES_DIR = System.getProperty("user.dir") + "/saves/";
+	
 	private EnumGameState state;
 	//private EnumLevel level;
 	private int level;
@@ -519,6 +528,36 @@ public class Game {
 	public EnumGuardType getGuardType() {
 		return guardType;
 	}
+	
+	public void serialize() {      
+	      try {
+	         FileOutputStream fileOut = new FileOutputStream(SAVES_DIR + "gameSaved.bin");
+	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
+	         out.writeObject(this);
+	         out.close();
+	         fileOut.close();
+	      }catch(IOException i) {
+	         i.printStackTrace();
+	      }   
+	}
+	
+	public static Game deserialize() {
+		Game game = null;
+	      try {
+	         FileInputStream fileIn = new FileInputStream(SAVES_DIR + "gameSaved.bin");
+	         ObjectInputStream in = new ObjectInputStream(fileIn);
+	         game = (Game) in.readObject();
+	         in.close();
+	         fileIn.close();
+	         return game;
+	      }catch(IOException i) {
+	         i.printStackTrace();
+	         return null;
+	      }catch(ClassNotFoundException c) {
+	         c.printStackTrace();
+	         return null;
+	      }
+	   }
 
 }
 

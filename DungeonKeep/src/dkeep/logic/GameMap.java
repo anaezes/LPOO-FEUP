@@ -1,6 +1,9 @@
 package dkeep.logic;
 
-public class GameMap {
+import java.io.Serializable;
+
+public class GameMap implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	private char[][] selectedBoard;
 

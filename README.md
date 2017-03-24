@@ -1,2 +1,32 @@
 # LPOO1617_T3G02
 [![BCH compliance](https://bettercodehub.com/edge/badge/anaezes/LPOO1617_T3G02)](https://bettercodehub.com/)
+
+
+* **Team members**:
+   * [Ana Claudia Fonseca Santos](https://github.com/anaezes) 
+      * up200700742 (up200700742@fe.up.pt)
+   * [Cristiana Maria Monteiro Ribeiro](https://github.com/311-311) 
+      * up201305188 (up201305188@fe.up.pt)
+
+
+
+
+
+
+* **Results of Better Code Hub:**
+
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/BetterCodeHub.png)
+ 
+ 
+ * **Results of Test Coverage with EclEmma:**
+ 
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/CoverageTest.png)
+
+
+* **Results of PIT Mutation Testing:**
+
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/PitMutationTest.png)
+
+
+* **Music Credits:**
+  * https://soundcloud.com/eric-skiff/underclocked-underunderclocked

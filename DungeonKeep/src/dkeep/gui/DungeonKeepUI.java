@@ -600,11 +600,12 @@ public class DungeonKeepUI{
 	public void playMusic() {
 		//source: https://soundcloud.com/eric-skiff/underclocked-underunderclocked
 		try{
-			if(clip == null){
-				audioInputStream = AudioSystem.getAudioInputStream(new File(SOUNDS_DIR + "Underclocked.wav"));
-				clip = AudioSystem.getClip();
-				clip.open(audioInputStream);
-			}
+			if(clip != null && clip.isRunning()) 
+				clip.stop();
+
+			audioInputStream = AudioSystem.getAudioInputStream(new File(SOUNDS_DIR + "Underclocked.wav"));
+			clip = AudioSystem.getClip();
+			clip.open(audioInputStream);
 			clip.start();
 		}
 		catch(Exception ex)
@@ -615,6 +616,6 @@ public class DungeonKeepUI{
 
 	public void stopMusic() {
 		if(clip != null)
-		clip.stop();
+			clip.stop();
 	}
 }

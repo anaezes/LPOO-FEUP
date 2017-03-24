@@ -1,6 +1,3 @@
-exclude:
-- /DungeonKeep/src/ckeep/cli/.*
-- /DungeonKeep/src/utils/BoardUtils.java
-component_depth: 1
+component_depth: 2
 languages:
 - java

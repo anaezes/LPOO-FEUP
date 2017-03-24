@@ -33,12 +33,12 @@ public class TestDungeonGameLogic {
 	int[] guard_x = new int[] {3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2, 2};
 	int[] guard_y = new int[] {1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 1};
 
-	public char[][] getMapCopy() {
-		char[][] mapCopy = new char[map.length][map[0].length];
+	public char[][] getMapCopy(char[][] map1) {
+		char[][] mapCopy = new char[map1.length][map[0].length];
 
-		for(int i = 0; i < map.length; i++)
-			for(int j = 0; j < map[i].length; j++)
-				mapCopy[i][j] = map[i][j];
+		for(int i = 0; i < map1.length; i++)
+			for(int j = 0; j < map1[i].length; j++)
+				mapCopy[i][j] = map1[i][j];
 
 		return mapCopy;
 	}
@@ -179,8 +179,6 @@ public class TestDungeonGameLogic {
 		game.moveHero(EnumMoves.LEFT);
 		game.moveHero(EnumMoves.LEFT);
 		assertTrue(game.getExitDoors().get(0).getDoorExitState());
-
-
 		assertTrue(game.getKey().getKeyState());
 		assertNotEquals(EnumGameState.Lost, game.getGameState());
 		assertEquals(EnumGameState.Win, game.getGameState());
@@ -200,27 +198,19 @@ public class TestDungeonGameLogic {
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
 			String oldCoords = game.getVilans().get(0).getCordinates();
-
 			game.getVilans().get(0).move(gameMap);
-
 			String newCoords = game.getVilans().get(0).getCordinates();
-
 			assertNotEquals(oldCoords, newCoords);
-
-			if(game.getVilans().get(0).getXCoordinate() == 1) {
+			if(game.getVilans().get(0).getXCoordinate() == 1) 
 				up = true;
-			}
-			else if(game.getVilans().get(0).getXCoordinate()==3) {
+			else if(game.getVilans().get(0).getXCoordinate()==3)
 				down = true;
-			}
-			else if(game.getVilans().get(0).getYCoordinate() == 1) {
+			else if(game.getVilans().get(0).getYCoordinate() == 1) 
 				left = true;
-			}
-			else if(game.getVilans().get(0).getYCoordinate() == 3) {
+			else if(game.getVilans().get(0).getYCoordinate() == 3)
 				right = true;
-			} else {
-				fail("fail test, ogre dont move to the expected possible place");
-			}
+			else 
+				fail("fail test, ogre dont move to the expected possible place");	
 		}		
 	}
 
@@ -303,17 +293,30 @@ public class TestDungeonGameLogic {
 		int i = 0;
 		while(i < 10)
 		{	
-			char[][] mapCopy = getMapCopy();
+			char[][] mapCopy = getMapCopy(map);
 			GameMap gameMap = new GameMap(mapCopy);
 			Game game = new Game(gameMap, true);
-
 			game.setGuardPath(guard_x, guard_y);
-
 			String coord=game.getVilans().get(0).getCordinates();
-
 			game.moveVilans();
 			if(game.getVilans().get(0).getCharacter() != 'g')
 				assertNotEquals(coord, game.getVilans().get(0).getCordinates());
+			coord=game.getVilans().get(0).getCordinates();
+			i++;
+		}
+	}
+
+	@Test
+	public void TestmoveOgre(){
+		int i = 0;
+		while(i < 10)
+		{	
+			char[][] mapCopy = getMapCopy(mapWithOgre);
+			GameMap gameMap = new GameMap(mapCopy);
+			Game game = new Game(gameMap, true);
+			String coord = game.getVilans().get(0).getCordinates();
+			game.moveVilans();
+			assertNotEquals(coord, game.getVilans().get(0).getCordinates());
 			coord=game.getVilans().get(0).getCordinates();
 			i++;
 		}
@@ -350,11 +353,8 @@ public class TestDungeonGameLogic {
 		assertEquals(null, guard.getClub());
 		guard.setPredifinedPath(true);
 		assertTrue(guard.getPredifinedPath());
-
-
 		int index=guard.getIndexGuard();
 		assertEquals(0, index);
-
 		Vilan vilan = new Ogre();
 		assertFalse(vilan.GetOnLeverOgre());
 		assertEquals(0,vilan.getIndexGuard());
@@ -422,20 +422,16 @@ public class TestDungeonGameLogic {
 		guard.move(board);
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
-			if(guard.getXCoordinate() == 2) {
+			if(guard.getXCoordinate() == 2)
 				up = true;
-			}
-			else if(guard.getXCoordinate() == 3) {
+			else if(guard.getXCoordinate() == 3)
 				down = true;
-			}
-			else if(guard.getYCoordinate() == 2) {
+			else if(guard.getYCoordinate() == 2)
 				left = true;
-			}
-			else if(guard.getYCoordinate() == 1) {
+			else if(guard.getYCoordinate() == 1)
 				right = true;
-			} else {
+			else 
 				fail("fail test");
-			}
 		}		
 	}
 
@@ -446,16 +442,16 @@ public class TestDungeonGameLogic {
 		guard.setIndex(23);
 		GameMap board = new GameMap(map);
 		while(guard.getCharacter() == 'g') {
-		guard.move(board);
-		if(guard.getCharacter() == 'g')
-			assertEquals(23, guard.getIndexGuard());
-		else if(((DrunkGuard)guard).getDirection() == 'f')
-			assertEquals(0, guard.getIndexGuard());
-		else 
-			assertEquals(22, guard.getIndexGuard());
+			guard.move(board);
+			if(guard.getCharacter() == 'g')
+				assertEquals(23, guard.getIndexGuard());
+			else if(((DrunkGuard)guard).getDirection() == 'f')
+				assertEquals(0, guard.getIndexGuard());
+			else 
+				assertEquals(22, guard.getIndexGuard());
 		}
 	}
-	
+
 	@Test
 	public void moveParanoidGuardOnLimits() {
 		ParanoidGuard guard = new ParanoidGuard(2, 3);
@@ -479,10 +475,10 @@ public class TestDungeonGameLogic {
 			int index = guard.getIndexGuard();
 			guard.move(board);
 			if(guard.getCharacter() != 'g')
-			assertNotEquals(guard.getIndexGuard(), index);
+				assertNotEquals(guard.getIndexGuard(), index);
 		}
 	}
-	
+
 	@Test
 	public void moveParanoidGuardOnOtherDirection() {
 		ParanoidGuard guard = new ParanoidGuard(2, 3);
@@ -516,14 +512,33 @@ public class TestDungeonGameLogic {
 		gameMaps.add(mapThree);
 		List<Vilan> v = new ArrayList<>();	
 		v.add(new Ogre(3, 2, 4, 2));
-
-
 		Game game = new Game(gameMaps, 1);
-
 		game.initOgres(3, 2, 4, 2);
 		assertEquals(game.getVilans().size(), 1);
 		assertEquals(game.getVilans().get(0).getCharacter(), v.get(0).getCharacter());
+	}
 
+	//Task3
+	@Test(timeout=100)
+	public void testComputeRandomDirection(){
+		DrunkGuard guard = new DrunkGuard(2, 3);
+		guard.setPath(guard_y, guard_x);
+		GameMap board = new GameMap(map);
+		guard.setIndex(22);
+		int i = 0;
+		while(i < 10) {
+			guard.move(board);
+			int num = guard.computeRandomDirection();
+			if(guard.getDirection() == 'f') 
+				assertTrue(num == 0 || num == 1);
+			else if(guard.getDirection() == 'b') 
+				assertTrue(num == 1 || num == 2);
+			else if(guard.getCharacter() == 'g') 
+				assertTrue(num == 0 || num == 1 || num == 2);
+			else 
+				fail("fail test");	
+			i++;
+		}		
 	}
 
 	@Test
@@ -540,7 +555,7 @@ public class TestDungeonGameLogic {
 		map.setSelectedBoard(mapWithOgre);
 		assertArrayEquals(map.getSelectedBoard(), mapWithOgre);
 	}
-	
+
 	@Test
 	public void testSerializeAndDeserialize() {
 		GameMap mapThree = new GameMap(mapWithOgreAndArm);

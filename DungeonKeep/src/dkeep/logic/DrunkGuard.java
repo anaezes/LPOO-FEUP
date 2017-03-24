@@ -39,7 +39,7 @@ public class DrunkGuard extends Guard {
 		this.SetYCoordinate(y_position[index]);
 	}
 
-	private int computeRandomDirection() {
+	public int computeRandomDirection() {
 		Random oj = new Random();
 		int num;
 		if(direction == 'f')

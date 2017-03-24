@@ -1,0 +1,17 @@
+16
+XXXXXXXXXXXXXXXX
+XkXX     XO*  XX
+X  X     X     X
+X  X     XX   XX
+X XX      XO*  S
+X  Xh         XX
+X  X      X    X
+X XX      XO* XX
+X         XXXXXX
+X XXXXXXX      X
+X XXa  XXXXXXX X
+X XX       XXX X
+X XX XX   *OXX X
+X  X XXXXXXXXX X
+X*OX           X
+XXXXXXXXXXXXXXXX

@@ -1,0 +1,11 @@
+10
+XXXXXXXXXX
+XX       X
+XX  a    X
+XX       X
+X     O* X
+X        X
+X h      X
+X      k X
+X        X
+XXXXXSXXXX

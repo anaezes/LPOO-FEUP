@@ -9,6 +9,7 @@ import java.util.Random;
  * @author Ana Santos & Cristiana Ribeiro
  */
 public class ParanoidGuard extends Guard {
+	private static final long serialVersionUID = 1L;
 	private char direction;
 	
 	/**
@@ -27,7 +28,6 @@ public class ParanoidGuard extends Guard {
 	 */
 	@Override
 	public void move(GameMap board) {
-
 		Random oj = new Random();
 		int num = oj.nextInt(2);
 
@@ -65,5 +65,4 @@ public class ParanoidGuard extends Guard {
 	public char getDirection() {
 		return direction;
 	}
-
 }

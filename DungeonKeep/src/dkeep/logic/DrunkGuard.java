@@ -10,7 +10,7 @@ import java.util.Random;
  */
 
 public class DrunkGuard extends Guard {
-
+	private static final long serialVersionUID = 1L;
 	private char direction;
 
 	/**
@@ -34,19 +34,16 @@ public class DrunkGuard extends Guard {
 
 		int index = indexGuard;
 		switch(num) {
-		// advance
 		case 0:
 			index = moveFront();
 			break;
-			// go back
-		case 2:
-			index = moveBack();
-			break;
-			// sleeps	
 		case 1:
 			caracter = 'g';
 			direction = 'g';
 			break;
+		case 2:
+			index = moveBack();
+			break;	
 		}
 
 		this.indexGuard = index;

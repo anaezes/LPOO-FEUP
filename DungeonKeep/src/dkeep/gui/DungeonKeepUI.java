@@ -132,7 +132,7 @@ public class DungeonKeepUI{
 		game = new Game(gameMaps, guardType, numOfOgres);
 		game.setGuardPath(BoardUtils.getSimpleGuardYmovement(), BoardUtils.getSimpleGuardXmovement());
 		currentBoardSize = game.getBoard().getBoardSize();
-		initJpanel();	
+		initJpanel();
 		initGraphics();
 		playMusic();
 	}
@@ -155,7 +155,7 @@ public class DungeonKeepUI{
 		GameMap gameMap = new GameMap(board);
 		this.game = new Game(gameMap, false);
 		currentBoardSize = game.getBoard().getBoardSize();
-		initJpanel();	
+		initJpanel();
 		initGraphics();
 	}
 
@@ -173,7 +173,7 @@ public class DungeonKeepUI{
 		setMovementButtonsState(true);
 		setSaveButtonsState(true);
 		currentBoardSize = game.getBoard().getBoardSize();
-		initJpanel();	
+		initJpanel();
 		initGraphics();
 	}
 
@@ -587,7 +587,6 @@ public class DungeonKeepUI{
 	}
 
 	public void playMusic() {
-		//source: https://soundcloud.com/eric-skiff/underclocked-underunderclocked
 		try{
 			if(clip != null && clip.isRunning()) 
 				clip.stop();

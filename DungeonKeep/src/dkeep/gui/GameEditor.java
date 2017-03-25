@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import ckeep.cli.Print;
 import dkeep.logic.Hero;
 import dkeep.logic.Ogre;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -20,7 +19,6 @@ import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
 public class GameEditor extends JDialog {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel board;
 	private char character;
@@ -44,7 +42,6 @@ public class GameEditor extends JDialog {
 	}
 
 	private void initBoardPanel() {
-
 		board = new JPanel();
 		board.setLayout(new GridLayout(10, 10));
 		board.setBounds(30, 30, 600, 600);
@@ -57,7 +54,6 @@ public class GameEditor extends JDialog {
 		initBottonWall();
 		initBottonDoor();
 		initBottonKey();
-
 		initButtonSave();
 
 		gameBoard = new JPanel[matrixSize][matrixSize];

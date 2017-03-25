@@ -502,7 +502,7 @@ public class TestDungeonGameLogic {
 		GameMap board = new GameMap(map);
 		guard.setIndex(22);
 		int i = 0;
-		while(i < 10) {
+		while(i < 15) {
 			guard.move(board);
 			int num = guard.computeRandomDirection();
 			if(guard.getDirection() == 'f') 

@@ -1,6 +1,7 @@
 package dkeep.logic;
 
 public class RookieGuard extends Guard {
+	private static final long serialVersionUID = 1L;
 
 	public RookieGuard(int i, int j) {
 		super(i,j);
@@ -8,7 +9,6 @@ public class RookieGuard extends Guard {
 
 	@Override
 	public void move(GameMap board) {
-		
 		int index = indexGuard;
 		if(index < getPathSize()-1)
 			index++;

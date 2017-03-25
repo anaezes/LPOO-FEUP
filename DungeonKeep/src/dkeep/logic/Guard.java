@@ -1,7 +1,7 @@
 package dkeep.logic;
 
 public abstract class Guard extends Vilan {
-
+	private static final long serialVersionUID = 1L;
 	protected int[] x_position;
 	protected int[] y_position;
 	protected int indexGuard;
@@ -64,8 +64,6 @@ public abstract class Guard extends Vilan {
 		return null;
 	}
 
-	public void checkClub(GameMap board) {}
-
 	public boolean getPredifinedPath() {
 		return hasPredifinedPath;
 	}
@@ -73,5 +71,4 @@ public abstract class Guard extends Vilan {
 	public void setIndex(int i) {
 		this.indexGuard = i;
 	}
-	
 }

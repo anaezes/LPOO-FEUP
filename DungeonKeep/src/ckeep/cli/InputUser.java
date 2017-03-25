@@ -13,17 +13,14 @@ public class InputUser {
 	private Game game;
 
 	public InputUser(List<GameMap> gameMaps, int numOgres, int[] guard_x, int[] guard_y) {
-
 		game = new Game(gameMaps, numOgres);
 		game.setGuardPath(guard_y, guard_x);
 	}
 
 	public void run() {
-		//Print print = new Print();
+		
 		System.out.print(Print.boardToString(game));
-
 		System.out.println("How to play? S to down - W to up - A to left - D to right");
-
 		Scanner input = new Scanner(System.in);
 
 		while(game.getGameState() == EnumGameState.Running && input.hasNext())
@@ -40,7 +37,6 @@ public class InputUser {
 			System.out.println("YOU WIN!");			
 		else if(game.getGameState() == EnumGameState.Lost)
 			System.out.println("Game Over!");
-
 		input.close();	
 	}
 
@@ -75,6 +71,4 @@ public class InputUser {
 			game.checkLostGame();
 		}
 	}
-
-
 }

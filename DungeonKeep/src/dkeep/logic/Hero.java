@@ -1,7 +1,7 @@
 package dkeep.logic;
 
 public class Hero extends Character {
-	
+	private static final long serialVersionUID = 1L;
 	private boolean withKey;
 	private boolean armed;
 	private char character;
@@ -45,7 +45,6 @@ public class Hero extends Character {
 	public void setCharacter() {
 		if(withKey)
 			this.character = 'H';
-		
 		if(armed)
 			this.character = 'A';
 		else

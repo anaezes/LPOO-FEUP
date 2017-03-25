@@ -15,8 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 public class GameOptions extends JDialog {
-	
-	private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 	private EnumGuardType guardType;
 	private int nOgres;
 	private JSlider slider;
@@ -129,8 +128,6 @@ public class GameOptions extends JDialog {
 			}
 		});		
 	}
-
-
 
 	public void initButtonOk() {
 		JButton btnOk = new JButton("Ok");

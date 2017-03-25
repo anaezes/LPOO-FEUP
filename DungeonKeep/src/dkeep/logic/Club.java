@@ -3,7 +3,6 @@ package dkeep.logic;
 import java.io.Serializable;
 
 public class Club implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	private int x;
 	private int y;

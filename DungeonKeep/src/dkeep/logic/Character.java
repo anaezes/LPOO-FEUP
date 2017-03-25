@@ -3,7 +3,6 @@ package dkeep.logic;
 import java.io.Serializable;
 
 public abstract class Character implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	protected int x;
 	protected int y;

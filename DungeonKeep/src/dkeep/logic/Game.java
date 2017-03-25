@@ -9,49 +9,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import dkeep.logic.Vilan.EnumVillainType;
 
 public class Game implements Serializable {
-	
 	private static final long serialVersionUID = 1L;
-	
 	public static final String SAVES_DIR = System.getProperty("user.dir") + "/saves/";
 	
 	public int gameId;
 	private EnumGameState state;
 	private int level;
-
 	private EnumGuardType guardType;
-
-	//characters of game
 	private Hero hero;
 	private Club heroClub;
 	private List<Vilan> vilans;
-
-	//list of exits doors
 	private List<ExitDoor> exitDoors;
-
 	private boolean canMoveGuard;
-
-	// flag of Lever in game
 	private Lever lever;
-
 	private Key key;
-
-	//list of levels
 	private List<GameMap> boards;
-
-	// index of selected board
 	private int indexBoard = 0;
-
-	// selected board
 	private GameMap selectedBoard;
-
-	//flag is a unic level or a list of levels
 	private boolean byLevel;
-
-	//saves if is the second trie to unlock the stairs (second level)
 	private int numberOfTries;
 	private static final int tries = 2;
 	private int numOgres;
@@ -87,10 +65,11 @@ public class Game implements Serializable {
 		this.numOgresInMap = false;
 		this.canMoveGuard = false;
 		this.numOgresInMap = false;
-		initGame();
 		this.state = EnumGameState.Running;
 		this.level = 1;
 		this.byLevel = true;
+		
+		initGame();
 	}
 
 	public Game(List<GameMap> boards, int numOgres) {
@@ -103,11 +82,11 @@ public class Game implements Serializable {
 		this.lever = null;
 		this.key = null;
 		this.canMoveGuard = false;
-		initGame();
 		this.state = EnumGameState.Running;
 		this.level = 1;
-
 		this.byLevel = true;
+		
+		initGame();
 	}
 	
 	public void setRandomId(){
@@ -118,7 +97,6 @@ public class Game implements Serializable {
 	/**
 	 * Identify all features from the game board
 	 * */
-
 	public void initGame() {
 		this.lever = null;
 		this.key = null;
@@ -248,7 +226,6 @@ public class Game implements Serializable {
 	}
 
 	public List<Vilan> initGuard(int i, int j) {
-
 		int num = 0;
 		if (this.guardType == null) {
 			Random oj = new Random();
@@ -275,12 +252,10 @@ public class Game implements Serializable {
 			v.add(new ParanoidGuard(i, j));
 			break;
 		}
-
 		return v;
 	}
 
 	public void initOgresList(List<Integer> x_ogres, List<Integer> y_ogres, List<Integer> x_clubs, List<Integer> y_clubs) {
-
 		List<Vilan> v = new ArrayList<>();
 		for(int i = 0; i < x_ogres.size(); i++)
 			v.add(new Ogre(x_ogres.get(i), y_ogres.get(i), x_clubs.get(i), y_clubs.get(i)));
@@ -288,7 +263,6 @@ public class Game implements Serializable {
 	}
 
 	public void initOgres(int x_ogre, int y_ogre, int x_club, int y_club) {
-
 		List<Vilan> v = new ArrayList<>();	
 
 		if(numOgres != -1) {
@@ -363,7 +337,6 @@ public class Game implements Serializable {
 	}
 
 	public void moveHero(EnumMoves movement) {
-
 		int x_hero = hero.getXCoordinate();
 		int y_hero = hero.getYCoordinate();
 
@@ -388,16 +361,12 @@ public class Game implements Serializable {
 	}
 
 	private boolean canMoveHero(int x_hero, int y_hero) {
-
 		if(selectedBoard.getSelectedBoard()[x_hero][y_hero] == 'X' || selectedBoard.getSelectedBoard()[x_hero][y_hero] == 'x')
 			return false;
-
 		if(selectedBoard.getSelectedBoard()[x_hero][y_hero] == ' ')
 			return true;
-
 		if(!exitDoor(x_hero, y_hero))
 			return false;
-
 		else if(verifyHeroClub(x_hero, y_hero) || verifyLever(x_hero, y_hero) || verifyKey(x_hero, y_hero))
 			return true;
 
@@ -435,7 +404,6 @@ public class Game implements Serializable {
 	}
 
 	private boolean exitDoor(int x_hero, int y_hero) {
-
 		if(isExitDoor(x_hero, y_hero))
 		{
 			if((lever != null && lever.getLeverState()) ||
@@ -490,7 +458,7 @@ public class Game implements Serializable {
 		for(int i = 0; i < vilans.size(); i++) {
 			vilans.get(i).move(selectedBoard);
 			if(vilans.get(i).getType() == EnumVillainType.Ogre)
-				vilans.get(i).checkClub(selectedBoard);
+				((Ogre)vilans.get(i)).checkClub(selectedBoard);
 		}
 	}
 
@@ -567,7 +535,6 @@ public class Game implements Serializable {
 	         return null;
 	      }
 	   }
-
 }
 
 

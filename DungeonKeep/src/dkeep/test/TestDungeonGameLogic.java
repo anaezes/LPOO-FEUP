@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 import dkeep.logic.*;
 import dkeep.logic.Game.EnumGameState;
@@ -184,9 +183,6 @@ public class TestDungeonGameLogic {
 		assertEquals(EnumGameState.Win, game.getGameState());
 	}
 
-
-
-
 	//Task3
 	@Test(timeout=100)
 	public void testOgreMove(){
@@ -222,16 +218,13 @@ public class TestDungeonGameLogic {
 		Club club = new Club(0,0);
 		club.setOnLeverState(true);
 		assertTrue(club.getOnLeverState());
-
 		Club club1 = new Club(1,0);
 		club.setOnLeverState(false);
 		assertEquals(false, lever.getLeverState());
 		lever.setLeverState(true);
 		assertEquals(true, lever.getLeverState());
 		assertFalse(club1.getOnLeverState());
-
 		assertEquals('a', club.getCharacter());
-
 		assertTrue(gameMap.checkBoardLeverAbove(3, 1));
 	}		
 
@@ -244,23 +237,17 @@ public class TestDungeonGameLogic {
 		assertEquals(game.getGameLevel(), currLevel+1);
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
-
-			game.getVilans().get(0).checkClub(gameMap);
-
-			if(game.getVilans().get(0).getClub().getXCoordinate() == 1) {
+			((Ogre) game.getVilans().get(0)).checkClub(gameMap);
+			if(game.getVilans().get(0).getClub().getXCoordinate() == 1)
 				up = true;
-			}
-			else if(game.getVilans().get(0).getClub().getXCoordinate()==3) {
+			else if(game.getVilans().get(0).getClub().getXCoordinate()==3)
 				down = true;
-			}
-			else if(game.getVilans().get(0).getClub().getYCoordinate() == 1) {
+			else if(game.getVilans().get(0).getClub().getYCoordinate() == 1)
 				left = true;
-			}
-			else if(game.getVilans().get(0).getClub().getYCoordinate() == 3) {
+			else if(game.getVilans().get(0).getClub().getYCoordinate() == 3)
 				right = true;
-			} else {
+			else
 				fail("fail test, ogre dont move to the expected possible place");
-			}
 		}	
 	}
 
@@ -268,12 +255,10 @@ public class TestDungeonGameLogic {
 	public void testClubCoordinates(){
 		GameMap gameMap = new GameMap(mapWithOgre);
 		Game game = new Game(gameMap,true);
-
 		assertEquals( "(2,3)", game.getVilans().get(0).getClub().getCordinates());
 		game.getVilans().get(0).getClub().setYCoordinate(2);
 		assertNotEquals("(2,3)", game.getVilans().get(0).getClub().getCordinates());
-
-		game.getVilans().get(0).checkClub(gameMap);
+		((Ogre) game.getVilans().get(0)).checkClub(gameMap);
 		assertNotEquals("(3,3)", game.getVilans().get(0).getClub().getCordinates());
 	}
 
@@ -358,7 +343,6 @@ public class TestDungeonGameLogic {
 		Vilan vilan = new Ogre();
 		assertFalse(vilan.GetOnLeverOgre());
 		assertEquals(0,vilan.getIndexGuard());
-
 	}
 
 	@Test
@@ -386,9 +370,7 @@ public class TestDungeonGameLogic {
 		gameMaps.add(mapOne);
 		gameMaps.add(mapTwo);
 		gameMaps.add(mapThree);
-
 		Game game = new Game(gameMaps, 3);
-
 		assertEquals(game.getNumOgres(), 3);
 		assertEquals(game.isGameOver(), false);
 		assertEquals(game.getBoard(), mapOne);
@@ -404,9 +386,7 @@ public class TestDungeonGameLogic {
 		gameMaps.add(mapOne);
 		gameMaps.add(mapTwo);
 		gameMaps.add(mapThree);
-
 		Game game = new Game(gameMaps, EnumGuardType.Drunk, 2);
-
 		assertEquals(game.getNumOgres(), 2);
 		assertEquals(game.isGameOver(), false);
 		assertEquals(game.getBoard(), mapOne);
@@ -488,20 +468,16 @@ public class TestDungeonGameLogic {
 		guard.move(board);
 		boolean up=false, down=false, left=false, right= false;
 		while( !up && !down  && !left  && !right) {
-			if(guard.getXCoordinate() == 2) {
+			if(guard.getXCoordinate() == 2) 
 				up = true;
-			}
-			else if(guard.getXCoordinate() == 3) {
+			else if(guard.getXCoordinate() == 3)
 				down = true;
-			}
-			else if(guard.getYCoordinate() == 2) {
+			else if(guard.getYCoordinate() == 2)
 				left = true;
-			}
-			else if(guard.getYCoordinate() == 1) {
+			else if(guard.getYCoordinate() == 1)
 				right = true;
-			} else {
+			else
 				fail("fail test");
-			}
 		}		
 	}
 

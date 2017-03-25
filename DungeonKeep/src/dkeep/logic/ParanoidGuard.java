@@ -3,6 +3,7 @@ package dkeep.logic;
 import java.util.Random;
 
 public class ParanoidGuard extends Guard {
+	private static final long serialVersionUID = 1L;
 	private char direction;
 	
 	public ParanoidGuard(int i, int j) {
@@ -12,7 +13,6 @@ public class ParanoidGuard extends Guard {
 
 	@Override
 	public void move(GameMap board) {
-
 		Random oj = new Random();
 		int num = oj.nextInt(2);
 
@@ -45,5 +45,4 @@ public class ParanoidGuard extends Guard {
 	public char getDirection() {
 		return direction;
 	}
-
 }

@@ -2,6 +2,8 @@ package dkeep.logic;
 
 public abstract class Vilan extends Character {
 
+	private static final long serialVersionUID = 1L;
+
 	public enum EnumVillainType {
 		Guard,
 		Ogre
@@ -15,23 +17,19 @@ public abstract class Vilan extends Character {
 		super(i, j);
 	}
 	
-	public int getXCoordinate() {
-		return x;
-	}
-	
-	public int getYCoordinate() {
-		return y;
-	}
+//	public int getXCoordinate() {
+//		return x;
+//	}
+//	
+//	public int getYCoordinate() {
+//		return y;
+//	}
 
 	public boolean GetOnLeverOgre() {
 		return false;
 	}
 
-	//public abstract char getCharacter();
-
 	public abstract Club getClub();
-
-	public abstract void checkClub(GameMap board);
 	
 	public abstract int getIndexGuard();
 	

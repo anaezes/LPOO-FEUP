@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Ogre extends Vilan {
-
+	private static final long serialVersionUID = 1L;
 	private boolean onLever;
 	private int numberTurnsLeftStunned;
 	private char character;
@@ -64,9 +64,7 @@ public class Ogre extends Vilan {
 		else{
 			this.character = 'O';
 			onLever = false;
-	
 			computeMoveOgre(board);
-
 			if(board.checkBoardLeverAbove(this.getXCoordinate(), this.getYCoordinate())) {
 				onLever = true;
 				this.character = '$';
@@ -81,9 +79,7 @@ public class Ogre extends Vilan {
 		while(!moved) {
 			int num = oj.nextInt(4);
 			currentCoord = this.getCordinates();
-
 			getNewPosition(board, num);
-			
 			if(currentCoord != this.getCordinates())
 				moved = true;
 		}
@@ -127,18 +123,14 @@ public class Ogre extends Vilan {
 	}
 
 	public void checkClub(GameMap board) {
-
 		ArrayList<Integer> validPositions = new ArrayList<>();
 
 		if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()-1)) 
 			validPositions.add(0);
-
 		if(board.checkBoardColisions(this.getXCoordinate(), this.getYCoordinate()+1))
 			validPositions.add(1);
-
 		if(board.checkBoardColisions(this.getXCoordinate()-1, this.getYCoordinate()))
 			validPositions.add(2);
-
 		if(board.checkBoardColisions(this.getXCoordinate()+1, this.getYCoordinate()))
 			validPositions.add(3);
 
@@ -148,14 +140,10 @@ public class Ogre extends Vilan {
 	}
 
 	public void moveClub(Integer[] positions, GameMap board) { 
-
 		Random club_dir= new Random();
-
 		int pos = club_dir.nextInt(positions.length);
 		int num = positions[pos];
-
 		onLever = false;
-
 		switch(num) { 
 		//left
 		case 0:

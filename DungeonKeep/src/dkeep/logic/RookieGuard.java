@@ -1,11 +1,26 @@
 package dkeep.logic;
 
-public class RookieGuard extends Guard {
+/** 
+ * Class RookieGuard
+ * <br>Date: 26/03/2017</br>
+ * 
+ * @author Ana Santos & Cristiana Ribeiro
+ */
 
+public class RookieGuard extends Guard {
+	
+	/**
+	 * Class Constructor RookieGuard
+	 * @param i 	x-coordinate
+	 * @param j		y-coordinate
+	 */
 	public RookieGuard(int i, int j) {
 		super(i,j);
 	}
 
+	/**
+	 * Move RookieGuard
+	 */
 	@Override
 	public void move(GameMap board) {
 		

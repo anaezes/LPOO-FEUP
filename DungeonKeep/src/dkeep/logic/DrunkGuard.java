@@ -2,15 +2,31 @@ package dkeep.logic;
 
 import java.util.Random;
 
+/** 
+ * Class DrunkGuard
+ * <br>Date: 26/03/2017</br>
+ * 
+ * @author Ana Santos & Cristiana Ribeiro
+ */
+
 public class DrunkGuard extends Guard {
 
 	private char direction;
 
+	/**
+	 * Class Constructor Drunk Guard
+	 * @param i 	x-coordinate
+	 * @param j		y-coordinate
+	 */
 	public DrunkGuard(int i, int j) {
 		super(i,j);
 		this.direction = 'f';
 	}
 
+	
+	/**
+	 *  Move DrunkGuard
+	 */
 	@Override
 	public void move(GameMap board) {
 		char caracter = 'G';	
@@ -39,6 +55,10 @@ public class DrunkGuard extends Guard {
 		this.SetYCoordinate(y_position[index]);
 	}
 
+	/**
+	 * Calculate a random direction to move
+	 * @return		integer to be considered on the movement
+	 */
 	public int computeRandomDirection() {
 		Random oj = new Random();
 		int num;
@@ -76,10 +96,18 @@ public class DrunkGuard extends Guard {
 		return index;
 	}
 
+	/**
+	 * Change DrunkGuard's direction
+	 * @param c  	new direction 
+	 */
 	public void setDirection(char c) {
 		direction = c;		
 	}
 
+	/**
+	 * Returns DrunkGuard's Direction Movement
+	 * @return 	direction 
+	 */
 	public char getDirection() {
 		return direction;
 	}

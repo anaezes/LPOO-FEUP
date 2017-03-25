@@ -2,14 +2,29 @@ package dkeep.logic;
 
 import java.util.Random;
 
+/** 
+ * Class ParanoidGuard
+ * <br>Date: 26/03/2017</br>
+ * 
+ * @author Ana Santos & Cristiana Ribeiro
+ */
 public class ParanoidGuard extends Guard {
 	private char direction;
 	
+	/**
+	 * Class Constructor ParanoidGuard
+	 * @param i 	x-coordinate
+	 * @param j		y-coordinate
+	 */
 	public ParanoidGuard(int i, int j) {
 		super(i,j);
 		this.direction = 'f';
 	}
 
+	/**
+	 * Moves Paranoid Guard
+	 * @param board 	current game map 
+	 */
 	@Override
 	public void move(GameMap board) {
 
@@ -42,6 +57,11 @@ public class ParanoidGuard extends Guard {
 		this.SetYCoordinate(y_position[index]);
 	}
 	
+	
+	/**
+	 * Returns ParanoidDrunk's Direction Movement
+	 * @return 	direction 
+	 */
 	public char getDirection() {
 		return direction;
 	}

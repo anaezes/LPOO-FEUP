@@ -3,6 +3,13 @@ package dkeep.logic;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+/** 
+ * Class Ogre
+ * <br>Date: 26/03/2017</br>
+ * 
+ * @author Ana Santos & Cristiana Ribeiro
+ */
 public class Ogre extends Vilan {
 
 	private boolean onLever;
@@ -10,37 +17,69 @@ public class Ogre extends Vilan {
 	private char character;
 	private Club club;
 
-
+	/**
+	 * Class Constructor Ogre
+	 * <br> Initialize ogre and club's positions</br>
+	 * <br> Set ogre's representation</br>
+	 */
 	public Ogre() {
 		super(1, 1);
 		this.club = new Club(1, 2);
 		this.character = 'O';
 	}
 
+	/**
+	 * Class Constructor Ogre
+	 * <br> Create Ogre and Club</br>
+	 * <br> with new coordinates</br>
+	 * @param x_ogre	x - ogres's coordinate
+	 * @param y_ogre	y - ogres's coordinate
+	 * @param x_club	x - club's coordinate
+	 * @param y_club	x - club's coordinate
+	 */
 	public Ogre(int x_ogre, int y_ogre, int x_club, int y_club) {
 		super(x_ogre, y_ogre);
 		this.club = new Club(x_club, y_club);
 		this.character = 'O';
 	}
-
+	
+	/**
+	 * Check if Ogre is above lever or not
+	 * @return 	true if it is or false otherwise 
+	 */
 	public boolean GetOnLeverOgre() {
 		return onLever;
 	}
 
+	/**
+	 * Returns ogre's representation
+	 * @return char Character
+	 */
 	public char getCharacter() {
 		return character;
 	}
 
 
+	/**
+	 * Put ogre stunned and change his representation to '8'
+	 */
 	public void putStunned() {
 		this.numberTurnsLeftStunned = 2;
 		this.character = '8';
 	}
 
+	/**
+	 * Decrement the number of moves being stunned
+	 */
 	public void updateTurnsLeftStunned() {
 		this.numberTurnsLeftStunned--;
 	}
 
+	/**
+	 * Verify is ogre is stunned or not
+	 * <br> if is not, change his representation to the original 'O'
+	 * @return true if is or false otherwise
+	 */
 	public boolean isStunned() {
 		if(numberTurnsLeftStunned == 0) {
 			this.character = 'O';
@@ -49,15 +88,29 @@ public class Ogre extends Vilan {
 		return true;
 	}
 
+	/**
+	 * Get ogre's club
+	 * @return 	club
+	 */
 	public Club getClub() {
 		return club;
 	}
 
+	
+	/**
+	 * Set Vilan type to Ogre
+	 * @return Vilan's type
+	 */
 	@Override
 	public EnumVillainType getType() {
 		return EnumVillainType.Ogre;
 	}
 
+	/**
+	 * Moves Ogre
+	 * @param board		actual game map
+	 * 
+	 */
 	public void move(GameMap board) {
 		if(this.isStunned())
 			updateTurnsLeftStunned();	
@@ -89,6 +142,7 @@ public class Ogre extends Vilan {
 		}
 	}
 
+	
 	private void getNewPosition(GameMap board, int num) {
 		switch(num) { 
 		case 0:
@@ -126,6 +180,11 @@ public class Ogre extends Vilan {
 			this.SetYCoordinate(this.getYCoordinate()-1);	
 	}
 
+	
+	/**
+	 * Compute valid positions to move club
+	 * @param board 	current game map
+	 */
 	public void checkClub(GameMap board) {
 
 		ArrayList<Integer> validPositions = new ArrayList<>();
@@ -147,6 +206,11 @@ public class Ogre extends Vilan {
 
 	}
 
+	/**
+	 * Move club according the valid positions previously calculated
+	 * @param positions 	valid positions to move into
+	 * @param board			actual game map
+	 */
 	public void moveClub(Integer[] positions, GameMap board) { 
 
 		Random club_dir= new Random();
@@ -183,6 +247,10 @@ public class Ogre extends Vilan {
 			onLever = true;
 	}
 
+	/**
+	 * Return index guard
+	 * @return index guard back to the begin
+	 */
 	@Override
 	public int getIndexGuard() {
 		return 0;

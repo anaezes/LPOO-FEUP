@@ -1,0 +1,11 @@
+10
+XXXXXXXXXX
+X        X
+X h  k O*X
+X        X
+X        X
+S a    O*X
+X        X
+X   O* O*X
+X        X
+XXXXXXXXXX

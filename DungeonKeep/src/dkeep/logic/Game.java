@@ -1,5 +1,7 @@
 package dkeep.logic;
 
+
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,12 +14,26 @@ import java.util.Random;
 
 import dkeep.logic.Vilan.EnumVillainType;
 
+/** 
+ * Class Game
+ * <br>Date: 26/03/2017</br>
+ * 
+ * @author Ana Santos & Cristiana Ribeiro
+ */
+
 public class Game implements Serializable {
+	
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * string SAVES_DIR, a static var with the path for saved games location
+	 */
 	public static final String SAVES_DIR = System.getProperty("user.dir") + "/saves/";
 	
+	/**
+	 *  int attr gameId, identifies the game
+	 */
 	public int gameId;
 	private EnumGameState state;
 	private int level;
@@ -57,12 +73,27 @@ public class Game implements Serializable {
 	private int numOgres;
 	private boolean numOgresInMap;
 
+	/**
+	 * <strong>EnumGameState</strong> - Identifies the state of the game
+	 * </br>
+	 * <strong>Running</strong> - The game is running
+	 * </br>
+	 * <strong>Win</strong> - The game has ended and user win the game
+	 * </br>
+	 * <strong>Lost</strong> - The game has ended and user lost the game
+	 */
 	public enum EnumGameState {
 		Running,
 		Win,
 		Lost,
 	}
-
+	
+	/**
+	 * Class Constructor Game specifying the board to play
+	 * 
+	 * @param board		the GameMap board to be used on the game, 
+	 * @param isTest	a boolean to verify if is a game or a unit test on run
+	 */
 	public Game(GameMap board, boolean isTest) {
 		setRandomId();
 		this.guardType = null;
@@ -77,6 +108,14 @@ public class Game implements Serializable {
 
 		initGame();
 	}
+	
+	/**
+	 *  Class Constructor Game that receives the boards to be used in the game, the type of Guard present in first level and number of ogres (and respective Clubs) that are available to play with
+	 * 
+	 * @param boards		List of GameMap boards 
+	 * @param guardType		Identifies if the Guard is Rockie, Drunk or Paranoid
+	 * @param numOgres		Number of ogres in the current game
+	 */
 
 	public Game(List<GameMap> boards, EnumGuardType guardType, int numOgres) {
 		setRandomId();
@@ -93,6 +132,13 @@ public class Game implements Serializable {
 		this.byLevel = true;
 	}
 
+	/**
+	 * Class Constructor Game that receives the boards to be used in the game and number of ogres (and respective Clubs) that are available to play with
+	 * 
+	 * @param boards	List of GameMap boards 
+	 * @param numOgres	Number of ogres in the current game
+	 * 
+	 */
 	public Game(List<GameMap> boards, int numOgres) {
 		setRandomId();
 		this.boards = boards;
@@ -109,14 +155,19 @@ public class Game implements Serializable {
 
 		this.byLevel = true;
 	}
-	
+	/**
+	 *  Change the ID game randomly 
+	 * 
+	 */
 	public void setRandomId(){
 		Random oj = new Random();
 		gameId = oj.nextInt(100000);
 	}
 
 	/**
-	 * Identify all features from the game board
+	 * Initialize the game and verify if exist Ogres
+	 * <br> If there are ogres on the game - they will take their positions on the map and put the key on board </br>
+	 * <br> If there are not ogres - only the key take its position </br>
 	 * */
 
 	public void initGame() {
@@ -131,6 +182,14 @@ public class Game implements Serializable {
 			initNoOgresInMap();
 	}
 
+
+	/**
+	 * <br>Set key in its position </br>
+	 * <br>Set lever in its position</br>
+	 * <br>Set exit doors in their position </br>
+	 * <br> by position - assume position in the current game board </br>
+	 */
+	
 	private void initNoOgresInMap() {
 		boolean ogres = false;
 		char character;
@@ -166,6 +225,15 @@ public class Game implements Serializable {
 		else this.lever = new Lever(tmp_x, tmp_y);
 	}
 
+
+	/**
+	 * Set the ogres in their position
+	 * <br>Set key in its position </br>
+	 * <br>Set lever in its position</br>
+	 * <br>Set exit doors in their position </br>
+	 * <br> by position - assume position in the current game board </br>
+	 */
+	
 	private void initNumOgresInMap() {
 		boolean ogres = false;
 		int tmp_x = 0, tmp_y=0;
@@ -237,6 +305,13 @@ public class Game implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Verify if the board has a character 'h' or 'H' that represents the Hero on the position [x][y]
+	 * @param i		the x-coordinate
+	 * @param j		the y-coordinate
+	 * @return		true if Hero exists or false otherwise
+	 */
+	
 	public boolean verifyifIsHero(int i, int j){
 		char character = selectedBoard.getBoardCaracter(i,j);
 		if(character == 'h' || character == 'H') {
@@ -247,6 +322,13 @@ public class Game implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Adds this specific Guard to Villan's List
+	 * <br>If not choosen, guardType is choose randomly</br>
+	 * @param i 	the x-coordinate of guard
+	 * @param j		the y-coordinate of guard
+	 * @return		return Villan's ArrayList with the guard added
+	 */
 	public List<Vilan> initGuard(int i, int j) {
 
 		int num = 0;
@@ -279,6 +361,14 @@ public class Game implements Serializable {
 		return v;
 	}
 
+	/**
+	 * Add various ogres and their respective clubs to Villan's ArrayList
+	 * @param x_ogres		List<Integer> with x-coordinate of each ogre
+	 * @param y_ogres		List<Integer> with y-coordinate of each ogre
+	 * @param x_clubs		List<Integer> with x-cooydinate of each club
+	 * @param y_clubs		List<Integer> with y-coordinate of each club
+	 */
+	
 	public void initOgresList(List<Integer> x_ogres, List<Integer> y_ogres, List<Integer> x_clubs, List<Integer> y_clubs) {
 
 		List<Vilan> v = new ArrayList<>();
@@ -286,6 +376,15 @@ public class Game implements Serializable {
 			v.add(new Ogre(x_ogres.get(i), y_ogres.get(i), x_clubs.get(i), y_clubs.get(i)));
 		this.vilans = v;
 	}
+	
+	/**
+	 * Add one ogre and his club to the Villans' ArrayList according their coordinates
+	 * <br> If number of ogres is not defined - it will be randomly calculated</br>
+	 * @param x_ogre		 x-coordinate of ogre
+	 * @param y_ogre		 y-coordinate of ogre
+	 * @param x_club		 x-coordinate of club
+	 * @param y_club		 y-coordinate of club
+	 */
 
 	public void initOgres(int x_ogre, int y_ogre, int x_club, int y_club) {
 
@@ -307,6 +406,11 @@ public class Game implements Serializable {
 		this.canMoveGuard = true;
 	}
 
+	/**
+	 * Set guard's path with predifined positions
+	 * @param x		int[] with x-coordinates of the guard
+	 * @param y		int[] with y-coordinates of the guard
+	 */
 	public void setGuardPath(int[] x, int[] y)  {
 		if(x != null) {
 			for(Vilan v : vilans) {
@@ -316,23 +420,41 @@ public class Game implements Serializable {
 			this.canMoveGuard = true;
 		}
 	}
-
+	/**
+	 * Returns current game state
+	 * @return		 game state
+	 */
 	public EnumGameState getGameState() {
 		return state;
 	}
-
+	
+	/**
+	 * Returns current game level
+	 * @return game level
+	 */
 	public int getGameLevel() {
 		return level;
 	}
-
+	
+	
+	/**
+	 * Set the game with state 
+	 * @param state		the new state to be attributed to the game
+	 */
 	public void setGameState(EnumGameState state) {
 		this.state = state;
 	}
 
+	/**
+	 * Increments the current game state
+	 */
 	public void nextLevel() {
 		this.level++;
 	}
 
+	/**
+	 * Check if the player lost the game and update game state
+	 */
 	public void checkLostGame() {
 		for(int i = 0; i < vilans.size(); i++) {			
 			if(verifyHeroIsNextToVilan(i)){
@@ -362,6 +484,10 @@ public class Game implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Change hero's position according the movement received
+	 * @param movement 		Identify if the move is Up, Down, Left or Right
+	 */
 	public void moveHero(EnumMoves movement) {
 
 		int x_hero = hero.getXCoordinate();
@@ -481,11 +607,18 @@ public class Game implements Serializable {
 			exitDoors.get(i).transformToStairs();
 	}
 
+	/**
+	 * Unlock Doors and change its representation to 'P'
+	 */
 	public void unlockDoors() {
 		for(int i = 0; i < exitDoors.size(); i++)
 			exitDoors.get(i).openExitDoor();
 	}
 
+	/**
+	 * Move Vilans
+	 * <br> If the vilan is an ogre, move its club too</br>
+	 */
 	public void moveVilans() {
 		for(int i = 0; i < vilans.size(); i++) {
 			vilans.get(i).move(selectedBoard);
@@ -494,50 +627,98 @@ public class Game implements Serializable {
 		}
 	}
 
+	/**
+	 * Returns Hero
+	 * @return		Hero
+	 */
 	public Hero getHero() {
 		return hero;
 	}
 
+	/**
+	 * Returns Villans 
+	 * @return 		Villans
+	 */
 	public List<Vilan> getVilans() {
 		return vilans;
 	}
 
+	/**
+	 *  Returns Hero's Club
+	 * @return  Club
+	 */
 	public Club getHeroClub() {
 		return heroClub;
 	}
 
+	/**
+	 * Returns game current's map
+	 * @return map
+	 */
 	public GameMap getBoard() {
 		return selectedBoard;
 	}
 
+	/**
+	 * Returns Exit Doors
+	 * @return exitDoors
+	 */
 	public List<ExitDoor> getExitDoors() {
 		return exitDoors;
 	}
 
+	/**
+	 * Check if the current game state is Lost
+	 * @return		true if game state is equal to Lost or false otherwise
+	 */
 	public boolean isGameOver() {
 		return this.state == EnumGameState.Lost;
 	}
 
+	/**
+	 * Returns actual game's lever
+	 * @return 	lever
+	 */
 	public Lever getLever() {
 		return lever;
 	}
 
+	/**
+	 * Returns actual game's key
+	 * @return 	key
+	 */
 	public Key getKey() {
 		return key;
 	}
 
+	/**
+	 * Determines if guard can be moved or not
+	 * @param b		boolean that identifies if guard can be moved or not
+	 */
 	public void setCanMoveGuard(boolean b) {
 		canMoveGuard = b;		
 	}
 
+	/**
+	 * Number of Ogres
+	 * @return numOgres
+	 */
 	public int getNumOgres() {
 		return numOgres;
 	}
 
+	/**
+	 * Returns guard's type: Paranoid, Rockie or Drunk
+	 * @return guardType
+	 */
 	public EnumGuardType getGuardType() {
 		return guardType;
 	}
 	
+
+	/**
+	 * Write game's object instance into a file 
+	 */
 	public void serialize() {      
 	      try {
 	         FileOutputStream fileOut = new FileOutputStream(SAVES_DIR + "gameSaved.bin");
@@ -550,6 +731,10 @@ public class Game implements Serializable {
 	      }   
 	}
 	
+	/**
+	 * Read the saved game from file and deserialize into game object
+	 * @return 		the game object
+	 */
 	public static Game deserialize() {
 		Game game = null;
 	      try {

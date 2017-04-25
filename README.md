@@ -1,4 +1,5 @@
 # LPOO1617_T3G02
+Project 1 for LPOO class
 
 [![BCH compliance](https://bettercodehub.com/edge/badge/anaezes/LPOO1617_T3G02?token=6943960e72bd266ebd8de65c3820afcb4670f953)](https://bettercodehub.com/)
 

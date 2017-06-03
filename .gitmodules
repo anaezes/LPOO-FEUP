@@ -1,0 +1,3 @@
+[submodule "project2"]
+	path = project2
+	url = https://github.com/anaezes/LPOO1617_T3G02_P2.git

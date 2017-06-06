@@ -16,17 +16,17 @@ Project 1 for LPOO class
 
 * **Results of Better Code Hub:**
 
-![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/BetterCodeHub.png)
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/project1/DungeonKeep/screenshots/BetterCodeHub.png)
  
  
  * **Results of Test Coverage with EclEmma:**
  
-![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/CoverageTest.png)
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/project1/DungeonKeep/screenshots/CoverageTest.png)
 
 
 * **Results of PIT Mutation Testing:**
 
-![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/DungeonKeep/screenshots/PitMutationTest.png)
+![](https://github.com/anaezes/LPOO1617_T3G02/blob/master/project1/DungeonKeep/screenshots/PitMutationTest.png)
 
 
 * **Music Credits:**
